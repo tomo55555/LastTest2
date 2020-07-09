@@ -1,0 +1,826 @@
+★unity授業ルーム
+
+mjpurin  14:19
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class GravityController : MonoBehaviour
+{
+    const float Gravity = 9.81f;
+    public float gravityScale = 1.0f;
+    void Update()
+    {
+        Vector3 vector = new Vector3();
+        vector.x = Input.GetAxis("Horizontal");
+        vector.z = Input.GetAxis("Vertical");
+        if (Input.GetKey("z")) {
+            vector.y = 1.0f;
+        } else {
+            vector.y = -1.0f;
+        }
+        Physics.gravity = Gravity * vector.normalized * gravityScale;
+    }
+}
+
+mjpurin  14:58
+環境設定を終え、教科書95ページまで進めました。
+:おじぎ_男性:
+1
+
+
+sekizawa  10:37
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class GravityController2 : MonoBehaviour
+{
+    public float x = 0.0f;
+    public float y = -9.81f;
+    public float z = 0.0f;
+    Vector3 vec;
+    private void Start()
+    {
+        vec = new Vector3();   
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        vec.x = x;
+        vec.y = y;
+        vec.z = z;
+        Physics.gravity = vec;
+    }
+}
+
+mjpurin  11:47
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Hole : MonoBehaviour
+{
+    public string activeTag;
+    private void OnTriggerStay(Collider other) {
+        Rigidbody r = other.gameObject.GetComponent<Rigidbody>();
+        Vector3 direction = transform.position - other.gameObject.transform.position;
+        direction.Normalize();
+        if (other.gameObject.tag == activeTag) {
+            r.velocity *= 0.9f;
+            r.AddForce(direction * r.mass * 20.0f);
+        } else {
+            r.AddForce(-direction * r.mass * 80.0f);
+        }
+    }
+}
+
+mjpurin  14:28
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SphereScript : MonoBehaviour
+{
+    public float power = 500f;
+    Rigidbody rd;
+    void Start()
+    {
+        rd = GetComponent<Rigidbody>();
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown("z")) {
+            //Vector3 vec = new Vector3(0, 1f, 0);
+            Vector3 vec = Vector3.up;
+            rd.AddForce(vec*power);
+        }
+    }
+}
+
+mjpurin  15:18
+本日は教科書111ページまで進みました。
+:おじぎ_男性:
+1
+
+
+mjpurin  11:01
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Shooter : MonoBehaviour
+{
+    const int SphereCandyFrequency = 3;
+    int sampleCandyCount;
+    public GameObject[] candyPrefabs;
+    public GameObject[] candySquarePrefabs;
+    public GameObject candyHolder;
+    public GameObject candyPrefab;
+    public float shotSpeed;
+    public float shotTorque;
+    public float baseWidth;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetButtonDown("Fire1")) {
+            Shot();
+        }
+    }
+    GameObject SampleCandy() {
+        GameObject prefab = null;
+        if(sampleCandyCount % SphereCandyFrequency == 0) {
+            int index = Random.Range(0, candyPrefabs.Length);
+            prefab = candyPrefabs[index];
+        } else {
+            int index = Random.Range(0, candySquarePrefabs.Length);
+            prefab = candySquarePrefabs[index];
+        }
+        sampleCandyCount++;
+        return prefab;
+    }
+    Vector3 GetInstantiatePosition() {
+        float x = baseWidth *
+            (Input.mousePosition.x / Screen.width) - (baseWidth / 2);
+        return transform.position + new Vector3(x, 0, 0);
+    }
+    public void Shot() {
+        GameObject candy = Instantiate(
+            SampleCandy(),
+            GetInstantiatePosition(),
+            Quaternion.identity
+            );
+        candy.transform.parent = candyHolder.transform;
+        Rigidbody candyRigidBody = candy.GetComponent<Rigidbody>();
+        candyRigidBody.AddForce(transform.forward * shotSpeed);
+        candyRigidBody.AddTorque(new Vector3(0, shotTorque, 0));
+    }
+}
+
+mjpurin  09:59
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CubeRot : MonoBehaviour
+{
+    Vector3 rot;
+    bool isRot;
+    void Update() {
+        if (Input.GetButtonDown("Jump") && !isRot) {
+            StartCoroutine(Rot());
+        }
+        if (isRot) {
+            transform.Rotate(rot);
+        }
+    }
+    IEnumerator Rot() {
+        isRot = true;
+        rot.y = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.y = 0;
+        rot.x = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.x = 0;
+        rot.z = 1f;
+        yield return new WaitForSeconds(3.0f);
+        rot.z = 0;
+        isRot = false;
+    }using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CubeRot : MonoBehaviour
+{
+    Vector3 rot;
+    bool isRot;
+    void Update() {
+        if (Input.GetButtonDown("Jump") && !isRot) {
+            StartCoroutine(Rot());
+        }
+        if (isRot) {
+            transform.Rotate(rot);
+        }
+    }
+    IEnumerator Rot() {
+        isRot = true;
+        rot.y = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.y = 0;
+        rot.x = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.x = 0;
+        rot.z = 1f;
+        yield return new WaitForSeconds(3.0f);
+        rot.z = 0;
+        isRot = false;
+    }
+}
+}
+
+mjpurin  10:09
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CubeRot : MonoBehaviour
+{
+    Vector3 rot;
+    void Update() {
+        if (Input.GetButtonDown("Jump") && rot.magnitude == 0f) {
+            StartCoroutine(Rot());
+        }
+        if (rot.magnitude>0f) {
+            transform.Rotate(rot);
+        }
+    }
+    IEnumerator Rot() {
+        rot.y = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.y = 0;
+        rot.x = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.x = 0;
+        rot.z = 1f;
+        yield return new WaitForSeconds(3.0f);
+        rot.z = 0;
+    }
+}
+
+mjpurin  11:25
+https://www.youtube.com/watch?v=nlLow7DbKkY
+
+YouTubeYouTube | Random Art Attack
+Unity 3D Particle Sub Emitters: Making Fireworks 
+
+
+mjpurin  09:50
+https://joytas.net/programming/unity/unity3
+
+ジョイタスネットジョイタスネット
+Unity3 | ジョイタスネット
+Shoot [作成手順] 床の作成 1.CubeからFloorを作成する。 2.Floorというタグを作成し付与する。 3.transformは下図 カメラの設定 4.transformを下図のように設定 弾丸の作成 5.SphereからBulletを作成する。 6.transformは下図（Floorに埋もれて見えないが気にしなくて良い) 7.表面材質を赤に設定する。 8.Rigidbodyを付
+2017年9月30日
+
+mjpurin  10:00
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class NejikoController : MonoBehaviour
+{
+    CharacterController controller;
+    Animator animator;
+    Vector3 moveDirection = Vector3.zero;
+    public float gravity;
+    public float speedZ;
+    public float speedJump;
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+    void Update()
+    {
+        if (controller.isGrounded) {
+            if (Input.GetAxis("Vertical") > 0f) {
+                moveDirection.z = Input.GetAxis("Vertical") * speedZ;
+            } else {
+                moveDirection.z = 0;
+            }
+            transform.Rotate(0, Input.GetAxis("Horizontal") * 3, 0);
+            if (Input.GetButton("Jump")) {
+                moveDirection.y = speedJump;
+                animator.SetTrigger("jump");
+            }
+        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        Vector3 globalDirection = transform.TransformDirection(moveDirection);
+        controller.Move(globalDirection * Time.deltaTime);
+        if (controller.isGrounded) {
+            moveDirection.y = 0;
+        }
+        animator.SetBool("run", moveDirection.z > 0f);
+    }
+}
+
+mjpurin  12:42
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Cube : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Space)) {
+            transform.position =
+                Vector3.MoveTowards(
+                    transform.position,
+                    new Vector3(10f, 10f, 10f),
+                    0.1f
+                    );
+        }
+    }
+}
+
+mjpurin  12:48
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Cube : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Space)) {
+            transform.position =
+                Vector3.MoveTowards(
+                    transform.position,
+                    new Vector3(10f, 10f, 10f),
+                    0.1f
+                    );
+        }
+        if (Input.GetKey(KeyCode.S)) {
+            transform.position =
+                            Vector3.MoveTowards(
+                                transform.position,
+                                new Vector3(0f, 0f, 0f),
+                                0.1f
+                                );
+        }
+        if (Input.GetKey(KeyCode.L)) {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                new Vector3(10f, 10f, 10f),
+                Time.deltaTime * 2f
+                );
+        }
+    }
+}
+
+mjpurin  13:38
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SimpleFollow : MonoBehaviour
+{
+    Vector3 diff;
+    public GameObject target;
+    public float followSpeed;
+    void Start()
+    {
+        diff = target.transform.position - transform.position;
+    }
+    void LateUpdate()
+    {
+        transform.position = 
+            Vector3.Lerp(
+            transform.position,
+            target.transform.position-diff,
+            Time.deltaTime*followSpeed
+            );
+    }
+}
+
+mjpurin  10:53
+https://docs.microsoft.com/ja-jp/dotnet/core/tutorials/with-visual-studio-code
+
+docs.microsoft.comdocs.microsoft.com
+Visual Studio Code を使用して .NET Core でコンソール アプリケーションを作成する - .NET Core
+Visual Studio Code と .NET Core CLI を使用して .NET Core コンソール アプリケーションを作成する方法について説明します。
+
+mjpurin  11:40
+https://joytas.net/programming/java_basic
+
+ジョイタスネットジョイタスネット
+Java(オブジェクト指向基本復習) | ジョイタスネット
+1.ゲームを作ることになりスライムを登場させることになった。そこで名前とHP(初期値20)をパラメータとして持つpublicなSlimeクラスを作成せよ。コンストラクタやメソッドの実装は不要でクラス内のアクセス修飾子は無印(パッケージプライベート)とする。 ●Slimeクラス 2.SlimeAppクラスを作成し、2匹のスライムをnewせよ。その際変数名はsurarinとsurakitiとし、名前は
+2018年1月29日
+
+mjpurin  11:58
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace Slimes {
+    class Slime {
+        public string Name { set; get; }
+        public int Hp { set; get; }
+        public Slime() { }
+        public Slime(string name) {
+            this.Name = name;
+        }
+        public void Appear() {
+            Console.WriteLine($"{this.Name}が現れた!!");
+        }
+        public void Attack() {
+            Console.WriteLine($"{this.Name}の攻撃:5ポイントのダメージを与えた");
+        }
+    }
+}
+11:58
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+namespace Slimes {
+    class Program {
+        static void Main(string[] args) {
+            string[] names = { "スラリン", "スラキチ", "スラッチ" };
+            var list = new List<Slime>();
+            foreach (string s in names) {
+                Slime slime = new Slime(s);
+                slime.Appear();
+                list.Add(slime);
+            }
+            Console.WriteLine($"{list.Count}匹のスライム軍団が襲ってきた");
+            foreach(Slime s in list) {
+                s.Attack();
+            }
+        }
+    }
+}
+
+mjpurin  09:47
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Shooter : MonoBehaviour
+{
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Physics.Raycast(ray,out hit, 100f)) {
+                Destroy(hit.collider.gameObject);
+            }
+            /*
+            foreach(RaycastHit hit in Physics.RaycastAll(ray)) {
+                Destroy(hit.collider.gameObject);
+            }
+            */
+            /*
+            foreach (RaycastHit hit in Physics.SphereCastAll(ray,3f)) {
+                Destroy(hit.collider.gameObject);
+            }
+            */
+        }
+    }
+}
+
+mjpurin  09:02
+https://joytas.net/programming/unity/unity6
+
+ジョイタスネットジョイタスネット
+Unity6 | ジョイタスネット
+Terrain Unityは強力な地形作成機能が備わっている。今回はそれを使ってみよう。 [作成手順] 準備 1.新規にプロジェクトを作成したら、インポートパッケージよりEnvironmentを選択。以下のようにEnviroｎmentのみにチェックを入れインポートする。2. ヒエラルキーのクリエイト->3DオブジェクトよりTerraiを作成する。 大地の作成 まずは感覚をつかもう。左端のRa
+2017年10月3日
+
+46cEQsLS  10:41
+Unity Standard Assets共有テスト
+GZip 
+Standard Assets_Mar 6, 2018.unitypackage
+188 MB GZip188 MB — クリックしてダウンロード
+
+
+
+mjpurin  11:23
+https://joytas.net/programming/unity/unity7
+
+ジョイタスネットジョイタスネット
+Unity7 | ジョイタスネット
+Mecanim1 [作成手順] 1.まずはUnitychanをDownloadする。 2.Unityで新しいプロジェクトを作成し、インポートパッケージ->カスタムパッケージから先程のダウンロードしたUnityChan_1_2_1.unitypackage をインポートする。 3.unitychanプレファブをシーンに配置する。（原点でよい） (この際、unitychanのアイコンがピンクなっ
+2017年10月4日
+
+mjpurin  13:32
+https://assetstore.unity.com/packages/3d/animations/humanoid-rig-sugar-pixels-135075
+
+Unity Asset StoreUnity Asset Store
+Humanoid Rig Sugar Pixels | 3D Animations | Unity Asset Store
+Elevate your workflow with the Humanoid Rig Sugar Pixels asset from sugarpixels. Find this & other Animations options on the Unity Asset Store. (410 kB)
+https://assetstorev1-prd-cdn.unity3d.com/key-image/438c2102-bb35-4966-b9aa-0650272b8181.png
+
+mjpurin  13:42
+https://assetstore.unity.com/packages/3d/characters/robots/space-robot-kyle-4696
+
+Unity Asset StoreUnity Asset Store
+Space Robot Kyle | 3D Robots | Unity Asset Store
+Elevate your workflow with the Space Robot Kyle asset from Unity Technologies. Find this & other Robots options on the Unity Asset Store. (177 kB)
+https://assetstorev1-prd-cdn.unity3d.com/key-image/5674d40c-36ff-422f-a44e-c8c368f9228a.jpg
+
+mjpurin  09:04
+https://joytas.net/programming/unity/unity9
+
+ジョイタスネットジョイタスネット
+Unity9 | ジョイタスネット
+CharacterController キャラの移動に便利なのがCharacterControllerだ。これを利用することで 地形の凸凹に沿って移動 壁にこするように沿って移動 登れる坂道の勾配を設定 などが簡単に実現することができる。今回はUnityちゃんのモデルをCharacterControllerを使って動かしてみよう。 新規プロジェクトの作成 1.新規にCharacterControl
+2017年10月10日
+
+mjpurin  11:08
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CharMove : MonoBehaviour {
+    Animator animator;
+    CharacterController cc;
+    AudioSource voice;
+    Vector3 dir = Vector3.zero;
+    public float gravity = 20.0f;
+    public float speed = 4.0f;
+    public float rotSpeed = 300.0f;
+    public float jumpPower = 8.0f;
+    public AudioClip[] clips;
+    void Start() {
+        animator = GetComponent<Animator>();
+        cc = GetComponent<CharacterController>();
+        voice = GetComponent<AudioSource>();
+    }
+    void Update() {
+        //前進成分を取得(0~1),今回はバックはしない
+        float acc = Mathf.Max(Input.GetAxis("Vertical"), 0f);
+        //接地していたら
+        if (cc.isGrounded) {
+            //左右キーで回転
+            float rot = Input.GetAxis("Horizontal");
+            //前進、回転が入力されていた場合大きい方の値をspeedにセットする(転回のみをするときも動くモーションをする)
+            animator.SetFloat("speed", Mathf.Max(acc, Mathf.Abs(rot)));
+            //回転は直接トランスフォームをいじる
+            transform.Rotate(0, rot * rotSpeed * Time.deltaTime, 0);
+            if (Input.GetButtonDown("Jump")) {
+                //ジャンプモーション開始
+                animator.SetTrigger("jump");
+            }
+        }
+        //下方向の重力成分
+        dir.y -= gravity * Time.deltaTime;
+        //CharacterControllerはMoveでキャラを移動させる。
+        cc.Move((transform.forward * acc * speed + dir) * Time.deltaTime);
+        //移動した後着していたらy成分を0にする。
+        if (cc.isGrounded) {
+            dir.y = 0;
+        }
+    }
+    /*
+    public void OnJump() {
+    }
+    */
+    public void OnJumpStart() {
+        dir.y = jumpPower;
+        voice.clip = clips[Random.Range(0, clips.Length)];
+        voice.Play();
+    }
+}
+
+mjpurin  09:40
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CamCon2 : MonoBehaviour
+{
+    public Transform target;
+    Vector3 cameraPos;
+    float sec;
+    void Update()
+    {
+        sec += Time.deltaTime;
+        cameraPos.x = target.position.x + Mathf.Cos(sec) * 1.74f;
+        cameraPos.y = transform.position.y;
+        cameraPos.z = target.position.z + Mathf.Sin(sec) * 1.74f;
+        transform.position = cameraPos;
+        transform.LookAt(target.position+Vector3.up);
+    }
+}
+
+mjpurin  09:52
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CamCon2 : MonoBehaviour
+{
+    public Transform target;
+    public Transform aim;
+    Vector3 cameraPos;
+    float sec;
+    float dist=1.74f;
+    void Update()
+    {
+        sec += Time.deltaTime;
+        dist -= Time.deltaTime * 0.2f;
+        dist = Mathf.Max(1.0f, dist);
+        cameraPos.x = target.position.x + Mathf.Cos(sec*0.6f) * dist;
+        cameraPos.y = aim.position.y;
+        cameraPos.z = target.position.z + Mathf.Sin(sec*0.6f) * dist;
+        transform.position = cameraPos;
+        transform.LookAt(aim);
+    }
+}
+
+mjpurin  10:20
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CamCon : MonoBehaviour
+{
+    public Transform target;
+    float fov=60f;//fieldofview
+    // Update is called once per frame
+    void Update() {
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            transform.RotateAround(target.position, Vector3.up, -40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            transform.RotateAround(target.position, Vector3.up, 40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.UpArrow)) {
+            transform.RotateAround(target.position, transform.right, -40f * Time.deltaTime);
+            //transform.Rotate(40f * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.DownArrow)) {
+            transform.RotateAround(target.position, transform.right, 40f * Time.deltaTime);
+           // transform.Rotate(-40f * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.J)) {
+            transform.Translate(0f, -0.5f * Time.deltaTime, 0f);
+        }
+        if (Input.GetKey(KeyCode.K)) {
+            transform.Translate(0f, 0.5f * Time.deltaTime, 0f);
+        }
+        if (Input.GetKey(KeyCode.L)) {
+            transform.Translate(0.5f * Time.deltaTime,0f, 0f);
+        }
+        if (Input.GetKey(KeyCode.H)) {
+            transform.Translate(-0.5f * Time.deltaTime, 0f, 0f);
+        }
+        if (Input.GetKey(KeyCode.Z)) {
+            fov -= 10f*Time.deltaTime;     
+        }
+        if (Input.GetKey(KeyCode.W)) {
+            fov += 10f * Time.deltaTime;
+        }
+        fov = Mathf.Clamp(fov, 20.0f, 150.0f);
+        Camera.main.fieldOfView = fov;
+    }
+}
+
+46cEQsLS  10:24
+Unityのテスト問題あったので共有します。ちょっと古いかもです
+https://tech.pjin.jp/blog/2016/04/27/unity_practice_1/
+
+TECH Projin（テックプロジン）TECH Projin（テックプロジン）
+【Unity】練習問題 1
+Unityの練習問題 第1問です。イベント関数についての問題です。
+2016年4月28日
+
+mjpurin  10:57
+以下の記事を参考にUnityで動画を作成しましょう。
+https://maku.blog/p/j8mzbnx/
+下はUnityRecorderで作成した動画のサンプルです。
+MPEG 4ビデオ 
+movie-001.mp4
+1 MB MPEG 4ビデオ1 MB — クリックしてダウンロード
+
+
+
+ミヤタ  11:20
+MPEG 4ビデオ 
+movie.mp4
+8 MB MPEG 4ビデオ8 MB — クリックしてダウンロード
+
+
+
+sekizawa  11:50
+MPEG 4ビデオ 
+movie-002.mp4
+447 kB MPEG 4ビデオ447 kB — クリックしてダウンロード
+
+
+11:52
+MPEG 4ビデオ 
+movie-004.mp4
+907 kB MPEG 4ビデオ907 kB — クリックしてダウンロード
+
+
+
+しんぼー  12:22
+MPEG 4ビデオ 
+movie.mp4
+18 MB MPEG 4ビデオ18 MB — クリックしてダウンロード
+
+
+
+Ayame Tsuchiya  12:29
+MPEG 4ビデオ 
+movie-002.mp4
+9 MB MPEG 4ビデオ9 MB — クリックしてダウンロード
+
+
+
+Nakaya  13:10
+MPEG 4ビデオ 
+slime.mp4
+2 MB MPEG 4ビデオ2 MB — クリックしてダウンロード
+
+
+
+46cEQsLS  13:22
+MPEG 4ビデオ 
+movie-002.mp4
+250 kB MPEG 4ビデオ250 kB — クリックしてダウンロード
+
+
+
+唐澤  13:30
+MPEG 4ビデオ 
+movie.mp4
+1 MB MPEG 4ビデオ1 MB — クリックしてダウンロード
+
+
+
+Fujimine  13:38
+MPEG 4ビデオ 
+movie.mp4
+439 kB MPEG 4ビデオ439 kB — クリックしてダウンロード
+
+
+
+mjpurin  11:28
+https://unity-chan.com/download/index.php
+
+mjpurin  09:10
+https://github.com/github/gitignore/blob/master/Unity.gitignore
+
+Unity.gitignore
+# This .gitignore file should be placed at the root of your Unity project directory
+#
+# Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
+#
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# MemoryCaptures can get excessive in size.
+# They also could contain extremely sensitive data
+/[Mm]emoryCaptures/
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
+
+# Uncomment this line if you wish to ignore the asset store tools plugin
+# /[Aa]ssets/AssetStoreTools*
+
+# Autogenerated Jetbrains Rider plugin
+/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# Visual Studio cache directory
+.vs/
+
+# Gradle cache directory
+.gradle/
+
+# Autogenerated VS/MD/Consulo solution and project files
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity3D generated meta files
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Unity3D generated file on crash reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.aab
+*.unitypackage
+
+# Crashlytics generated file
+crashlytics-build.properties
+
+# Packed Addressables
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+# Temporary auto-generated Android Assets
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*

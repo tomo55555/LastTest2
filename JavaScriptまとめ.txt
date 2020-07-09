@@ -1,0 +1,412 @@
+【学習メモ】JavaScriptの基礎まとめ
+JavaScript
+目次：
+
+１、JavaScriptとは
+２、基本的な文法
+３、文字列と数値
+４、変数
+５、オブジェクト
+６、条件判定のための型と式
+７、関数
+
+※順次、内容を追加・更新していく予定です。
+
+１、JavaScriptとは
+Javaと名前が似ていますが、全くの別物です。
+JavaScriptはオブジェクト指向型のプログラミング言語で、
+現在、web開発では必須と言われているほど多くの場面で使われています。
+HTMLでは静的な画面しか作れませんでしたが、JavaScriptを使えば動的なページが作れます。
+例えば、マウスをボタンに置いたら色が変わる、文字を入力するとページに表示されるなど。
+非同期通信などJavaScriptを元に様々な応用的な実装もできます。
+
+JavaScriptはどこで使う
+JavaScriptはCSSと同じようにHTMLにリンクを記載します。これでそのHTMLページでJavaScriptが使えるようになります。
+
+sample.html
+<!DOCTYPE html>
+  <html>
+    <head>
+    </head>
+      <body>
+       <script src="sample.js"></script>
+       <div id="text">This is message</div>
+        <button id="btn">ボタン</button>
+      </body>
+   </html>
+sample.jsがJavaScriptのファイル名です。
+これでsample.jsに書いたコードをこのHTMLに反映させることができます。
+
+HTML要素を取得し,JavaScriptで操作する(追加）
+・This is messageの背景色を赤にする。
+・ボタンを押したら,アラートを出す。
+
+sample.js
+window.onload = function(){
+//idを取得する
+  var message = document.getElementById('text');
+//色を赤にする
+  message.style.backgroundColor = 'red';
+
+  var btn = document.getElementById('btn');
+//onclickイベントを設定し、ボタンが押されたらアラートで'click'を表示
+  btn.onclick = function(){
+    alert('clicked');
+  }
+}
+ 
+
+2、基本的な文法
+※ここから、console.log()の内容は、ブラウザの「検証」→consoleから確認。
+ 
+・文の終わりにはセミコロン
+
+console.log('出力');
+ 
+
+変数
+変数の定義
+var 変数名;
+
+var name;
+変数に値を代入
+変数名 = 代入する値
+
+name = 'Tom'
+変数の使い方は２通り
+
+１、変数を定義してから値を入れる
+
+var name;
+name = 'Tom'
+２、変数を定義すると同時に値を入れる
+
+var name = 'Tom';
+ 
+
+値の更新
+var name = 'Tom';
+name = 'Jerry'; 
+console.log(name); //Jerry
+ 
+
+変数の一括定義
+var name1, name2;
+ 
+
+変数にはどんなデータでも入れられる
+var str = 'string'; //文字列
+var num = 100; //数値　
+var arr = ['a', 'b']; //配列
+var obj = {a: 'b'}; //オブジェクト
+var fun = function() {}; //関数
+ 
+
+3、文字列と数値
+文字列
+
+文字列はシングルクオテーション（' '）またはダブルクオテーション（"  "）で囲む。
+
+var name = '山田太郎';
+文字列の結合
+var name = '山田' + '太郎';
+console.log(name); //山田太郎
+var lastName = '山本';
+var firstName = '一郎';
+var fullName = lastName + firstName;
+console.log(fullName); //山本一郎
+数値
+クオートは不要。
+
+var x = 10;
+ 
+
+四則演算
+var result = 10 + 20; 
+console.log(result); //30
+var x = 10;
+var y = 20;
+var result = x + y;
+console.log(result); //30
+ 
+
+自分自身に足し算する場合は？
+var x = 10;
+x = x + 5;
+console.log(x); //15
+↓
+
+以下のようにもできる
+
+var x = 1;
+x++;
+console.log(x); //2
+
+var x = 10;
+x += 5
+console.log(x); //15
+X＋＋は、X = X ＋１と同じ。
+だいたいX＋＋を使う
+反対に引き算は、Xーー
+
+数値を文字列で計算してしまうと？
+var x = '10';
+var y = '20';
+var result = x + y;
+console.log(result); //1020
+ 
+
+4、変数
+配列では、複数のデータをまとめて扱うことができます。
+
+配列を使わない例：
+var fruit1 = 'みかん';
+var fruit2 = 'りんご';
+var fruit3 = 'ぶどう';
+配列を使う例:
+var fruit = ['みかん', 'りんご', 'ぶどう'];
+配列の操作
+配列を作ると、時自動的に値にインデックス（番号）が割り当てられます。
+
+インデックスは0番から始まるので、１つめの要素のインデックスは0番になります。
+
+var fruit = ['みかん', 'りんご', 'ぶどう'];
+var orange = fruit[0];
+var apple = fruit[1];
+var grape = fruit[2];
+console.log(orange) // みかん
+console.log(apple) // りんご
+console.log(grape) // ぶどう
+配列の要素を数えるときはlength
+console.log(fruit.length);
+インデックスは０から始まるのでした。
+
+2番目の要素を取りたいときは1を、3番目の要素を取りたいときは2を指定する、つまりインデックスから１を引けばいいですね。
+
+ということは、
+
+「最後の要素」を取りたいときは・・・
+
+インデックスの数 ー 1をすればいい。
+
+var fruit = ['みかん', 'りんご', 'ぶどう'];
+var lastIndex = fruit.length - 1;
+var lastElement = fruit[lestIndex];
+console.log(lestIndex) //ぶどう
+ 
+
+5、オブジェクト
+配列では、同じようなデータをまとめることができましたが、異なるデータをまとめることができませんでした。オブジェクトでは異なるデータをまとめることができます。
+
+オブジェクトの定義
+{プロパティ名１：値１,  プロパティ名２：値２・・・};
+
+オブジェクトを使わない例：
+var peronName = '山田太郎';
+var peronAge = 20;
+var personGender = 'male';
+オブジェクトを使う例：
+var person = {
+name: '山田太郎',
+age: 20,
+gender: 'male'
+};
+下記も同じですが、自分は上記の方が見やすいので上記の書き方をしています。
+
+var person = {name: '山田太郎', age: 20, gender: 'male'};
+オブジェクトの操作
+オブジェクト名 . プロパティ名
+
+var person = {
+name: '山田太郎', 
+age: 20, 
+gender: 'male'};
+var name = person.name
+console.log(name) //山田太郎
+入れ子になっているオブジェクトのプロパティの値も取得できます。
+
+下記は、personオブジェクトのaddressのポストコードを取得
+
+var person = {
+name: '山田太郎',
+age: 20,
+gender: 'male',
+address: {
+postcode: '100-0001',
+pref: '東京都',
+city: '千代田区'
+ }
+};
+var postcode = person.address.postcode;
+console.log(postcode); //100-0001
+値の更新
+var person = {
+name: '山田太郎', 
+age: 20, 
+gender: 'male'};
+person.age = 21;
+console.log(person.age); //21
+プロパティの追加
+var person = {
+name: '山田太郎', 
+age: 20, 
+gender: 'male'};
+person.kana = 'やまだたろう'
+console.log(person.kana) //やまだたろう
+ 
+
+6、条件判定のための型と式
+論理型（真　OR　偽）
+var name = '山田太郎';
+console.log(name === '山田太郎'); //true
+比較演算子
+var person = {
+name: '山田太郎', 
+age: 20, 
+gender: 'male'};
+console.log(age >= 20); //true
+ 
+
+==、!= と ===、!==の違い
+==、!= は片方が文字列、もう片方が数値でも同じ数字であればtrue
+
+===、!==は型まで一致していないとtrueになりません。
+
+console.log('10' == 10); //true
+console.log('10' === 10); //false
+ 
+console.log('10' != 20); //true
+console.log('10' !== 20); //false
+条件式
+if（条件式）{
+  処理
+}
+
+if(age >= 20){
+console.log('年齢は20歳以上です')
+}
+論理演算子
+！「NOT」
+
+&&「かつ」
+
+| | 「または」
+
+if(name === '山田太郎' && !url){
+console.log('山田さんのurlはありません')
+}
+if(name === '山田太郎' || name === '武田涼'){
+console.log('山田太郎さんか武田涼さんです')
+}
+条件分岐（if〜else文）
+if(y > 100){
+console.log('yは100より大きいです');
+} else if(y > 50){
+console.log('yは50より大きいです');
+} else {
+console.log('yは50以下です')
+}
+case文（追加）
+var color = 'blue';
+switch(color){
+  case 'blue':
+      console.log('青です');
+      break;
+  case 'red':
+      console.log('赤です');
+      break;
+  case 'green':
+      console.log('緑です');
+      break;
+  default:
+      console.log('無色です');
+}
+繰り返し
+while文
+var i = 0;
+while(i < 10){
+console.log(i);
+i++
+}
+i++で更新してあげないと無限ループになってしまうので、忘れずに書きましょう。
+ 
+
+for文
+whileと同じ繰り返し文。whileはいろんな繰り返しを柔軟に書けますが、for文は単純な処理を「何回繰り返す」文を簡潔に書けます。
+
+for（初期化式;　条件式;　更新式）{
+   文;
+};
+
+for(var i = 0; i < 10; i++){
+console.log(i); //1~9まで順番に出力される
+}
+for文＋条件分岐
+//3の倍数の時に'Hey!'を出力する
+for (var i = 1; i <= 100; i++){
+  if (i % 3 == 0){
+    console.log('Hey!');
+  }else{
+    console.log(i); 
+  }
+}
+配列の繰り返し
+var fruit = ['みかん', 'りんご', 'ぶどう'];
+var value;
+for (var i = 0; i < 3; i++) {
+value = fruit[i];
+console.log(value);
+}
+7、関数
+function  関数名（引数、引数・・・）{
+     文;
+}
+
+//関数の定義
+function add() {
+var a = 10;
+var b = 20;
+var result = a + b;
+console.log(result);
+}
+
+//関数の呼び出し
+add();// 30
+オブジェクトのプロパティとして定義する
+var person = {
+name: '',
+age: 20,
+say: function(){
+console.log('こんにちは');
+ }
+};
+
+person.say();// こんにちは
+引数
+//関数の定義
+function add(a, b){
+var result = a + b;
+console.log(result);
+}
+
+//関数の呼び出し
+add(1, 1); //2
+add(10, 20); //30
+戻り値
+一つ前の「引数」では、足し算した値を出力するだけでしたが、「結果を返す」ことによって帰ってきた結果を自由に使うことができます。より汎用的な関数にすることができます。
+
+
+//戻り値を使った関数
+function add(a, b){
+var result = a + b;
+return result;
+}
+
+var result1 = add(1, 1); 
+console.log(result1); //2
+
+var result2 = add(10, 20); 
+console.log(result2); //30
+
+var result3 = add(result1, result2);
+console.log(result3); //32

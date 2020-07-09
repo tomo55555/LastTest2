@@ -1,0 +1,3699 @@
+★Day75
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GravityController : MonoBehaviour
+{
+    const float Gravity = 9.81f;
+    public float gravityScale = 1.0f;
+   
+    void Update()
+    {
+        Vector3 vector = new Vector3();
+        vector.x = Input.GetAxis("Horizontal");
+        vector.z = Input.GetAxis("Vertical");
+
+        if (Input.GetKey("z")) {
+            vector.y = 1.0f;
+        } else {
+            vector.y = -1.0f;
+        }
+        Physics.gravity = Gravity * vector.normalized * gravityScale;
+    }
+}
+
+★Day76
+
+重力をインスペクタを使って変更するコード
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class GravityController2 : MonoBehaviour
+{
+    public float x = 0.0f;
+    public float y = -9.81f;
+    public float z = 0.0f;
+    Vector3 vec;
+    private void Start()
+    {
+        vec = new Vector3();   
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        vec.x = x;
+        vec.y = y;
+        vec.z = z;
+        Physics.gravity = vec;
+    }
+}
+教科書に出てきた同じ色のボールを引き付けるコード
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Hole : MonoBehaviour
+{
+    public string activeTag;
+    private void OnTriggerStay(Collider other) {
+        Rigidbody r = other.gameObject.GetComponent<Rigidbody>();
+        Vector3 direction = transform.position - other.gameObject.transform.position;
+        direction.Normalize();
+        if (other.gameObject.tag == activeTag) {
+            r.velocity *= 0.9f;
+            r.AddForce(direction * r.mass * 20.0f);
+        } else {
+            r.AddForce(-direction * r.mass * 80.0f);
+        }
+    }
+}
+ｚを押すと上昇するコード
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SphereScript : MonoBehaviour
+{
+    public float power = 500f;
+    Rigidbody rd;
+    void Start()
+    {
+        rd = GetComponent<Rigidbody>();
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown("z")) {
+            //Vector3 vec = new Vector3(0, 1f, 0);
+            Vector3 vec = Vector3.up;
+            rd.AddForce(vec*power);
+        }
+    }
+}
+
+★Day77
+
+p112Hole.cs追記
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Hole : MonoBehaviour
+{
+    bool fallIn;
+    public string activeTag;
+    
+    public bool IsFallIn() {
+        return fallIn;
+    }
+    private void OnTriggerEnter(Collider other) {
+        if (other.gameObject.tag == activeTag) {
+            fallIn = true;
+        }
+    }
+    private void OnTriggerExit(Collider other) {
+        if (other.gameObject.tag == activeTag) {
+            fallIn = false;
+        }
+    }
+    void OnTriggerStay(Collider other) {
+        Rigidbody r = other.gameObject.GetComponent<Rigidbody>();
+        
+        Vector3 direction = transform.position - other.gameObject.transform.position;
+        direction.Normalize();
+
+        if (other.gameObject.tag == activeTag) {
+            r.velocity *= 0.9f;
+            r.AddForce(direction * r.mass * 20.0f);
+        } else {
+            r.AddForce(-direction * r.mass * 80.0f);
+        }
+    }
+}
+FallinChecker.cs作成(p114)
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FallInChecker : MonoBehaviour
+{
+    public Hole red;
+    public Hole blue;
+    public Hole green;
+
+    private void OnGUI() {
+        string label = "";
+        if(red.IsFallIn() && blue.IsFallIn() && green.IsFallIn()) {
+            label = "Fall in hole!";
+        }
+        GUI.Label(new Rect(0, 0, 100, 30), label);
+    }
+}
+CandyDozer
+p136 Pusher.csの作成
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Pusher : MonoBehaviour
+{
+    Vector3 startPosition;
+    public float amplitude;
+    public float speed;
+    // Start is called before the first frame update
+    void Start()
+    {
+        startPosition = transform.localPosition;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        float z = amplitude * Mathf.Sin(Time.time * speed);
+        transform.localPosition = startPosition + new Vector3(0, 0, z);
+    }
+}
+
+★Day78
+
+左右に揺れるキューブ
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cube : MonoBehaviour
+{
+    Vector3 startPos;
+    // Start is called before the first frame update
+    void Start()
+    {
+        startPos = transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        /*
+        transform.Translate(new Vector3(0f, 0, 0.01f),Space.World);
+       transform.Rotate(0.1f, 0.1f, 0.1f);
+        transform.localScale = transform.localScale + new Vector3(0.03f, 0, 0);
+        */
+        float x = Mathf.Sin(Time.time);
+        transform.position = startPos + new Vector3(x, 0, 0);
+    }
+}
+螺旋状に奥に進むコード
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Cube : MonoBehaviour
+{
+    Vector3 startPos;
+    public float shotSpeed=10f;
+    public float speed=10f;
+    public float amp=2f;
+    // Start is called before the first frame update
+    void Start()
+    {
+        startPos = transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+        float x = amp*Mathf.Cos(Time.time * speed);
+        float y =amp* Mathf.Sin(Time.time*speed);
+        float z = Time.time*shotSpeed;
+        transform.position = startPos + new Vector3(x, y, z);
+    }
+}
+
+★Day79
+
+Unity(Translateによる移動)
+
+今回はRigidbodyを付与せず、TranslateやRotateで物体を移動させてみよう。
+
+1.3Dでプロジェクトを作成したら３dギズモを以下のように調整する
+
+
+2.弾丸の作成
+
+弾丸を作成する。create->3d->Cylinderを原点に作成する
+
+
+ただこれだと物体の前方を表すz軸が奥を向いてしまっている。(画面の奥を指している)
+
+
+3.z軸の変更。こういった場合はオブジェクトに親を設定をする。まずは原点にCreateEmptyする。
+
+
+CreateEmptyした際には必ずtransformをresetする習慣をつけるとよい
+
+
+4.以下のようにcreateEmptyしたgameobjectの子要素にcylinderを設定し、rotationのxを90度に設定する。
+
+
+5.親子構造にして子要素を90度回すことによってz軸の向きを変えることができた。bulletと名前を変更しておこう。(下の図は見る角度を変えている)
+
+
+6.BulletScriptの作成。ProjectビューのCreate->C＃スクリプトからBulletScriptを作成する。
+
+
+7.BulletScriptを以下のように記述する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BulletScript : MonoBehaviour
+{
+    void Update()
+    {
+        transform.Translate(Vector3.forward);
+    }
+}
+8.作成したBulletScriptをドラッグ＆ドロップでbulletにアタッチする。
+
+
+9.実行してみよう。画面奥に進んでいくはずだ。ためしにbulletの角度ｘを-30度にしてもう一度実行してみよう。
+
+
+-30度の方向に飛んでいった。これで弾丸はOKなのでプロジェクトにドラッグ&ドラッグしてプレファブ化しておこう。bulletはヒエラルキーにはもう不要なので削除しておく
+
+
+10.スペースシップを作成する。Createから3dobjectでCubeを選択する。
+
+
+11.今作ったCubeを右クリックして新たにCreateからCubeを作成する。こうすることで子要素としてオブジェクトを作成することができる。子要素のインスペクターを以下のように設定する
+
+
+12.Shipとリネームする
+
+
+13.ShipScriptを以下のように作成する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ShipScript : MonoBehaviour
+{
+    public GameObject prefab;
+    Vector3 vec;
+    public float speed;
+    
+    void Update()
+    {
+        vec.x = Input.GetAxis("Horizontal");
+        transform.Rotate(Input.GetAxis("Vertical"), 0, 0);
+        transform.Translate(vec * speed);
+        if (Input.GetButtonDown("Jump")) {
+            GameObject bullet = Instantiate(
+                prefab,
+                transform.position,
+                transform.rotation*Quaternion.Euler(-90f,0,0)
+                //Quaternion.LookRotation(Quaternion.Euler(-90f, 0, 0) * transform.forward)
+            );
+        }
+    }
+}
+14.ShipにShipScriptをアタッチしたらインスペクターからbulletプレファブを登録する。speedは1とした。
+
+★Day81
+
+コルーチンの練習
+中央にCubeを配置して下のスクリプトをアタッチする。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CubeRot : MonoBehaviour
+{
+    Vector3 rot;
+    void Update() {
+        if (Input.GetButtonDown("Jump") && rot.magnitude == 0f) {
+            StartCoroutine(Rot());
+        }
+        if (rot.magnitude>0f) {
+            transform.Rotate(rot);
+        }
+    }
+    IEnumerator Rot() {
+        rot.y = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.y = 0;
+        rot.x = 1f;
+        yield return new WaitForSeconds(2.0f);
+        rot.x = 0;
+        rot.z = 1f;
+        yield return new WaitForSeconds(3.0f);
+        rot.z = 0;
+    }
+}
+パーティクル
+パーティクルの練習になる動画
+https://www.youtube.com/watch?v=nlLow7DbKkY
+
+制作時間
+以下の二つのうちどちらかを選択して制作すること
+1.CandyDozerカスタム
+CandyDozerをカスタムして面白くしてください。
+
+2.オリジナルゲーム
+以下の要素を盛り込み簡単なゲームを作成してください。
+〇パーティクルシステム（自作、他作OK)
+〇SE&BGM(自作、多作OK)
+パーティクルシステムと音楽の練習がメインのためゲーム自体はしょぼくてＯＫです。
+
+★Day82
+
+Unity(70年代風テニスゲーム)
+
+1.3Dでプロジェクトを作成したら３dギズモを以下のように調整する
+
+
+2.Cubeを新規に作成しWall1とリネーム。transformを以下のように設定する
+
+
+3.Wall1を複製(Ctr+d)してWall2にリネーム。transformのyにマイナスをつける
+
+
+4.カメラを調整しよう。背景色を単色にし遠近感をなくして見える範囲を調整している。
+
+
+こんな感じになっていればOKだ
+
+
+5.LeftPlayerの作成。
+新規CubeをリネームしてLeftPlayerとする。transformは以下
+
+
+6.RightPlayerの作成
+LeftPlayerを複製（ctr+d)してRightPlayerとリネーム。トランスフォームのｘを変更する
+
+
+ここまででこんな感じになっていればOKだ。
+
+
+7.Playerの動きの実装。プレイヤーが上下に動けるようにする。
+左のプレイヤーはqキーで上、aキーで下。
+右のプレイヤーはl(エル)キーで上,o(オー)キーで下に設定してみよう。
+まずはEdit->Project Settingsを開く
+
+
+Input->Axesから項目数を20にして新たなAxisを２つ増やす
+
+
+8.LeftPの設定。LeftPlayer用の設定をしよう。新規に作成された2つのCancelのうちの上の方を開き以下のように入力する。
+
+
+9.RightPの設定。同様に一番下にできたCancelを開いて以下のように設定する。
+
+
+10.Playerスクリプトの作成。
+新規C#スクリプトを作成し、Playerとリネームし以下のように作成する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public string keyName;
+    Vector3 vec;
+    
+    void Start()
+    {
+        vec = transform.position;
+    }
+
+    void Update()
+    {
+        vec.y += Input.GetAxis(keyName);
+        if(vec.y> 7f) {
+            vec.y = 7f;
+        }
+        if (vec.y < -7f) {
+            vec.y = -7f;
+        }
+        transform.position = vec;
+    }
+}
+作成したPlayerスクリプトを２つのPlayerにアタッチする
+
+
+LeftPlayerを開いてkeyNameを以下のように設定する。
+
+
+同様にRightPlayerにはRightPを割り付ける
+
+
+実行してみよう。左手でqまたはaを右手でlまたはoを押すことでプレイヤーが上下に動けば成功だ。
+
+11.ボールの作成
+新規Sphereを作成しBallとリネーム。transformは以下
+
+
+BallにRigidbodyを付与し、以下のように設定する。
+重力は使わないのでUse Gravityをoffにする
+
+
+12.Ballスクリプトの作成
+新規C#スクリプトを名前をBallで作成する。記述は以下
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ball : MonoBehaviour {
+    void Start() {
+        GetComponent<Rigidbody>().velocity = new Vector3(1f, 2f, 0) * 5f;
+    }
+}
+Ballにアタッチして実行してみよう。
+全く跳ね返らないことがわかる。
+
+13.PhysicMaterialの作成
+プロジェクトビューのCreateからPhysicMaterialを作成しBallとリネーム。
+以下のように設定を変更する。
+
+
+以下のようにBallにアタッチする。
+
+
+実行してみよう。70年代風テニスゲームの動きが再現できた。
+
+Unity3
+
+Shoot
+動画プレーヤー
+
+00:00
+00:21
+
+
+[作成手順]
+
+床の作成
+1.CubeからFloorを作成する。
+2.Floorというタグを作成し付与する。
+3.transformは下図
+
+
+カメラの設定
+4.transformを下図のように設定
+
+
+弾丸の作成
+5.SphereからBulletを作成する。
+6.transformは下図（Floorに埋もれて見えないが気にしなくて良い)
+
+7.表面材質を赤に設定する。
+8.Rigidbodyを付与する。すり抜けが発生しないように下図のようにCollision DetectionをContinuous Dynamicに設定する。
+
+9.Bulletというタグを作成し付与する。
+10.BulletController.csの作成。以下のようにスクリプトを作成する。画面から見えなくなった時にデストロイする処理を入れている。作成できたらヒエラルキーのBulletに付与する
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class BulletController : MonoBehaviour {
+06
+ 
+07
+  void OnBecameInvisible(){
+08
+    Destroy (gameObject);
+09
+  }
+10
+}
+11.プレファブ化する。(ヒエラルキーからは削除する）
+
+Shooterの作成
+11.今回はカメラにスクリプト付与する。Shooter.csを以下のように作成しカメラにアタッチする。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class Shooter : MonoBehaviour {
+06
+  public GameObject prefab;
+07
+ 
+08
+  void Update () {
+09
+    if (Input.GetMouseButtonDown (0)) {
+10
+      //引数一つでInstantiate
+11
+      GameObject obj = Instantiate (prefab);
+12
+      //親要素設定（今回はカメラ)
+13
+      obj.transform.parent = transform;
+14
+      //親要素からのオフセットは0
+15
+      obj.transform.localPosition = Vector3.zero;
+16
+      //メインカメラからマウスクリックした地点にrayを飛ばす
+17
+      Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+18
+      //rayの方向を長さ1にして dirに代入
+19
+      Vector3 dir = ray.direction.normalized;
+20
+      //生成したObjのrigidbodyを取得し、速度をdir方向に与える
+21
+      obj.GetComponent<Rigidbody> ().velocity = dir * 100.0f;
+22
+    }
+23
+     
+24
+  }
+25
+}
+12.Shooterスクリプトをカメラにアタッチしたら、インスペクターからBulletプレファブを登録する。
+
+13.実行してマウスをクリックしてみよう。クリックした場所に弾丸が飛んでいけば成功だ。
+
+GameManagerの作成
+14.GUI関連やscoreなどを一元管理できるようにCreateEmptyからGameManagerを作成しGameManager.csスクリプトを以下のように作成する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class GameManager : MonoBehaviour {
+06
+  public GUIStyle scoreStyle;
+07
+  public GUIStyle msgStyle;
+08
+  private int score = 0;
+09
+  private string msg="";
+10
+ 
+11
+  void Update(){
+12
+    if (msg == "GameOver") {
+13
+      //動きを止める
+14
+      Time.timeScale = 0f;
+15
+    }
+16
+  }
+17
+ 
+18
+  void OnGUI(){
+19
+    GUI.Label (new Rect (5, 5, 10, 10), score.ToString(), scoreStyle);
+20
+    GUI.Label (new Rect (Screen.width/2-150, Screen.height/2-25, 300, 50), msg, msgStyle);
+21
+  }
+22
+  public int GetScore(){
+23
+    return score;
+24
+  }
+25
+  public void SetScore(int score){
+26
+    this.score = score;
+27
+  }
+28
+  public string GetMsg(){
+29
+    return msg;
+30
+  }
+31
+  public void SetMsg(string msg){
+32
+    this.msg = msg;
+33
+  }
+34
+}
+落下してくるCubeの作成
+15.Cubeを作成する。トランスフォームは下図。(Floorに埋もれるが考慮しなくてよい)
+
+16.Rigidbodyを付与し、Collision DetectionをContinuous Dynamicに設定する。
+17.青の素材を付与する。
+
+18.CubeController.csを下図のように作成し、アタッチする。プレファブには直接GameManagerの参照を渡せないので修飾子はprivateとし、setterを準備しておく。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CubeController : MonoBehaviour {
+06
+  private GameManager gm;
+07
+ 
+08
+  void OnCollisionEnter(Collision coll){
+09
+    if (coll.gameObject.tag == "Bullet") {
+10
+      gm.SetScore (gm.GetScore () + 1);
+11
+      Destroy (gameObject, 0.1f);
+12
+ 
+13
+    }
+14
+    if (coll.gameObject.tag == "Floor") {
+15
+      gm.SetMsg ("GameOver");
+16
+ 
+17
+    }
+18
+ 
+19
+  }
+20
+  public void SetGameMananger(GameManager gm){
+21
+    this.gm = gm;
+22
+  }
+23
+ 
+24
+}
+19.プレファブ化する。
+
+CubeGeneratorの作成
+２０.CreateEmptyからCubeGeneratorを作成。
+２１.CubeGeneratorにCubeGenerator.csスクリプトを下図のように作成し付与する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CubeGenerator : MonoBehaviour {
+06
+  public GameObject prefab;
+07
+  public GameManager gm;
+08
+ 
+09
+  void Start () {
+10
+    StartCoroutine (Create ());
+11
+  }
+12
+  //コルーチンで生成を行う
+13
+  IEnumerator Create(){
+14
+    //生成間隔の初期値
+15
+    float delta = 1.5f;
+16
+    while (true) {
+17
+      GameObject obj=Instantiate (
+18
+        prefab,
+19
+        new Vector3(Random.Range(-12.0f,12.0f),Random.Range(8.0f,12.0f),Random.Range(-3.0f,3.0f)),
+20
+        Quaternion.identity
+21
+       
+22
+      );
+23
+      //GameMangerをセットする。
+24
+      obj.GetComponent<CubeController> ().SetGameMananger(gm);
+25
+      //生成間隔時間停止
+26
+      yield return new WaitForSeconds (delta);
+27
+      //徐々に生成間隔を早める
+28
+      if (delta > 0.5f) {
+29
+        delta -= 0.05f;
+30
+      }
+31
+    }
+32
+  }
+33
+}
+22.インスペクターからCubeプレファブとヒエラルキーにあるGameMangerオブジェクトを登録する。
+
+
+実行
+23.実行してみよう。最初の動画のように遊べれば成功だ。
+
+[完成版]
+以下から完成版をダウンロードできる。(Unity5.5.4)
+
+★Day83
+
+ネジコ制作
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class NejikoController : MonoBehaviour
+{
+    CharacterController controller;
+    Animator animator;
+    Vector3 moveDirection = Vector3.zero;
+    public float gravity;
+    public float speedZ;
+    public float speedJump;
+    void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+    void Update()
+    {
+        if (controller.isGrounded) {
+            if (Input.GetAxis("Vertical") > 0f) {
+                moveDirection.z = Input.GetAxis("Vertical") * speedZ;
+            } else {
+                moveDirection.z = 0;
+            }
+            transform.Rotate(0, Input.GetAxis("Horizontal") * 3, 0);
+            if (Input.GetButton("Jump")) {
+                moveDirection.y = speedJump;
+                animator.SetTrigger("jump");
+            }
+        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        Vector3 globalDirection = transform.TransformDirection(moveDirection);
+        controller.Move(globalDirection * Time.deltaTime);
+        if (controller.isGrounded) {
+            moveDirection.y = 0;
+        }
+        animator.SetBool("run", moveDirection.z > 0f);
+    }
+}
+目的地に移動する（MoveTowards,Lerp)
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class Cube : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.Space)) {
+            transform.position =
+                Vector3.MoveTowards(
+                    transform.position,
+                    new Vector3(10f, 10f, 10f),
+                    0.1f
+                    );
+        }
+        if (Input.GetKey(KeyCode.S)) {
+            transform.position =
+                            Vector3.MoveTowards(
+                                transform.position,
+                                new Vector3(0f, 0f, 0f),
+                                0.1f
+                                );
+        }
+        if (Input.GetKey(KeyCode.L)) {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                new Vector3(10f, 10f, 10f),
+                Time.deltaTime * 2f
+                );
+        }
+    }
+}
+カメラ制御
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SimpleFollow : MonoBehaviour
+{
+    Vector3 diff;
+    public GameObject target;
+    public float followSpeed;
+    void Start()
+    {
+        diff = target.transform.position - transform.position;
+    }
+    void LateUpdate()
+    {
+        transform.position = 
+            Vector3.Lerp(
+            transform.position,
+            target.transform.position-diff,
+            Time.deltaTime*followSpeed
+            );
+    }
+}
+
+
+★Day84
+
+Unity(ゴルフ)
+
+1.3Dでプロジェクトを作成したら３dギズモを以下のように調整する
+
+
+2.新規Cubeを作成しGroundにリネーム。transformを以下のように調整する
+
+
+3.カメラの調整。
+メインカメラを選択して以下のようにtransformを調整する
+
+
+だいたい以下のような構図になればOKだ
+
+
+4.Ballの作成
+新規Sphereを作成しBallにリネーム。transformを調整する
+
+
+新規にマテリアルを作成し、赤色に設定し、ballにアタッチ
+
+
+Rigidbodyを付与する。値は特に変更しなくてよい。
+
+新規にPhysicMaterialを作成しBallとリネーム。下のように設定しBallにアタッチする
+
+
+実行してみよう。
+ボールが落下し少しはねたら成功だ。
+
+5.ボールを飛ばす処理の作成
+今回はマウスでドラッグすることにより打ち上げる角度やパワーを調整する仕組みにする。
+新規C#スクリプトよりBallControllerを作成し以下のように記述する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Sphere : MonoBehaviour
+{
+    Vector2 startPos;
+    Vector2 endPos;
+    Rigidbody rb;
+    
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) {
+            startPos = Input.mousePosition;
+        }
+        if (Input.GetMouseButtonUp(0)) {
+            endPos = Input.mousePosition;
+            Vector2 dir = startPos - endPos;
+            Vector3 vec = new Vector3(0, dir.y, dir.x);
+            rb.AddForce(vec*3f );
+        }    
+    }
+}
+スクリプトをBallにアタッチして実行してみよう。画面を右上から左下に向かってドラッグして離す。
+
+
+ボールが飛んでいけば成功だ。ドラッグする際の角度がボールの打ち上げ角度になるのでいろいろ試してもらいたい。
+
+ネジコ
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class N1 : MonoBehaviour
+{
+    CharacterController controller;
+    Animator animator;
+    Vector3 moveDirection = Vector3.zero;
+    public float gravity;
+    public float speedZ;
+    public float speedJump;
+    void Start() {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+    void Update() {
+        if (controller.isGrounded) {
+            if (Input.GetAxis("Vertical") > 0f) {
+                moveDirection.z = Input.GetAxis("Vertical") * speedZ;
+            } else {
+                moveDirection.z = 0;
+            }
+            transform.Rotate(0, Input.GetAxis("Horizontal") * 3, 0);
+            if (Input.GetButton("Jump")) {
+                moveDirection.y = speedJump;
+                animator.SetTrigger("jump");
+            }
+        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        Vector3 globalDirection = transform.TransformDirection(moveDirection);
+        controller.Move(globalDirection * Time.deltaTime);
+        if (controller.isGrounded) {
+            moveDirection.y = 0;
+        }
+        animator.SetBool("run", moveDirection.z > 0f || transform.rotation.eulerAngles.magnitude>0f);
+    }
+}
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class C1 : MonoBehaviour
+{
+    public Transform target;
+   
+    void LateUpdate()
+    {
+        transform.position = Vector3.Lerp(
+            transform.position,
+            target.position - target.forward * 3 + Vector3.up,
+            0.1f
+            );
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            Quaternion.LookRotation(target.forward),
+            0.1f
+            );
+    }
+}
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class StageGenerator : MonoBehaviour
+{
+    const int StageTipSize = 30;
+    int currentTipIndex;
+    public Transform character;
+    public GameObject[] stageTips;
+    public int startTipIndex;
+    public int preInstantiate;
+    public List<GameObject> generatedStageList = new List<GameObject>();
+    void Start()
+    {
+        currentTipIndex = startTipIndex - 1;
+        UpdateStage(preInstantiate);
+    }
+
+    void Update()
+    {
+        int charaPositionIndex = (int)(character.position.z / StageTipSize);
+        if (charaPositionIndex + preInstantiate > currentTipIndex) {
+            UpdateStage(charaPositionIndex + preInstantiate);
+        }
+    }
+    void UpdateStage(int toTipIndex) {
+        if(toTipIndex <= currentTipIndex) {
+            return;
+        }
+        for(int i=currentTipIndex + 1; i <= toTipIndex; i++) {
+            GameObject stageObject = GenerateStage(i);
+            generatedStageList.Add(stageObject);
+        }
+        while (generatedStageList.Count > preInstantiate + 2) {
+            DestroyOldestStage();
+        }
+        currentTipIndex = toTipIndex;
+    }
+    GameObject GenerateStage(int tipIndex) {
+        int nextStageTip = Random.Range(0, stageTips.Length);
+        GameObject stageObject = Instantiate(
+            stageTips[nextStageTip],
+            new Vector3(0,0,tipIndex*StageTipSize),
+            Quaternion.identity
+            );
+        return stageObject;
+    }
+    void DestroyOldestStage() {
+        GameObject oldStage = generatedStageList[0];
+        generatedStageList.RemoveAt(0);
+        Destroy(oldStage);
+    }
+}
+
+
+★Day85
+
+ネジコ横の作成
+ネジコインスペクター
+
+
+カメラインスペクター
+
+
+ネジココントローラー(N2.cs)
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class N2 : MonoBehaviour
+{
+    const int DefaultLife = 3;
+    const float StunDuration = 0.5f;
+    CharacterController controller;
+    Animator animator;
+    Vector3 moveDirection;
+    int life = DefaultLife;
+    float recoverTime = 0.0f;
+    public float gravity;
+    public float speedX;
+    public float speedJump;
+    public float accelerationX;
+
+    public int Life() {
+        return life;
+    }
+    public bool IsStan() {
+        return recoverTime > 0.0f || life <= 0;
+    }
+    void Start() {
+        controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
+    }
+
+    void Update() {
+        if (Input.GetKeyDown("space")) {
+            Jump();
+        }
+        if (IsStan()) {
+            moveDirection.x = 0f;
+            recoverTime -= Time.deltaTime;
+        } else {
+            float acceleratedX = moveDirection.x +
+                (accelerationX * Time.deltaTime);
+            moveDirection.x = Mathf.Clamp(acceleratedX, 0, speedX);
+        }
+        moveDirection.y -= gravity * Time.deltaTime;
+       // Vector3 globalDirection = transform.TransformDirection(moveDirection);
+        controller.Move(moveDirection * Time.deltaTime);
+
+        if (controller.isGrounded) {
+            moveDirection.y = 0;
+        }
+        animator.SetBool("run", moveDirection.x > 0f);
+    }
+    
+    public void Jump() {
+        if (IsStan()) {
+            return;
+        }
+        if (controller.isGrounded) {
+            moveDirection.y = speedJump;
+            animator.SetTrigger("jump");
+        }
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit) {
+        if (IsStan()) {
+            return;
+        }
+        if (hit.gameObject.tag == "Robo") {
+            life--;
+            recoverTime = StunDuration;
+            animator.SetTrigger("damage");
+            Destroy(hit.gameObject);
+        }
+    }
+}
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class C2 : MonoBehaviour
+{
+    public Transform target;
+    Vector3 pos;
+    float diffX;
+    void Start()
+    {
+        pos = transform.position;
+        diffX = transform.position.x - target.position.x;
+    }
+    void LateUpdate()
+    {
+        pos.x = target.position.x+diffX;
+        transform.position = pos;
+    }
+}
+StageGenerator(SG1.cs)
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SG1 : MonoBehaviour
+{
+    const int StageTipSize = 30;
+    int currentTipIndex;
+    public Transform character;
+    public GameObject[] stageTips;
+    public int preInstantiate;
+    public List<GameObject> generatedStageList =
+        new List<GameObject>();
+    void Start() {
+        UpdateStage(preInstantiate);
+    }
+
+    void Update() {
+        int charaPositionIndex =
+            (int)(character.position.x / StageTipSize);
+        if (charaPositionIndex + preInstantiate > currentTipIndex) {
+            UpdateStage(charaPositionIndex + preInstantiate);
+        }
+    }
+    void UpdateStage(int toTipIndex) {
+        for (int i = currentTipIndex + 1; i <= toTipIndex; i++) {
+            GameObject stageObject = GenerateStage(i);
+            generatedStageList.Add(stageObject);
+        }
+        while (generatedStageList.Count > preInstantiate + 2) {
+            DestroyOldestStage();
+        }
+        currentTipIndex = toTipIndex;
+    }
+    GameObject GenerateStage(int tipIndex) {
+        int nextStageTip = Random.Range(0, stageTips.Length);
+        GameObject stageObject = Instantiate(
+            stageTips[nextStageTip],
+            new Vector3(tipIndex * StageTipSize, 0, 0),
+            Quaternion.Euler(0,90f,0)
+            );
+        return stageObject;
+    }
+    void DestroyOldestStage() {
+        GameObject oldStage = generatedStageList[0];
+        generatedStageList.RemoveAt(0);
+        Destroy(oldStage);
+    }
+}
+
+★Day86
+
+Unity( 初級課題)
+
+以下の動画のようなゲームを作成せよ。
+仕様:
+●ボールが出てくる間隔は1.5秒ごと
+●上下動している青いブロックは空中ジャンプできない
+
+作例
+重力の設定
+スケールを１でsphereを作成すると地球換算で1mである。見た目の印象とは違い実際はかなり大きな球ということとなる。
+結果としてrigidbodyなどで動かした場合ちょっともっさり動いている印象を受ける。
+その修正のため、重力を強く設定しよう。
+Edit->Project SettingsからPhysicsを選択し、重力を-20に設定する。
+
+
+floorの作成
+create->3dオブジェクトからcubeを作成し、Floorとリネームする。
+トランスフォームは以下。
+
+
+Ballの作成
+赤いボールを作成しよう。
+CreateからSphereを選択し、Ballとリネームする。
+トランスフォームは以下
+（Floorにめり込んでいるのが気になる人は一旦Floorを非表示しておくとよい)
+
+
+CreateMaterialから赤の素材を作成し、Ballにアタッチ。
+Rigidbodyを付与し、Mass(質量)を吹っ飛びやすいように0.1にする。
+
+
+Ballタグを作成し、Ballに設定する。
+そこまで作業を行ったらこれを再利用できるようにプレファブにしよう。
+プレファブにしたら、ヒエラルキーからは削除しておく。
+
+BallGeneratorの作成
+ボールを生成し、発射する。ボールジェネレータを作成しよう。
+Create->CreateEmptyして、BallGeneratorとリネーム。
+トランスフォームは以下
+
+
+以下のように配置されればOKだ。打ち出したい方向にz軸(青の矢印)を向けておくのがポイントだ。
+
+
+BallGeneratorスクリプトの作成
+ボールが1.5秒ごとに生成され、飛んでいく処理を作ろう。
+BallGereratorスクリプトを作成し、以下の記述。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BallGenerator : MonoBehaviour
+{
+    public GameObject prefab;
+    public float speed;
+    
+    void Start() { 
+        StartCoroutine(GenerateBall());
+    }
+
+    IEnumerator GenerateBall() {
+        while (true) {
+            GameObject ball = Instantiate(
+                prefab,
+                transform.position,
+                transform.rotation
+                );
+            ball.GetComponent<Rigidbody>().velocity=transform.forward*speed;
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
+}
+作成したらヒエラルキーにあるBallGeneratorにアタッチし、インスペクターから以下のように設定する。
+
+
+カメラの設定
+mainカメラの設定をしよう。以下のようにトランスフォームを設定する。
+
+
+確認
+再生してみよう。以下のように1.5秒間隔でボールが発射されれば成功だ。
+
+Barの作成
+CreateからCubeを作成し、Barとリネーム。
+トランスフォームは以下
+
+
+マテリアルを付与
+新しい青いマテリアルを作成し、Barに付与する。
+
+Rigidbodyの付与
+リジッドボディを付与する。
+相手を強くふっとばすために質量を重くする。
+また、今回は上下運動以外の余計な挙動をしてほしくないのでConstraintsを以下のように設定する。
+
+
+BarControllerの作成
+スペースキーを押されたときにジャンプする処理を作る。
+空中ジャンプをしない処理を盛り込んで以下のようにBarControllerを作成する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BarController : MonoBehaviour
+{
+    Rigidbody rb;
+    public float jumpPower;
+    bool isGrounded;
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            rb.velocity=Vector3.up * jumpPower;
+            isGrounded = false;
+        }
+    }
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Floor") {
+            isGrounded = true;
+        }
+    }
+}
+Floorにタグの付与
+手順が前後したが、床と接触したときにフラグを反転させているのでFloorにFloorタグを作成&アタッチしておこう。
+
+
+BarにBarControllerをアタッチ
+ヒエラルキーにあるBarに今作成したBarControllerをアタッチし、JumpPowerを12に設定する。
+
+
+確認
+実行して確認してみよう。
+ぶつかったときの跳ね返りが少ないようだ。PhysicMaterialを作成し調整しよう。
+ProjectビューにあるCreateからPhysicMaterialを作成し、Ballとリネームし以下のように調整しよう。
+
+
+作成した素材をドラッグ&ドロップでBallプレファブに付与する。
+
+
+確認
+実行してみよう。だいぶ気持ちよく跳ね返るようになった！
+
+スコア表示実装
+まずはスコアをカウントできるようにしよう。
+BarControllerの以下ハイライト部分を追記する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BarController : MonoBehaviour
+{
+    Rigidbody rb;
+    public float jumpPower;
+    bool isGrounded;
+    public int Count { get; set; } = 0;
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            rb.velocity=Vector3.up * jumpPower;
+            isGrounded = false;
+
+        }
+    }
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Floor") {
+            isGrounded = true;
+        }
+        else if (collision.gameObject.tag == "Ball") {
+            Count++;
+        }
+    }
+}
+FloorControllerの作成
+表示関連はFloorControllerにさせよう。
+以下のようにFloorController.csを作成する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FloorController : MonoBehaviour
+{
+    public GUIStyle style;
+    public BarController bc;
+    bool isGrounded;
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Ball") {
+            isGrounded = true;
+        }
+    }
+    
+    private void OnGUI() {
+        string label;
+        label = $"{bc.Count}";
+        
+        if (isGrounded) {
+            label += " GameOver";
+        }
+     
+        GUI.Label(new Rect(10, 10, 100, 100), label,style);
+    }
+    
+}
+作成ができたらFloorにアタッチしてBarControllerを登録をし、文字色の設定などを以下のように行う。
+
+
+確認
+実行して確認してみよう。点数が上がっていき床に接触するとGameOverが出力される。
+
+ゲームオーバー処理
+ゲームオーバーになったら処理を止めよう。FloorControllerに1行追記する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FloorController : MonoBehaviour
+{
+    public GUIStyle style;
+    public BarController bc;
+    bool isGrounded;
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Ball") {
+            isGrounded = true;
+            Time.timeScale = 0;
+        }
+    }
+    
+    private void OnGUI() {
+        string label;
+        label = $"{bc.Count}";
+        
+        if (isGrounded) {
+            label += " GameOver";
+        }
+     
+        GUI.Label(new Rect(10, 10, 100, 100), label,style);
+    }
+    
+}
+Time.timeScaleを0にすることによりゲームを止めることができる。
+
+不要になったBallの削除
+これでだいたい終了だが、不要になったBallの削除を行っておこう。
+Ballスクリプトを以下のように作成し、Ballプレファブにアタッチする。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Ball : MonoBehaviour
+{
+    private void OnBecameInvisible() {
+        Destroy(gameObject);
+    }
+}
+これでBallがカメラの描画範囲外に出たときに削除することができる。
+
+おまけ
+Time.timeScaleが出てきたので。スローモーション効果も入れてみよう。
+今回はBarとBallがぶつかった瞬間に少しスローモーションになるようにしてみる。BarControllerに以下ハイライト部分を追記する。
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BarController : MonoBehaviour
+{
+    Rigidbody rb;
+    public float jumpPower;
+    bool isGrounded;
+    public int Count { get; set; } = 0;
+    
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            rb.velocity=Vector3.up * jumpPower;
+            isGrounded = false;
+
+        }
+    }
+    private void OnCollisionEnter(Collision collision) {
+        if (collision.gameObject.tag == "Floor") {
+            isGrounded = true;
+        }
+        else if (collision.gameObject.tag == "Ball") {
+            Count++;
+            StartCoroutine(SlowMotion());
+        }  
+    }
+    
+    IEnumerator SlowMotion() {
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(0.1f);
+        Time.timeScale = 1.0f;
+    }
+}
+確認
+実行してみよう。ぶつかった瞬間にTimeScaleをいじることでスローにしている。
+ただレンダリング結果がブレブレになっている。
+
+ブレブレの修正
+こういったときにはrigidbodyコンポーネントになるInterpolateをInterpolateにする。BallプレファブとBarの両方のrigidbodyに対して行おう。
+
+
+確認
+ウルトラスムーズに表示されるようになった！
+ゲームの演出としてスローモーションが有効なことも多い。
+是非あなたのゲームにスローモーション効果を入れてみてほしい。
+
+ネジコ
+p272 TitleControllerの変更
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class TitleController : MonoBehaviour
+{
+    public void OnStartButtonClicked() {
+        SceneManager.LoadScene("Main");
+    }
+}
+
+★87
+
+Unity4
+
+Ray
+動画プレーヤー
+
+00:00
+00:12
+
+
+前回は実際に弾丸を飛ばしたが、目に見えないRay(光線)というのを飛ばす方法もよく用いられる。
+今回はクリックした場所にRayを飛ばしてRayが衝突したコライダーを消すという処理を作ってみよう。
+
+[作成手順]
+
+画面にSphereを並べる
+1.CreateEmptyから原点にSphereGeneratorを作成し、SphereGenerator.csを以下のように作成アタッチする。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class SphereGenerator : MonoBehaviour {
+06
+ 
+07
+  void Start () {
+08
+    for (int y = 0; y < 10; y++) {
+09
+      for (int x = 0; x < 10; x++) {
+10
+        GameObject obj = GameObject.CreatePrimitive (PrimitiveType.Sphere);
+11
+        obj.transform.position = new Vector3 ((float)x,(float)y,0f );
+12
+      }
+13
+    } 
+14
+  }
+15
+}
+カメラの調整
+2.下図のようにtransformを設定する。
+
+3.実行してみよう。画面に100個のSphereが並べば成功だ。
+
+カメラにスクリプトの付与
+4.今回はカメラに直接スクリプトを付与する。Shooter.csを以下のように作成しカメラに付与する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class Shooter : MonoBehaviour
+06
+{
+07
+ void Update()
+08
+ {
+09
+  if (Input.GetMouseButtonDown(0)) {
+10
+   Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+11
+ 
+12
+   RaycastHit hit;
+13
+ 
+14
+  if(Physics.Raycast(ray,out hit, 100f)) {
+15
+   Destroy(hit.collider.gameObject);
+16
+  }
+17
+ 
+18
+/*
+19
+  foreach(RaycastHit hit in Physics.RaycastAll(ray)) {
+20
+   Destroy(hit.collider.gameObject);
+21
+  }
+22
+*/
+23
+/*
+24
+  foreach (RaycastHit hit in Physics.SphereCastAll(ray,3f)) {
+25
+   Destroy(hit.collider.gameObject);
+26
+  }
+27
+*/
+28
+  }
+29
+ }
+30
+}
+実行
+5.実行してみよう。クリックしたところのSphereが消えれば成功だ。
+
+[補足]
+RaycastHit構造体が何を保持するかは公式サイトに全部出ている。見ておくこと
+https://docs.unity3d.com/ja/540/ScriptReference/RaycastHit.html
+
+Unity5
+
+Tank
+動画プレーヤー
+
+00:00
+00:14
+
+
+
+リジッドボディを付与されたキャラの動かし方や弾丸の発射、カメラの追従、時間の計測などをやってみよう。
+[作成手順]
+
+地面の作成
+1.CubeからFloorを作成する。transformは下図。
+
+2.適当に表面材質を設定する。
+
+カメラの設定
+3.カメラのトランスフォームを下図のように設定する。
+
+
+タンクの作成
+砲塔が旋回しない自走砲タイプの戦車を作成する。
+
+4.CreateEmptyからTankを作成する。配置場所はあとで調整するのでどこでも良い。大切なことはZ軸が前になるよう子要素をモデリングしていくことだ。
+5.Tankの子要素といてBodyとTurretを作成する。transformは下図。
+●Boby(Cube)
+
+●Turret(Cylinder)
+
+
+（親要素のZ軸（青)が前になるように子要素をモデリングする)
+6.表面材質を適当に設定する。
+7.親要素のみにRigidbodyを付与する。
+8.親要素のtransformを以下のように設定する。
+
+
+タンクを動かそう
+9.TankController1.csを以下のように作成する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class TankController1 : MonoBehaviour {
+06
+  Rigidbody rb;
+07
+  void Start () {
+08
+    rb = GetComponent<Rigidbody> ();
+09
+  }
+10
+ 
+11
+  void Update () {
+12
+    float x = Input.GetAxis ("Horizontal");
+13
+    float z = Input.GetAxis ("Vertical");
+14
+    Vector3 dir = new Vector3 (x, 0f, z);
+15
+ 
+16
+    if (dir.magnitude > 0.1) {
+17
+      transform.LookAt (transform.position + dir);
+18
+      rb.velocity = transform.forward * 5.0f;
+19
+    }
+20
+     
+21
+  }
+22
+}
+10.Tankにこのスクリプトを付与し実行してみよう。上下左右キーでタンクが動けば成功だ。
+LookAtで入力方向を向かせタンクを前方(z軸)に進めている。右向きから左向きに一瞬で向きを変えるのがこのスクリプトの特徴。コミカルなゲームに向く動きだ。
+
+11.先ほどの動きでも良いがもう一つ作ってみよう。先ほどのTankController1はリムーブコンポーネントしてTankController2.csを作成し付与しよう。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class TankController2 : MonoBehaviour {
+06
+ 
+07
+  void Update () {
+08
+    float rot = Input.GetAxis ("Horizontal");
+09
+    float acc = Input.GetAxis ("Vertical");
+10
+    transform.Rotate (0, rot, 0);
+11
+    transform.Translate (0, 0, acc*0.1f);
+12
+  }
+13
+}
+12.実行してみよう。上下キーで前進後退、左右キーで車体の旋回を行う。自走砲にピッタリの動きだ。今回はこれで行こう。
+
+砲弾の発射
+13.砲身からぶっ放す砲弾を作成しよう。プリミティブ素材のCapsuleから作成したいのだがデフォルトでは正面（z軸）が違う方向を向いている。
+
+14.こういった時には親要素を作り子要素をz軸を意識しながら入れる形で実現する。まずはCreateEmptyからBulletを作成する。（座標はどこでもよい)
+15.その中に子要素としてCapsuleを作成する。transformは下図。
+
+16.親要素を見てみよう。子要素を90度回転させることによって正面(z軸)の設定に成功している。Unityをやる時に必須のテクニックだ。
+
+17.適当な表面素材を設定し、Rigidbodyを付与する。この際Rigidbodyは親要素のみにつけるのは言うまでもない。
+18.すり抜け予防にRigidbodyのCollision DetectionをContinuous Dynamicに設定しておこう。
+
+
+19.画面から見えなくなったときにDestroyするようにBulletController.csを以下のように作成し付与しよう。
+(OnBecameInvisibleはMeshRendererが必須コンポーネントのため必須コンポーネントオプションを指定しておく
+こうしておくと、もし付いていない場合には自動的に付与してくれる(すでについている時は外そうとするとerror))
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+[RequireComponent(typeof (MeshRenderer))]
+06
+public class BulletController : MonoBehaviour {
+07
+  void OnBecameInvisible(){
+08
+    Destroy (gameObject);
+09
+  }
+10
+}
+19.ここまでやったら、これをプレファブ化してヒエラルキーからは削除しておこう。ここらで一旦シーンをセーブしておくと良いだろう。(Main)
+
+発射ロジックの実装
+20.TankController2.csを以下のように変更しよう。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class TankController2 : MonoBehaviour {
+06
+ 
+07
+  public GameObject prefab;
+08
+ 
+09
+  void Update () {
+10
+    if (Input.GetButtonDown("Jump")) {
+11
+      StartCoroutine (Fire ());
+12
+    }
+13
+    float rot = Input.GetAxis ("Horizontal");
+14
+    float acc = Input.GetAxis ("Vertical");
+15
+    transform.Rotate (0, rot, 0);
+16
+    transform.Translate (0, 0, acc*0.1f);
+17
+  }
+18
+  IEnumerator Fire(){
+19
+    yield return new WaitForSeconds (0.1f);
+20
+    GameObject obj = Instantiate (
+21
+      prefab,
+22
+      transform.position+transform.forward*2.4f+transform.up*0.7f,
+23
+      Quaternion.LookRotation(transform.forward)
+24
+    );
+25
+ 
+26
+    obj.GetComponent<Rigidbody> ().velocity = transform.forward * 80.0f;
+27
+ 
+28
+  }
+29
+}
+21.インスペクターからbulletプレファブを登録したら実行してみよう。スペースキーで砲弾が発射されれば成功だ。
+
+ブロックの作成
+砲弾でぶっ飛ぶブロックを作成しよう。吹っ飛ぶ気持ち良さを優先させるためここでは質量を軽くする。
+22.CubeからBlockを作成し（座標は任意)、適当な表面材質を設定する。
+23.Rigidbodyを付与し、Massは0.1
+すり抜け予防のためCollision DetectionをContinuous Dynamicに設定しておこう
+24.Blockというタグを作成し付与する
+25.プレファブ化し、ヒエラルキーからは削除しておく。
+
+Blockジェネレーターの作成
+26.CreateEmptyからBlockGeneratorを作成し、BlockGenerator.csを以下のように作成し付与する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class BlockGenerator : MonoBehaviour {
+06
+  public GameObject prefab;
+07
+ 
+08
+  void Start () {
+09
+    StartCoroutine (CreateBlock ());
+10
+ 
+11
+  }
+12
+ 
+13
+  IEnumerator CreateBlock(){
+14
+    for (int i = 0; i < 100; i++) {
+15
+      Instantiate (
+16
+        prefab,
+17
+        new Vector3(Random.Range(-10.0f,10.0f),Random.Range(3.0f,10.0f),Random.Range(0.0f,10.0f)),
+18
+        Quaternion.Euler(Random.insideUnitSphere*360f)
+19
+      );
+20
+      yield return new WaitForSeconds (0.01f);
+21
+ 
+22
+    }
+23
+  }
+24
+}
+27.インスペクターからblockプレファブを登録し、実行してみよう。気持ちよく吹っ飛ばしてくれ。
+
+IsKinematic
+28.砲弾をぶっ放すだけでなく、堅牢なボディーも戦車の特徴だ。blockの山に突っ込んでみよう。
+
+ああ!乗り上げて転倒してしまった。
+28.TankのRigidbodyのIsKinematicにチェックをいれる。こうすることでスクリプトのみで移動し、外部から影響はうけない。これでどんな悪路でも安定して走破することができる。
+
+カメラの設定
+カメラをどのように使うかでゲームの性質ががらっと変わる。アクションゲームではかなり重要な部分だ。今回は手始めにカメラが戦車に追従する動きを入れてみよう。
+29.CameraController.csを以下のように作成し、カメラにアタッチする。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CameraController : MonoBehaviour {
+06
+  public Transform tank;
+07
+  public float dist=3.5f;
+08
+  public float height=1.5f;
+09
+ 
+10
+  void LateUpdate(){
+11
+    transform.position = tank.position + (-tank.forward * dist) + tank.up * height;
+12
+    transform.LookAt (tank.position);
+13
+ 
+14
+  }
+15
+}
+30.インスペクターからTankを登録し実行してみよう。カメラがTankを追尾するようなった。被写体からのオフセットを指定して被写体を写すというのが基本だ。これをUpdateメソッドのあとに実行するLateUpdateに記述する。
+
+GameMananger
+ただ、爽快に吹っ飛ばすだけでもいいが、一応終了条件みたいなものを設定しよう。今回は全部のblockを吹っ飛ばすまでの時間を競うものとする。
+31.CreateEmptyからGameManagerを作成し、GameManager.csを以下のように作成し付与する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class GameManager : MonoBehaviour {
+06
+  public GUIStyle timeStyle;
+07
+  public GUIStyle msgStyle;
+08
+  private float clearTime;
+09
+  const int BLOCKCOUNT = 100;
+10
+  private int count=0;
+11
+  bool isGoal=false;
+12
+ 
+13
+  void Update () {
+14
+    if (count == BLOCKCOUNT) {
+15
+      isGoal = true;
+16
+    } 
+17
+    if (!isGoal) {
+18
+      clearTime += Time.deltaTime;
+19
+    }
+20
+     
+21
+  }
+22
+  public int GetCount(){
+23
+    return count;
+24
+  }
+25
+  public void AddCount(){
+26
+    this.count++;
+27
+  }
+28
+  void OnGUI(){
+29
+     
+30
+    GUI.Label (new Rect (Screen.width-250,Screen.height-40,100,100), "Time:" + clearTime.ToString("0.000"), timeStyle);
+31
+    if (isGoal) {
+32
+      GUI.Label (new Rect (10,Screen.height-40,100,100), "Finish!!", msgStyle);
+33
+ 
+34
+    }
+35
+  }
+36
+}
+32.インスペクターからフォントの設定をしよう。今回はどちらもfont-size：４０，color:白に設定したがお好みに合わせて調整してもらいたい。
+
+
+吹き飛ばしたblockのカウント
+
+33.ステージ全体を巨大なキューブで囲ってそこから飛び出した数をカウントすることにした。まずはCubeからCountZoneを作成し、transformを以下のように設定する。
+
+34.TriggerなのでコライダーのIsTriggerにチェックを入れ、不要なMeshとMeshRendererはリムーブコンポーネントしておく。
+35.CountZoneController.csを以下のように作成しCountZoneに付与する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CountZoneController : MonoBehaviour {
+06
+  public GameManager gm;
+07
+ 
+08
+  void OnTriggerExit(Collider coll){
+09
+    if (coll.gameObject.tag == "Block") {
+10
+      gm.AddCount ();
+11
+    }
+12
+  }
+13
+}
+36.インスペクターにヒエラルキーにあるGameManagerをドラッグして登録する。
+
+完成
+以上で終了だ。細かいゲームバランスを調整してみてもらいたい。
+
+[課題]
+●今回blockの生成の際for文の中で100とハードコーディングしてしまっている。これをGameManagerから参照するように変えてみよう。
+●パーティクルでエフェクトを加えてみよう。
+●効果音を加えてみよう。
+
+[完成版]
+以下からダウンロード解凍後、assetsフォルダに入っているMain.unityをクリックすることでUnityが開く(Unity5.5.4)
+
+Unity6
+
+Terrain
+動画プレーヤー
+
+00:00
+00:13
+
+
+Unityは強力な地形作成機能が備わっている。今回はそれを使ってみよう。
+
+[作成手順]
+
+準備
+1.新規にプロジェクトを作成したら、インポートパッケージよりEnvironmentを選択。以下のようにEnviroｎmentのみにチェックを入れインポートする。
+
+2. ヒエラルキーのクリエイト->3DオブジェクトよりTerraiを作成する。
+
+
+大地の作成
+まずは感覚をつかもう。
+左端のRaise/Lowerを押して、ペン先や、ブラシサイズ、鋭さ（Opacity)を変更しながら雰囲気をつかもう。マウスドラッグで盛り上がりShiftを押しながらドラッグで押し下げることができる。まずは細かいことを気にせずに色々ためそう。
+
+
+3.PaintHeightモードにして下にあるFlattenボタンを押そう。これで全体が高さ0で初期化される。
+
+4.PaintHeightモードで大まかな地形を作る。PaintHeightモードに値を入れて操作を行うとその高さに近づけてくれる。
+今は50をいれてペイントしたので高さ５０の丘が出来ている。
+
+
+
+5.Raise/LowerやPaintHeightモードを駆使してお気に入りの大地を作ろう。尖り過ぎてしまった場所や周辺と違和感のある部分は下図のSmoothHeightツールを使ってなぞるとなだらかになる。
+
+
+
+表面材質の設定
+6.PaintTextureモードを選択し、下のEditTexturesボタン->add Textureを選択する。
+
+7.ポップアップ画面左のselectからGrassHillAlbedoを選択し、下にあるAddボタンを押す。
+
+
+8.再びEditTextureボタンを押し、今度はGrassRockyAlbedoをAddする。
+9.2つのテクスチャを切り替えながらペイントをしていこう。Altキーを押しながら色々な角度から眺めて不自然な部分がないようにしていく。
+
+
+木を植えよう
+10.PlaceTreesモードを選択して下のEditTrees->add Treeを選択する。
+11.Broadleaf-desktopを選択し、addを押す。
+
+12.BrushSizeで塗る範囲を決め(TreeDensityは密度)木を配置していこう。植えすぎたところはShiftを押しながらで削除できる。
+
+13.Altキーでの画面調整やズームなども利用してバランス良く配置していく。
+
+
+海の設定
+以前はpro版限定だった海の機能だが、現在は無料版でも使える。配置してみよう。
+14.水のプレファブは以下の所にある。今回はAdvanceを使う。これをterrainの真ん中あたりに配置する。
+
+15.Y軸で水面の高さ、X軸とZ軸で広さを設定できる。自分のマップに合わせて水面を設定する。
+
+
+
+キャラの配置
+せっかくなのでキャラを配置してみよう。ここではデフォルトで用意されているものを使う。
+15. 下図インポートパッケージからcharacterを選択。
+
+16.charactersからallを選択してインポートする。
+17.以下のプレファブをヒエラルキーに配置する
+
+１８．transformを設定し、キャラが地形の上にいるように設定する。
+
+
+カメラコントローラーの作成
+14.プレイヤーにカメラを追従させよう。CameraController.csを作成しカメラに付与する。
+
+ページ最下部参照
+
+15.インスペクターからThirdPersonControllerを登録しよう。
+
+
+実行
+上下左右の矢印キーで移動。スペースでジャンプをする。自分で作ったフィールドを探検してみよう。
+
+
+
+
+
+
+
+
+
+Post-processによりDepth-OF-Field(被写界深度)設定している
+
+Depth-Of-Filedに加えAmbientOcclusionとVignette追加
+フルサイズ画像ダウンロード
+
+Icon
+Panther4Full
+ 1 file(s)    3.90 MB
+使用アセット
+Pz.Kpfw IV (H)
+https://assetstore.unity.com/packages/3d/vehicles/land/pz-kpfw-iv-h-81247
+Windridge City
+https://assetstore.unity.com/packages/3d/environments/roadways/windridge-city-132222
+Old Soviet Shop
+https://assetstore.unity.com/packages/3d/environments/urban/old-soviet-shop-54767
+
+CameraController
+
+ using System.Collections;
+  using System.Collections.Generic;
+  using UnityEngine;
+  public class CameraController : MonoBehaviour
+  {
+    public Transform player;
+    public float pointX = -3.0f;
+    public float pointY = 1.0f;
+    public float rotX;
+    public float rotY;
+    
+    void LateUpdate(){
+      transform.position = player.position + (player.forward*pointX) + (player.up * pointY);
+      Vector3 dir = player.forward;
+      dir.x += rotX;
+      dir.y += rotY;
+      transform.rotation=Quaternion.LookRotation(dir);
+    }
+  }
+
+★Day88
+
+Unity(Post-Processing)
+
+1.新規3Dプロジェクトを作成する
+
+2.AssetStoreより以下のAssetをインポートする
+https://assetstore.unity.com/packages/3d/environments/fantasy/mega-fantasy-props-pack-87811
+
+3.Mega Fantasy Props Pack内にあるExampleScenesにあるCourtyardシーンを開く
+
+
+シーンを再生してみよう。以下のように表示されればOKだ。
+
+
+4.Post-Processingのインストール
+MenuのWindow->PackageManagerを開き、検索窓にPoと入力して絞り込まれたPostProcessingを選択してInstall
+
+
+5.Post−Process Volumeオブジェクトの作成
+パッケージをインストールすることにより新規3DオブジェクトにPost-process Volumeが選択できるようになるのでこれを選択する。
+
+
+作成されたPost-process VolumeオブジェクトをFilter1とリネームしよう。
+このオブジェクトにFilter効果を設定していく。
+
+
+6.レイヤー設定
+このFilterに新規にレイヤーを設定しよう。レイヤープルダウンを開きAdd Layerする
+
+
+Filter1を追加
+
+
+Filter1オブジェクトのレイヤーをFilter1に設定する
+
+
+7.新規プロファイルの作成
+Filter１オブジェクトを選択しインスペクターからPostPoressVolumeの設定をする
+まずFilterが全体に適用されるようにIs Globalをチェック。その後Newボタンを押して新規プロファイルを作成する。
+
+
+8.カメラにこのこのエフェクトが反映されるように設定
+今回のこのシーンのカメラはFPSControllerの子要素として設定されているFirstPersonCharacterが持っている。まずはこのオブジェクトを選択する
+
+
+Add-componentからPost-process Layerを選択
+
+
+設定されたコンポーネントにLayerからFilter1を設定する
+これでこのカメラにFilter1が適用されることになる
+
+
+9.Filter効果の作成
+では色々とFilter効果を適用させていこう！まずはFilter1オブジェクトを選択して
+Addeffect->Unity->Ambient Occlusion
+を選択しよう
+
+
+Ambient Occlusionはくぼんでいる部分に対して陰影を加える。Intensityにチェックをいれ1に設定する
+
+
+以下のように重厚感が加われば成功だ。Intensityのスライダで調整してみよう。
+Colorにチェックをいれ色を変えると陰影の色を変えることができる、焦げ茶にするとサビっぽくなる。
+
+
+10.被写界深度の設定
+続いて被写界深度を設定しよう。再びAdd effectからDepth of Fieldを選択
+
+
+Aperture(いわゆるf値)を1.8くらい（ボケ量が多い)に設定して、FocusDistance(ピントの合う距離)を5ｍくらいに設定しよう。
+
+
+5メートル付近にピントがあい、背景がボケれば成功だ
+
+
+12.ビネットの設定
+古いカメラなどで見られる画面の端が黒くなるビネットを設定しよう。
+
+
+以下のように設定する。今回は効果がわかりやすいように大げさに設定しているがこういった効果は控えめにおこなったほうがよい。
+
+
+周辺が暗くなった。これもColorを調整して焦げ茶にするとまた違う味がでる。
+
+
+以上で今回のPost-Pocessing機能の紹介は終了だ。ゲームに対して表現力が格段に高まる。
+そのほかにも様々な効果がある。下の記事などを参考に色々試してみてもらいたい
+https://www.fast-system.jp/unity-post-processing-stack/
+
+(おまけ）
+上記のアセット内のフィールドを散策できるようにしよう。
+おなじみの公式スタンダードアセット
+https://assetstore.unity.com/packages/essentials/asset-packs/standard-assets-for-unity-2017-3-32351
+から
+FirstPersonCharacter
+CrossPlatformInput
+Utility
+の３箇所にチェックをいれインポート
+
+
+インポートが終了すれば動けるようになる再生してマウスと上下キーで散策してみてもらいたい
+
+Unity7
+
+Mecanim1
+動画プレーヤー
+
+00:00
+00:12
+
+
+
+[作成手順]
+1.まずはUnitychanをDownloadする。
+http://unity-chan.com/download/download.php?id=UnityChan&v=1.2.1
+2.Unityで新しいプロジェクトを作成し、インポートパッケージ->カスタムパッケージから先程のダウンロードしたUnityChan_1_2_1.unitypackage
+をインポートする。
+
+3.unitychanプレファブをシーンに配置する。（原点でよい）
+
+(この際、unitychanのアイコンがピンクなっている場合は、アセットストア版のUnityちゃんをダウンロードし直す）
+4.unitychanを正面に捉えるようカメラを調整しよう。以下は参考transform
+
+5.専用ライトが付属しているのでそろを使おう。以下をシーンに配置する。
+
+6.明るすぎるのでIntensityを1くらいにしよう。
+
+7.こんな感じに表示されればここまではOKだ。
+
+
+AnimatorControllerの作成
+8.プロジェクトビューのクリエイトからAnimatorControllerを新規に作成し、CharControllerと名前をつける。
+
+9.unitychanに付与されているAnimatorコンポーネントにCharControllerを登録する。
+
+10.Animatorタブを押してAnimator画面を出そう。表示がずれている場合はalt+ドラッグで画面を動かせる。
+
+11.Animator内でオプションクリックしてCreateState->Emptyを選択しよう。
+
+12.Stateを選択し、HandUpと名前をつけ、モーションにHANDUP00_Rを登録する。
+
+13.最初のモーションが登録された。実行してみよう。手をあげて走ってくれば成功だ。
+
+14.同様に新しいEmptyStateを作成し、DAMAGED01モーションを登録する。
+
+１８．Transitionを作成しよう。HandUpをオプションクリックして、、MakeTransitionを選択する。
+
+19.そんままSlipにドラッグすると２つのモーションが矢印で接続される。
+
+20.実行してみよう。少し走って転べば成功だ。
+21.下図①のように矢印をクリックしてみよう。
+
+このように矢印をクリックするとTransitionの詳細が確認できる。HandUpを68%ほど再生したあと0.25秒かけて徐々に次のSlipに遷移することを表している。(Has ExitTimeにチェックが入っているときはExitTimeが経過した時のみ遷移する)
+22.手をあげて走ってくる時間が短いので修正しよう。下図のようにHandUpを2.5回繰り返してから遷移するようにする
+
+23.引き続きモーションをつなげよう。Slipの下にKickを作り、WAIT04モーションを割り付けトランジションでつなげる。
+
+24.もう一つつなげる。Kickの下にWinを作り。WIN00モーションを割り付けトランジションでつなげる。
+
+25.実行してみよう。Kickの後、Winに遷移するのが少し遅い。先程のようにExitTimeを50%くらいしてもいいがここでは、新しくモーションを作成してみよう。
+
+既存モーションから新規モーションの作成
+26.Animatorからkickをダブルクリックして、Animationタブを開いて現在のモーションの詳細をみよう。
+
+27.図のなかにある+ボタンを押して新規モーションクリップを作成する。今回はWAIT04KAIと名付けた。
+
+28.下でプレビューしながら上のツマミを動かし不要な部分をトリミングする。（今回は後半をカットした）
+
+29.編集が終わったら最下部にあるApplyボタンを押す。これで新しいモーションクリップが作成された。
+30.作成したモーションクリップを割り付けよう。
+
+31.実行してみよう。モーションは短くなったが、kickモーションを短くした影響で回転がずれ最後少し横をむいてしまっている。
+
+３２．RotationのBake Into poseにチェックを入れ。最下部にあるApplyボタン押す。RotationのBake Into poseにチェックをいれるとアニメーションがもとのトランスフォーム影響を全く与えなくなる。
+
+33.実行してみよう。最後にきちんと前を向くはずだ。
+
+Unity8
+
+Mecanim2
+モーションの追加
+1.前回のUnityちゃんを使ったMecanim1のプロジェクトを開く。
+2.アセットストアに行って、以下のパッケージをダウンロードしインポートする。
+
+
+3.kickの後にモーションを追加したい。まずはkickとWinを切り離そう。
+
+4.kickの後に新規にHikickを追加する。
+
+5.モーションにhk_rh_right_A2を登録する。再生してみるとスピードが早すぎるので半分の速度にした。
+
+6.つなぎ目を不自然にならないよう調整しよう。下は調整例。
+動画プレーヤー
+
+00:00
+00:12
+
+
+リターゲティング
+7.まずはアセットストアから以下のパッケージをダウンロード、インポートする。
+
+
+8.zombiのmodelの中にあるｚ＠walkを選択しよう。
+
+9.このようにアセットストアなどからダウンロードした場合modelのタイプをまず確認しなければならない。
+AnimationタイプがHumanoidだったら最初からメカニムに最適化されているので問題ない。LegacyやGenericの場合は変換してあげよう。
+
+
+10.変換したモデルをシーンに配置しよう。
+
+１１．Unityちゃんはいったん無効にする。
+
+12.スケールが大きいので少しさがってもらって、さきほどまで作成していたUnityちゃん用のCharController（AnimatorController)を付与する。
+
+13.実行してみよう。AnimatorContorollerも使いまわせることがわかる。
+動画プレーヤー
+
+★Day89
+
+Unity9
+
+CharacterController
+動画プレーヤー
+
+00:00
+00:19
+
+
+キャラの移動に便利なのがCharacterControllerだ。これを利用することで
+地形の凸凹に沿って移動
+壁にこするように沿って移動
+登れる坂道の勾配を設定
+などが簡単に実現することができる。今回はUnityちゃんのモデルをCharacterControllerを使って動かしてみよう。
+
+新規プロジェクトの作成
+1.新規にCharacterControllerLessonプロジェクトを作成する。
+2.下のリンクからUnitychanパッケージをダウンロード、インポートする。（すでに持っている人はそれを利用すればよい)
+http://unity-chan.com/download/download.php?id=UnityChan&v=1.2.1
+
+ステージの作成
+3.CreateEmptyからStageを原点に作成する。
+4.Stageの子要素として、CubeからFloorを作成し、以下のようにtransformを設定する。
+
+5.Stageの子要素として、CubeからSlopeを作成し、以下のようにtransformを設定する。
+
+6.Slope複製からSlope(1)を作成し、以下のようにtransformを設定する。
+
+7.Stageの子要素としてCubeからStepを作成する。以下のようにtransformを設定する。
+
+8.Step複製からStep(1)を作成し、以下のようにtransformを設定する。
+
+9.表面材質を適当に設定し、カメラを調整しよう。
+
+
+Unityちゃんの配置
+10.modelsフォルダに入っているunitychanをシーンに配置する。
+
+11.transformを以下のように調整する。
+
+
+カメラの設定
+12.CameraController.csを以下のように作成し、カメラにアタッチする。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CameraController : MonoBehaviour {
+06
+  public Transform player;
+07
+ 
+08
+  void LateUpdate () {
+09
+    transform.position = player.position + (-player.forward * 3.0f) + (player.up * 1.0f);
+10
+    transform.LookAt (player.position+Vector3.up);
+11
+  }
+12
+}
+13.インスペクターからplayerにUnitychanを登録する。
+
+14.実行してみよう。以下のように表示されれば成功だ。
+
+
+AnimatorController
+12.Project->Create->AnimatorControllerからAnimatorControllerを作成し、名前をCharAnimとする。
+13.Animatorタブを開き,createState->emptyからIdleステートを以下のように作成する。
+
+14.Unitychanにアタッチして実行してみよう。普通の立ちポーズとなれば成功だ。この際、Apply Root Motionのチェックを外す。今回はUnityちゃんの位置の移動に関してはすべてスクリプトで行う。(モーションがもっている移動情報は使わない)。
+
+15.アニメーターにWalkアクションを以下のように追加する。
+
+16.パラメータを追加する。Parameters->+->Floatと選択する。
+
+17.speedと入力する。これでspeedというパラメータを追加できた。
+
+18.IdleからWalkの遷移の条件を以下の設定しよう。
+
+19.同様にWalkからIdleの遷移を以下のように設定する。
+
+20.次にRunのモーションを追加する。
+
+21.WalkからRunの遷移を以下のように設定する。
+
+22.RunからWalkへの遷移は以下。
+
+23.さらにJumpを以下のように追加する。
+
+24.jumpというparameterを追加する。今回はjumpに関してはtriggerを使う。
+
+25.speedとjumpという2つのparameterがあることを確認する。
+
+26.AnyStateから遷移を出すとどのタイミングでもモーションを実行できる。今回はjumpをAnyStateからの遷移にしよう。以下のように設定する。またすぐにジャンプアクションに遷移するようにTransitionDurationを小さく設定する。
+
+27.ジャンプモーションを1回再生したら、Walkに繋げよう。下の図のようにHas Exit Timeにチェックをいれると再生を終えると自動的に遷移する。
+
+
+CharacterControllerの付与
+モーションの設定ができたのでいよいよキャラクターコントローラーを付与して実際にステージ上を移動できるようにしていこう。
+18.AddComponent->PhysicsからCharacterControllerを付与する。
+19.CharacterControllerを以下のように設定する(登れる最大傾斜45度、登れる段差30cm、コライダーはモデルに合わせる）
+
+
+コントローラーの作成
+20.あとは、モーションの遷移とキャラクターの動きを制御するCharMove.csを作成しよう。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CharMove : MonoBehaviour {
+06
+  Animator animator;
+07
+  CharacterController cc;
+08
+ 
+09
+  Vector3 dir = Vector3.zero;
+10
+  public float gravity = 20.0f;
+11
+  public float speed = 4.0f;
+12
+  public float rotSpeed = 300.0f;
+13
+  public float jumpPower = 8.0f;
+14
+ 
+15
+  void Start () {
+16
+    animator = GetComponent<Animator> ();
+17
+    cc = GetComponent<CharacterController> ();
+18
+  }
+19
+ 
+20
+ 
+21
+  void Update () {
+22
+    //前進成分を取得(0~1),今回はバックはしない
+23
+    float acc = Mathf.Max (Input.GetAxis ("Vertical"), 0f);
+24
+    //接地していたら
+25
+    if (cc.isGrounded) {
+26
+      //左右キーで回転
+27
+      float rot = Input.GetAxis ("Horizontal");
+28
+      //前進、回転が入力されていた場合大きい方の値をspeedにセットする(転回のみをするときも動くモーションをする)
+29
+      animator.SetFloat ("speed", Mathf.Max (acc, Mathf.Abs (rot)));
+30
+      //回転は直接トランスフォームをいじる
+31
+      transform.Rotate (0, rot * rotSpeed * Time.deltaTime, 0);
+32
+ 
+33
+      if (Input.GetButtonDown ("Jump")) {
+34
+        //ジャンプモーション開始
+35
+        animator.SetTrigger ("jump");
+36
+      }
+37
+    } 
+38
+    //下方向の重力成分
+39
+    dir.y -= gravity * Time.deltaTime;
+40
+ 
+41
+    //CharacterControllerはMoveでキャラを移動させる。
+42
+    cc.Move ((transform.forward * acc * speed + dir) * Time.deltaTime);
+43
+    //移動した後着していたらy成分を0にする。
+44
+    if (cc.isGrounded) {
+45
+      dir.y = 0;
+46
+    }
+47
+ 
+48
+  }
+49
+   
+50
+}
+21.作成したスクリプトをUnityちゃんに付与し、実行してみよう。アニメーションに合わせて移動し、45度までの坂や、30cmまでの段差はそのまま進めることがわかる。
+
+問題点
+40cmの段差がジャンプしても登れないのは違和感がある。それを修正しよう。そもそも、なぜジャンプしているのに登れないかというとジャンプしているのは見た目だけで、実際の高さは変化していないからだ。
+
+図を見てもわかるがジャンプしてもtransformの変わっていない。
+
+修正しよう。ジャンプモーションに入ってすぐ高さを与えると、変な動きになる。なぜならば、ジャンプモーションの最初の部分で沈み込む動作をしているからだ。そこでモーションクリップを分析し地面から離れた時にイベントを発生させるという手法をとる。
+
+22.Jumpをダブルクリックしてモーション編集画面に入り、Eventsを開く。
+
+
+23.再生しながら地面から離れるタイミングを探し、そこにEventを挿入する。今回はOnJumpStartというイベントを発生させた。
+（下部にあるApplyボタンを押すのを忘れない)
+
+
+24.後は、CharMove.csにこのイベント発生時の処理を追記するだけだ。一番下にメソッドを追記する。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CharMove : MonoBehaviour {
+06
+  Animator animator;
+07
+  CharacterController cc;
+08
+ 
+09
+  Vector3 dir = Vector3.zero;
+10
+  public float gravity = 20.0f;
+11
+  public float speed = 4.0f;
+12
+  public float rotSpeed = 300.0f;
+13
+  public float jumpPower = 8.0f;
+14
+ 
+15
+  void Start () {
+16
+    animator = GetComponent<Animator> ();
+17
+    cc = GetComponent<CharacterController> ();
+18
+  }
+19
+ 
+20
+ 
+21
+  void Update () {
+22
+    //前進成分を取得(0~1),今回はバックはしない
+23
+    float acc = Mathf.Max (Input.GetAxis ("Vertical"), 0f);
+24
+    //設置いていたら
+25
+    if (cc.isGrounded) {
+26
+      //左右キーで回転
+27
+      float rot = Input.GetAxis ("Horizontal");
+28
+      //前進、回転が入力されていた場合大きい方の値をspeedにセットする(転回のみをするときも動くモーションをする)
+29
+      animator.SetFloat ("speed", Mathf.Max (acc, Mathf.Abs (rot)));
+30
+      //回転は直接トランスフォームをいじる
+31
+      transform.Rotate (0, rot * rotSpeed * Time.deltaTime, 0);
+32
+ 
+33
+      if (Input.GetButtonDown ("Jump")) {
+34
+        //ジャンプモーション開始
+35
+        animator.SetTrigger ("jump");
+36
+      }
+37
+    } 
+38
+    //下方向の重力成分
+39
+    dir.y -= gravity * Time.deltaTime;
+40
+ 
+41
+    //CharacterControllerはMoveでキャラを移動させる。
+42
+    cc.Move ((transform.forward * acc * speed + dir) * Time.deltaTime);
+43
+    //移動した後着していたらy成分を0にする。
+44
+    if (cc.isGrounded) {
+45
+      dir.y = 0;
+46
+    }
+47
+ 
+48
+  }
+49
+  //ジャンプモーションで地面から足が離れたときに呼ばれるイベント
+50
+  public void OnJumpStart () {
+51
+    //足が離れたらトランスフォームを上方に移動する。
+52
+    dir.y = jumpPower;
+53
+  }
+54
+ 
+55
+}
+確認
+実行してみよう。地面から離れると同時に実際に高さを与えている。３０ｃｍの段差などはものともしない感じになった。
+
+最後に
+今回はChracterControllerによるキャラの移動をレッスンした。重力を自分で実装しないといけない点や、IsKinematic的な挙動で他者からの物理的影響は受けないなど癖も多いが、利用どころを間違えなければ結構使える。慣れていくといくと良いだろう。
+
+★Day90
+
+Unity(UnityChanパーフェクトviewer)
+
+カメラを操作してUnityChanの写真を撮ろう。
+
+1.床の作成
+Cubeを作成しFloorにリネーム。トランスフォームは以下
+
+
+2.UnityChanのダウンロード
+UnitychanをDownloadする。
+http://unity-chan.com/download/download.php?id=UnityChan&v=1.2.1
+
+3.バグの修正
+Unityのバージョン違いによって発生すバグを修正する
+AutoBlink.csから以下のように１行コメントアウトする
+
+//
+//AutoBlink.cs
+//オート目パチスクリプト
+//2014/06/23 N.Kobayashi
+//
+using UnityEngine;
+using System.Collections;
+//using System.Security.Policy;
+
+namespace UnityChan
+{
+	public class AutoBlink : MonoBehaviour
+	{
+4.UnityChanの配置
+Prefabsにはいっているunitychan_dynamicをシーンに配置
+
+
+トランスフォームは以下
+
+
+今回不要なIdleChangerとFaceUpdateはオフにしておこう
+
+
+5.ライトの設定
+プレファブからDirectional light for UnityChanをシーンに配置し、予めあったDirectional Lightは削除する
+
+
+ライトの設定をしよう。以下のようにLightコンポーネントを修正する
+
+
+6.確認
+カメラのtransformを以下のように設定して再生してみよう。
+
+
+以下のように表示されれば成功だ
+
+
+カメラを回す
+では実際にこのUnityChanを映すカメラ設定を考えてみよう
+
+7.RotateAround
+新規スクリプトからCamConを以下のように作成し、mainカメラにアタッチ
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CamCon : MonoBehaviour
+{
+    public Transform target;
+    
+    void Update()
+    {
+        //(中心点、回転軸、回転速度)今回は1秒間に40度回す設定
+        transform.RotateAround(target.position, Vector3.up, 40f*Time.deltaTime);
+    }
+}
+TargetにUnityChan_dynamicを登録
+
+
+実行してみよう。
+
+UnityChanを中心にカメラが回ることがわかる。現在のカメラ位置から対象を中心に回すときにRotateAroundは便利だ。
+
+8.キー入力に対応
+この動きを利用してキー入力で見るアングルを変更できるようにする。
+Camcon.csを以下のように変更する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CamCon : MonoBehaviour
+{
+    public Transform target;
+    
+    void Update()
+    {
+        //(中心点、回転軸、回転速度)今回は1秒間に40度回す設定
+        //transform.RotateAround(target.position, Vector3.up, 40f*Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            transform.RotateAround(target.position, Vector3.up, -40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            transform.RotateAround(target.position, Vector3.up, 40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.UpArrow)) {
+            transform.RotateAround(target.position, transform.right, 40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.DownArrow)) {
+            transform.RotateAround(target.position, transform.right, -40f * Time.deltaTime);
+        }
+    }
+}
+左右上下キーでアングルを変えられるようになった。上下の切り替えの際にはカメラの横軸を支点に回るようにする
+
+9.カメラ位置の調整
+アングルだけではなく、カメラの高さなども調整できるようにしよう。
+以下のようにCamCon.csを変更する
+位置の調整はVimライクにH,J,K,Lキーで変更する
+
+10.ズーム機能
+ズームできるようにしよう。以下のようにCamCon.csに追記する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CamCon : MonoBehaviour {
+    public Transform target;
+    float fov = 60f;//field of viewの既定値
+
+    void Update() {
+        //(中心点、回転軸、回転速度)今回は1秒間に40度回す設定
+        //transform.RotateAround(target.position, Vector3.up, 40f*Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.RightArrow)) {
+            transform.RotateAround(target.position, Vector3.up, -40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow)) {
+            transform.RotateAround(target.position, Vector3.up, 40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.UpArrow)) {
+            transform.RotateAround(target.position, transform.right, 40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.DownArrow)) {
+            transform.RotateAround(target.position, transform.right, -40f * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.J)) {
+            transform.Translate(0f, -0.5f * Time.deltaTime, 0f);
+        }
+        if (Input.GetKey(KeyCode.K)) {
+            transform.Translate(0f, 0.5f * Time.deltaTime, 0f);
+        }
+        if (Input.GetKey(KeyCode.L)) {
+            transform.Translate(0.5f * Time.deltaTime, 0f, 0f);
+        }
+        if (Input.GetKey(KeyCode.H)) {
+            transform.Translate(-0.5f * Time.deltaTime, 0f, 0f);
+        }
+        if (Input.GetKey(KeyCode.Z)) {
+            fov -= 10f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.W)) {
+            fov += 10f * Time.deltaTime;
+        }
+        //(変数,最小値,最大値)
+        fov = Mathf.Clamp(fov, 10f, 150f);
+        //fovの設定
+        Camera.main.fieldOfView = fov;
+    }
+}
+Zで拡大、Wで引くことができる。お好みのアングルを探して究極の１枚を撮影していただきたい。
+
+
+(参考)
+RotateAroundを使わずにSinとCosで回す例
+この方法だと回転しながら徐々に対象に近づくなど細かい制御が可能
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CamCon2 : MonoBehaviour
+{
+    public Transform target;
+    public Transform aim;
+    Vector3 cameraPos;
+    float sec;
+    float dist=1.74f;
+    void Update()
+    {
+        sec += Time.deltaTime;
+        dist -= Time.deltaTime * 0.2f;
+        dist = Mathf.Max(1.0f, dist);
+        cameraPos.x = target.position.x + Mathf.Cos(sec*0.6f) * dist;
+        cameraPos.y = aim.position.y;
+        cameraPos.z = target.position.z + Mathf.Sin(sec*0.6f) * dist;
+        transform.position = cameraPos;
+        transform.LookAt(aim);
+    }
+}
+マウスを使って回す場合
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CamCon3 : MonoBehaviour {
+    //被写体とカメラの距離
+    public float distance = 5f;
+    //y軸回転の初期値 (Unitychanを前から見る）
+    public float rotY = 180f;
+    //x軸回転の初期値
+    public float rotX = 0f;
+    //ドラッグの距離に対する角度変化の度合い(画面幅で360度)
+    public float rotAngle = 360f;
+    //映す対象(Unitychan)が入る
+    public Transform target;
+    //注視点のオフセット（上方にして顔などに合わせる)
+    public Vector3 offset;
+
+    //ドラッグを始めた地点
+    Vector2 slideStartPos;
+    //前フレームのマウスの位置
+    Vector2 prevPos;
+    //前フレームと現在のマウス位置のずれ量(x,y)
+    Vector2 delta;
+    //ドラッグ中か？
+    bool isDrag = false;
+
+    //fieldOfView:ズーム値の初期値
+    float fov = 60f;
+
+    void Update() {
+        /**ドラッグの決定**/
+        //カチっとマウスを「押し下げ」された
+        if (Input.GetMouseButtonDown(0)) {
+            slideStartPos = Input.mousePosition;//座標を記録
+        }
+        //マウスが押され続けている
+        if (Input.GetMouseButton(0)) {
+            //もし画面幅の1割の量動かしたらドラッグとみなす
+            if (Vector2.Distance(slideStartPos, Input.mousePosition) >= Screen.width * 0.1f) {
+                isDrag = true;
+            }
+        }
+        //マウスが押されていなかったらisDragはfalse
+        if (!Input.GetMouseButton(0)) {
+            isDrag = false;
+        }
+
+        /**ドラッグによる変位量を求める**/
+        //ドラッグされていたら
+        if (isDrag) {
+            Vector2 pos = Input.mousePosition;
+            delta = pos - prevPos;//前フレームのマウス位置との差をみる
+
+        } else {
+            delta = Vector2.zero;
+        }
+        prevPos = Input.mousePosition;//prevを更新
+
+        /**マウス座標の変位量によってどれだけカメラを動かすのかを求める**/
+        if (isDrag) {
+            //ドラッグ量に対する感度を求める
+            float anglePerPixel = rotAngle / Screen.width;
+            //ドラッグの横成分はy回転
+            rotY += delta.x * anglePerPixel;
+            //0~360を循環
+            rotY = Mathf.Repeat(rotY, 360f);
+            //ドラッグの縦成分はx回転
+            rotX -= delta.y * anglePerPixel;
+            //-60~60に挟み込む
+            rotX = Mathf.Clamp(rotX, -60f, 60f);
+
+        }
+
+        /**カメラ位置、カメラの角度の決定**/
+        if (target != null) {
+            //注視点の設定
+            Vector3 lookPosition = target.position + offset;
+            //カメラを動かすベクトルを作成(q*vecでベクトルを回す）
+            Vector3 relativePos = Quaternion.Euler(rotX, rotY, 0) * new Vector3(0, 0, -distance);
+            //カメラの位置を決定
+            transform.position = lookPosition + relativePos;
+            //注視点にカメラを向ける
+            transform.LookAt(lookPosition);
+        }
+
+        /**fov(FieldOfView:ズーム)の決定**/
+        //マウスホイールによってfovの値を操作
+        fov += Input.GetAxis("Mouse ScrollWheel");
+        //10~150に挟み込む
+        fov = Mathf.Clamp(fov, 10f, 150f);
+        //fovの値を決定
+        Camera.main.fieldOfView = fov;
+    }
+}
+
+SinとCosで回す方法
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class CamCon2 : MonoBehaviour
+{
+    public Transform target;
+    public Transform aim;
+    Vector3 cameraPos;
+    float sec;
+    float dist=1.74f;
+    void Update()
+    {
+        sec += Time.deltaTime;
+        dist -= Time.deltaTime * 0.2f;
+        dist = Mathf.Max(1.0f, dist);
+        cameraPos.x = target.position.x + Mathf.Cos(sec*0.6f) * dist;
+        cameraPos.y = aim.position.y;
+        cameraPos.z = target.position.z + Mathf.Sin(sec*0.6f) * dist;
+        transform.position = cameraPos;
+        transform.LookAt(aim);
+    }
+}
+
+Unity14
+
+Animation
+アニメーションの使い方を覚えよう。
+動画プレーヤー
+
+00:00
+00:14
+
+
+プロジェクトの作成
+1.AnitmationLessonというプロジェクトを3Dで作成する。
+
+Floorの作成
+2.CreateからCubeを作成し、Floorとリネームしよう。transformは以下。
+
+
+Cubeの作成
+3.CreateからCubeを作成し、表面材質を赤にする。transformは以下。
+
+
+カメラの調整
+4.カメラを調整して下のような構図にする。
+
+
+Animation
+5.ヒエラルキーでCubeを選択した状態でWindow->Animationとする。
+
+6.Createボタンを押す。
+
+7.Cube.animと名前をつける。
+
+
+8.操作するプロパティを選択する。まずはpositionを操作する。
+
+9.　２秒後に(120フレーム)にキーフレームを追加する。
+
+10.同様に３秒後(180フレーム)と4秒後(240フレーム)にもキーフレームを設定する。
+
+11.Recボタンが押されていることを確認し、60フレームを選択する。
+
+12.インスペクターからtransformのzを12に変更する。
+
+13.同様に120フレームのtransformを以下のように設定する。
+
+14.同じく180フレームのtransformを以下のように設定する。
+
+15.実行してみよう。辺にそってCubeが１周するはずだ。
+
+16.カーブの確認。下部にあるCurvesを押すと遷移の状態がわかる。赤がx軸,緑がy軸、青をz軸をあわらしている。今回y軸はいじっていないので一定でることがわかる。
+
+17.カーブを編集してみよう。今は角の周辺でやや減速している動きをしている。等速度で移動するようにしてみよう。全てのコントロールポイントを選択する。
+
+18.全てのコントールポイントをLinearにする。
+
+19.直線になったことを確認する。
+
+20.実行してみよう。等速度移動するようになったことが確認できる。
+
+CubeControllerの作成
+21.以下のようなCubeController.csを作成しCubeにアタッチする。
+
+01
+using System.Collections;
+02
+using System.Collections.Generic;
+03
+using UnityEngine;
+04
+ 
+05
+public class CubeController : MonoBehaviour {
+06
+ 
+07
+  void Update () {
+08
+    if(Input.GetButtonDown("Jump")){
+09
+      Vector3 vec = transform.position;
+10
+      vec.y *= -1;
+11
+      transform.position = vec;
+12
+    }
+13
+  }
+14
+}
+22.スペースキーを押した時にy座標を1と-1を切り替える単純なものだ。実行してみよう。しかし、何も変わらない。
+これからもわかる通り、基本的にはAnimationを行なっている時はそれでの動きを優先する。
+
+★Day92
+
+本日は教科書を終わらせる予定です！
+
+Chapter6　Flappy Azarashi
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ScrollObject : MonoBehaviour
+{
+    public float speed = 1.0f;
+    public float startPosition;
+    public float endPosition;
+    
+    void Update()
+    {
+        transform.Translate(-1 * speed * Time.deltaTime, 0, 0);
+        if(transform.position.x <= endPosition) {
+            ScrollEnd();
+        }
+    }
+    void ScrollEnd() {
+        transform.Translate(-1*(endPosition-startPosition),0,0);
+        SendMessage("OnScrollEnd", SendMessageOptions.DontRequireReceiver);
+    }
+}
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AzarashiController : MonoBehaviour
+{
+    Rigidbody2D rb2d;
+    public float maxHeight;
+    public float flapVelocity;
+    // Start is called before the first frame update
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetButtonDown("Fire1") && transform.position.y < maxHeight) {
+            Flap();
+        }
+    }
+    public void Flap() {
+        rb2d.velocity = new Vector2(0.0f, flapVelocity);
+    }
+}
+Animationを適用する
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AzarashiController : MonoBehaviour
+{
+    Rigidbody2D rb2d;
+    Animator animator;
+    float angle;
+    public float maxHeight;
+    public float flapVelocity;
+    public float relativeVelocityX;
+    public GameObject sprite;
+    // Start is called before the first frame update
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        animator = sprite.GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetButtonDown("Fire1") && transform.position.y < maxHeight) {
+            Flap();
+        }
+        ApplyAngle();
+        animator.SetBool("flap", angle>= 0f);
+    }
+    public void Flap() {
+        rb2d.velocity = new Vector2(0.0f, flapVelocity);
+    }
+    void ApplyAngle() {
+        float targetAngle =
+            Mathf.Atan2(rb2d.velocity.y, relativeVelocityX) * Mathf.Rad2Deg;
+        angle = Mathf.Lerp(angle, targetAngle, Time.deltaTime * 10.0f);
+        sprite.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+    }
+}
+死亡判定を追加
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AzarashiController : MonoBehaviour
+{
+    Rigidbody2D rb2d;
+    Animator animator;
+    float angle;
+    bool isDead;
+    public float maxHeight;
+    public float flapVelocity;
+    public float relativeVelocityX;
+    public GameObject sprite;
+   
+    public bool IsDead() {
+        return isDead;
+    }
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        animator = sprite.GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetButtonDown("Fire1") && transform.position.y < maxHeight) {
+            Flap();
+        }
+        ApplyAngle();
+        animator.SetBool("flap", angle>= 0f);
+    }
+    public void Flap() {
+        if (isDead) {
+            return;
+        }
+        rb2d.velocity = new Vector2(0.0f, flapVelocity);
+    }
+    void ApplyAngle() {
+        float targetAngle;
+        if (isDead) {
+            targetAngle = -90f;
+        } else {
+            targetAngle =
+            Mathf.Atan2(rb2d.velocity.y, relativeVelocityX) * Mathf.Rad2Deg;
+        }
+        angle = Mathf.Lerp(angle, targetAngle, Time.deltaTime * 10.0f);
+        sprite.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+    }
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (isDead) {
+            return;
+        }
+        isDead = true;
+    }
+}
+Block.csの追加
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Block : MonoBehaviour
+{
+    public float minHeight;
+    public float maxHeight;
+    public GameObject pivot;
+    // Start is called before the first frame update
+    void Start()
+    {
+        ChangeHeight();
+    }
+    void ChangeHeight() {
+        float height = Random.Range(minHeight, maxHeight);
+        pivot.transform.localPosition = new Vector3(0f, height, 0f);
+    }
+
+   void OnScrollEnd() {
+        ChangeHeight();
+    }
+}
+隙間3段階ランダムバージョン
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Block : MonoBehaviour
+{
+    public float minHeight;
+    public float maxHeight;
+    public GameObject pivot;
+    public Transform underPivot;
+    public bool isRandom;
+    // Start is called before the first frame update
+    void Start()
+    {
+        ChangeHeight();
+    }
+    void ChangeHeight() {
+        float height = Random.Range(minHeight, maxHeight);
+        pivot.transform.localPosition = new Vector3(0f, height, 0f);
+        if (isRandom) {
+            SetRandomHeight();
+        }
+    }
+
+   void OnScrollEnd() {
+        ChangeHeight();
+        
+    }
+    void SetRandomHeight() {
+        int height = Random.Range(-1, 2);
+        underPivot.localPosition = new Vector3(0f, height*0.5f, 0f);
+    }
+}
+
+
+★Day93
+
+昨日終わらなかったのでFlappyAzarashiの続きです！
+
+Chapter6　Flappy Azarashi(後編)
+P.327
+AzarashiController.cs(操作制御の追加)
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AzarashiController : MonoBehaviour
+{
+    Rigidbody2D rb2d;
+    Animator animator;
+    float angle;
+    bool isDead;
+    public float maxHeight;
+    public float flapVelocity;
+    public float relativeVelocityX;
+    public GameObject sprite;
+   
+    public bool IsDead() {
+        return isDead;
+    }
+    void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        animator = sprite.GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetButtonDown("Fire1") && transform.position.y < maxHeight) {
+            Flap();
+        }
+        ApplyAngle();
+        animator.SetBool("flap", angle>= 0f);
+    }
+    public void Flap() {
+        if (isDead) {
+            return;
+        }
+        if(rb2d.isKinematic) {
+            return;
+        }
+        rb2d.velocity = new Vector2(0.0f, flapVelocity);
+    }
+    void ApplyAngle() {
+        float targetAngle;
+        if (isDead) {
+            targetAngle = -90f;
+        } else {
+            targetAngle =
+            Mathf.Atan2(rb2d.velocity.y, relativeVelocityX) * Mathf.Rad2Deg;
+        }
+        angle = Mathf.Lerp(angle, targetAngle, Time.deltaTime * 10.0f);
+        sprite.transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+    }
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (isDead) {
+            return;
+        }
+        isDead = true;
+    }
+    public void SetSteerActive(bool active) {
+        rb2d.isKinematic = !active;
+    }
+}
+GameController.cs
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameController : MonoBehaviour
+{
+    enum State {
+        Ready,
+        Play,
+        GameOver
+    }
+    State state;
+
+    public AzarashiController azarashi;
+    public GameObject blocks;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Ready();
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        switch (state) {
+            case State.Ready:
+                if (Input.GetButtonDown("Fire1")) {
+                    GameStart();
+                }
+                break;
+            case State.Play:
+                if (azarashi.IsDead()) {
+                    GameOver();
+                }
+                break;
+            case State.GameOver:
+                if (Input.GetButtonDown("Fire1")) {
+                    Reload();
+                }
+                break;
+        }
+    }
+    void Ready() {
+        state = State.Ready;
+        azarashi.SetSteerActive(false);
+        blocks.SetActive(false);
+    }
+    void GameStart() {
+        state = State.Play;
+        azarashi.SetSteerActive(true);
+        blocks.SetActive(true);
+        azarashi.Flap();
+    }
+    void GameOver() {
+        state = State.GameOver;
+        ScrollObject[] scrollObjects = GameObject.FindObjectsOfType<ScrollObject>();
+        foreach(var so in scrollObjects) {
+            so.enabled = false;
+        }
+    }
+    void Reload() {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+    }
+}
+
+★Day94
+
+Unityで作ったゲームをGitHubにあげる。
+1.作業フォルダをzipで圧縮して万が一のためのバックアップファイルをつくる
+
+2.上部EditからProjectSettingsを選択。Editorからの以下のように設定する
+
+
+
+
+3.バージョン管理に必要ないファイルを除外するために以下のリンクをもとに
+.gitignoreファイルを作業ディレクトリ内に作成する。
+
+https://github.com/github/gitignore/blob/master/Unity.gitignore
+
+3.5 git init
+4.git add .
+5.git commit -m”First-commit”;
+
+(ファイルがデカすぎてこけたらLFSなどの検討が必要)
+
+
+
+6.Web用にプロジェクトをビルドする。その際保存先をプロジェクトフォルダ内のdocsフォルダにする。
+
+6.5 ビルドができたらadd & commitする。コミットメッセージは”docs追加”
+
+7.GitHubに行ってリポジトリを作成する。名前はゲーム名とするとよい。
+
+8.ローカルから今作ったリポジトリをリモート指定する。
+
+$ git remote add origin **********SSHアドレスを入力****
+9.以下のコマンドで確認
+
+$ git remote -v
+10.確認ができたら以下のコマンドでプッシュする。
+
+$ git push -u origin master
+11.以下の記事をみてgitHubに移動してgithub pages設定をする。
+https://qiita.com/tonkotsuboy_com/items/f98667b89228b98bc096
+
+12.Github pagesはコミットしてもすぐに反映されないことが多い。
+その場合は空コミットを送ってプッシュすると反映されることがある。
+
+$ git commit --allow-empty -m"empty"
+参考
+Unityの作品をGitHub Pagesで公開する
+http://am1tanaka.hatenablog.com/entry/2015/11/27/115926
+
+
+
+
+
+
+
+
+
+

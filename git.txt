@@ -1,0 +1,530 @@
+Gitインストール
+
+名前とメールアドレスの設定
+$ git config --global user.name "hogehoge"
+$ git config --global user.email "hogehoge@gmail.com"
+
+git graphでgit log –graphを表示する設定
+$ git config --global alias.graph "log --graph --date-order --all --pretty=format:'%h %Cred%d %Cgreen%ad %Cblue%cn %Creset%s' --date=short" 
+
+config –globalの確認
+$ git config --global -l
+
+waring LF will …がでたら
+$git config --global core.autoCRLF false
+
+gitbashによる操作練習
+pwd（print working directory)/今いる場所表示
+cd (change directory)/フォルダ変更
+ls (list)/ファイル一覧
+ls -l/縦表示
+mkdir(makedirectory)/フォルダ作成
+
+vimtutor
+$ vimtutor
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>ブロック要素、インライン要素</title>
+</head>
+<body>
+  <h1>ブロック要素、インライン要素</h1>
+  <p>HTMLで定義されている要素の多くは、 ブロックレベル要素（Block-Level Elements）か、インライン要素（Inline Elements）に分類されます。 この分類により、どの要素の内側にどの要素を配置できるかなどのルールが定められています。
+  </p>
+  <h2>ブロック要素</h2>
+  <p>ブロックレベル要素は、見出し・段落・表など、文書を構成する基本となる要素で、一つのブロック（かたまり）として認識されます。 ブラウザでの表示も一つのかたまりとして扱われることが多く、一般的なブラウザでは前後に改行が入ります。</p>
+  <h2>インライン要素</h2>
+  <p>
+  インライン要素は、主にブロックレベル要素の内容として用いられる要素で、文章の一部として扱われます。 例えば、p要素の中のstrong要素のように、段落のなかの一部を強調するような使われ方をする要素です。 一般的なブラウザでは前後に改行が入らず、文章の一部として表示されます。</p>
+  <h2>配置のルール</h2>
+  <p>ブロックレベル要素の中には、他のブロックレベル要素やインライン要素を配置することができます。 一方、インライン要素の中には、文字データや他のインライン要素を配置することができますが、 インライン要素の中にブロックレベル要素を配置することはできません。</p>
+  <h3>よく使うタグ分類</h3>
+  <dl>
+    <dt>ブロック要素</dt>
+    <dd>p</dd>
+    <dd>div</dd>
+    <dd>h1</dd>
+    <dd>ol</dd>
+    <dd>ul</dd>
+    <dd>table</dd>
+    <dt>インライン要素</dt>
+    <dd>a</dd>
+    <dd>img</dd>
+    <dd>span</dd>
+    <dd>strong</dd>
+  </dl>
+</body>
+</html>
+
+上記サイトのlesson1.htmlを作成する。書き終わったら以下のコマンドでchormeで確認する。
+$ start chrome lesson1.html
+
+vimのカスタマイズ
+vimのカスタマイズは.vimrcというファイルに記述する。
+$ vi ~/.vimrc
+【内容】
+set hlsearch
+set shiftwidth=4
+set tabstop=4
+let loaded_matchparen=1
+set noswapfile
+
+書いたら:wqして抜けて設定を反映させる
+$ source ~/.vimrc
+
+float
+floatを使ったときの回り込みの挙動を確認しよう。
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>floatLesson</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+<link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<div id="wrapper">
+<p><img src="images/takoyaki.jpg" class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+<p class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+</body>
+</html>
+
+.fl{
+  float:left;
+}
+.fr{
+  float:right;
+}
+.cb{
+  clear:both;
+}
+#wrapper{
+  width:80%;
+  margin:0 auto;
+}
+
+sampleフォルダの中に新しくabsolute.htmlを以下のように作成する。
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>absoluteLesson</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+<link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<div id="wrapper">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <div id="blockContainer">
+    <div id="red">
+      redBlock
+    </div>
+    <div id="blue">
+      blueBlock
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+.fl{
+  float:left;
+}
+.fr{
+  float:right;
+}
+.cb{
+  clear:both;
+}
+#wrapper{
+  width:80%;
+  margin:0 auto;
+}
+img{
+  margin:0 0 20px 20px;
+}
+
+#blockContainer{
+
+}
+
+#red{
+  width:400px;
+  height:200px;
+  background:red;
+}
+#blue{
+  width:400px;
+  height:200px;
+  background:blue;
+}
+
+絶対配置をさせてみよう。cssで#redの要素のプロパティを以下のように編集する。
+#red{
+  position:absolute;
+  top:10px;
+  left:10px;
+  width:400px;
+  height:200px;
+  background:red;
+}
+
+
+gitignoreファイルの作成
+git管理しているフォルダに.gitignoreファイルを追加する。
+.classファイルは人間が見ても意味がわからないのでバージョン管理から外す。
+
+*.class
+書き終わったらgit add & commit
+
+[毎回ignoreするならばglobalに設定もあり]
+
+$ git config --global core.excludesfile ~/.gitignore_global
+$ echo "*.class" >> ~/.gitignore_global
+
+Git(基本操作)
+
+gitでの基本操作を学習しよう。
+
+はじめてのコミット
+[フォルダ作成]
+作業フォルダを作成しよう。今回はdesktopにgit_basicフォルダを作成し、そこに移動する。
+
+　
+$ mkdir ~/desktop/git_basic
+$ cd ~/desktop/git_basic
+　
+一番最初にやることはgit initだ。これでgitの管理下に置かれる
+
+$ git init
+なにかしたらすぐにgit statusで確認するクセをつけるとよいだろう
+
+$ git status
+今はまだcommitオブジェクトが存在していないので
+nothing to commit
+と表示される。
+
+さっそくファイルを1枚作ってみよう。今回はtest.txtを作成する。
+
+$ vi test.txt
+vimが開くので以下のように1行入力して:wqする。
+
+first_line
+git statusしてみよう。
+
+$ git status
+On branch master
+No commits yet
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+  test.txt
+nothing added to commit but untracked files present (use "git add" to track)
+作業フォルダの変更を検知してメッセージが表示されている。
+test.txt
+という知らないファイルが存在している。
+というメッセージだ。
+
+gitで履歴を作っていくにはまずステージングエリアと呼ばれるところに変更したい情報をaddしなければならない。
+
+さっそく今作ったtest.txtをaddしよう。
+
+$ git add test.txt
+　
+なにかしたらgit status
+
+$ git status
+On branch master
+No commits yet
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+  new file:   test.txt
+test.txtファイルがステージングエリアにあがってコミットできる状態になっている。コミットしてみよう。
+
+1
+$ git commit -m"first commit"
+2
+ 
+3
+[master (root-commit) 27fae62] first commit
+4
+ 1 file changed, 1 insertion(+)
+5
+ create mode 100644 test.txt
+gitはコミットする際に必ずどういう変更をしたのかということを記すコミットメッセージというのを付与しなければならない。
+git commit -m
+と-mオプションをつけてコミットすることでcommitと同時にメッセージを付与することができる。今回は”first commit”というコミットメッセージを付与した。
+
+コミットオブジェクトができたのでgit graphしてみよう。
+(git graph はgit log –graphを短いコマンドで実行できるようにgit講座の初回に設定してある)
+
+1
+　
+2
+$ git graph
+3
+* 27fae62  (HEAD -> master) 2020-01-21 mjpurin first commit
+4
+　
+左に27fae62というこのコミットオブジェクトのハッシュ値が表示されている。
+このハッシュ値はコミット識別するのに使われる。
+
+2度目のコミット
+test.txtを変更しよう。viにて2行目を追加して以下の状態にする。
+
+first_line
+second_line
+git statusで確認
+
+1
+$ git status
+2
+ 
+3
+Changes not staged for commit:
+4
+  (use "git add <file>..." to update what will be committed)
+5
+  (use "git restore <file>..." to discard changes in working directory)
+6
+  modified:   test.txt
+作業フォルダに変更があったことをgitが感知している。今回は差分を確認してみよう。
+
+$ git diff
+ 
+diff --git a/test.txt b/test.txt
+index c380edd..efac604 100644
+--- a/test.txt
++++ b/test.txt
+@@ -1 +1,2 @@
+ first_line
++second_line
+この状態でのdiffコマンドは最初のコミットと現在の作業フォルダの差分を表示してくれている。(+記号は新しく加わった行を意味している。)
+
+変更内容も確認したのでaddしよう。
+
+　
+$ git add .
+　
+先程はgit addの後ろにファイル名を書いたが.記号を使うとそのフォルダで行われた変更全部をステージングエリアに上げることを意味する。とても便利なコマンドなので多用される。statusをみよう。
+
+1
+$ git status
+2
+ 
+3
+On branch master
+4
+Changes to be committed:
+5
+  (use "git restore --staged <file>..." to unstage)
+6
+  modified:   test.txt
+test.txtの変更を含んだコミットを作成できる状態という表示されている。
+ここで先程のgit diffをしてみよう。
+
+$ git diff
+しかし、何も表示されない。addしたあとのdiffコマンドはステージングエリアと作業フォルダの差分を表示する。最新コミットとの変更を知りたい場合は以下のように入力する。
+
+$ git diff HEAD
+HEADというのは今作業しているブランチの最新のコミットオブジェクトを指すポインターでGitではかなり重要な意味を持つ言葉だ。
+
+差分も確認したのでcommitしよう。
+
+$ git commit -m"second commit"
+コミットしたらgit graphだ。
+
+1
+$ git graph
+2
+ 
+3
+* 5cc2965  (HEAD -> master) 2020-01-21 mjpurin second commit
+4
+* 27fae62  2020-01-21 mjpurin first commit
+2つ目のコミットオブジェクトが作成された。
+
+同じようにtest.txtにthird_lineを追記して3つ目のコミットオブジェクトを作成してみてもらいたい。(実際に自分で作業する)
+
+できたであろうか？git graphすると以下のような感じなるはずだ。
+
+$ git graph
+ 
+* 266f605  (HEAD -> master) 2020-01-21 mjpurin third commit
+* 5cc2965  2020-01-21 mjpurin second commit
+* 27fae62  2020-01-21 mjpurin first commit
+昔に戻りたい・・・
+あのときに戻りたい。。。実際の人生ではできないがgitを使っていれば簡単に戻れる。まずは完全にそのときに状態にもどす方法をやろう。
+
+1
+$ git reset --hard 27fae
+作業フォルダも履歴も完全に1時間前に戻った。完全にリセットしてやり直したい場合にはよい方法だ。
+
+もちろん復元する手段も提供されている。以下のように入力
+
+1
+　
+2
+$ git reflog
+3
+ 
+4
+27fae62 (HEAD -> master) HEAD@{0}: reset: moving to 27fae
+5
+266f605 HEAD@{1}: commit: third commit
+6
+5cc2965 HEAD@{2}: commit: second commit
+7
+27fae62 (HEAD -> master) HEAD@{3}: commit (initial): first commit
+8
+　
+reflogはリファレンスログで過去に行ったコミットオブジェクトを参照できる。
+third commitしたオブジェクト(266f)に再びreset –hardして復元しよう。
+
+$ git reset --hard 266f
+HEAD is now at 266f605 third commit
+git graphで確認
+
+1
+$ git graph
+2
+ 
+3
+* 266f605  (HEAD -> master) 2020-01-21 mjpurin third commit
+4
+* 5cc2965  2020-01-21 mjpurin second commit
+5
+* 27fae62  2020-01-21 mjpurin first commit
+third commitをした直後の状態に復元された。
+
+Git(基本操作2)
+
+gitでの基本操作を学習しよう。(前回のところまで作業を進めておく)
+
+ブランチ(枝)
+最初から存在しているmasterブランチ。実際の開発ではこのmasterブランチで開発を進めることは少ない。通常は何かしら作業用ブランチを作成してそこで作業をする。今回はgitにとってとても重要なブランチを学んでいこう。まずは以下のコマンドで現在のブランチを確認
+
+　
+$ git branch
+* master
+　
+masterブランチのみが存在していていまそこを指していることを*で示している。
+以下のコマンドで新しいブランチを作成する。
+
+　
+$ git branch dev
+　
+git graphしてみよう。
+
+$ git graph
+* 266f605  (HEAD -> master, dev) 2020-01-21 mjpurin third commit
+* 5cc2965  2020-01-21 mjpurin second commit
+* 27fae62  2020-01-21 mjpurin first commit
+ブランチを作成した時点を指すdevというブランチが作成された。
+存在しているブランチも確認してみよう。
+
+$ git branch
+  dev
+* master
+masterブランチの他にdevブランチが作成されていることがわかる。ただ*はmasterブランチを指している。devブランチに移動しよう。
+
+　
+$ git checkout dev
+Switched to branch 'dev'
+　
+git ではcheckout というコマンドブランチ間を移動する。
+branchの状態を見てみよう。
+
+$ git branch
+* dev
+  master
+*がdevに移動していまdevブランチを指していることがわかる。
+
+実際にdevブランチ上で作業してみよう。viでtest.txtを開いて4th_lineの1行を追加する。
+
+first_line
+second_line
+third_line
+4th_line
+　
+wqしてaddしてcommitしよう。commitメッセージは”4th追加”とする。
+コミットしたらgit graphしてみよう。
+
+$ git graph
+* 2bf39e4  (HEAD -> dev) 2020-01-23 mjpurin 4th追加
+* 266f605  (master) 2020-01-21 mjpurin third commit
+* 5cc2965  2020-01-21 mjpurin second commit
+* 27fae62  2020-01-21 mjpurin first commit
+devブランチで作業が進んでいることがわかる。この変更が気に入らない場合にはいつでもmasterの状態に戻れる。checkout masterしよう。
+
+1
+　
+2
+$ git checkout master
+3
+Switched to branch 'master'
+masterブランチに移動した。viで確認してみよう。4thが追加される前に戻っているはずだ。
+
+再びcheckout devしよう。
+
+1
+$ git checkout dev
+2
+Switched to branch 'dev'
+3
+ 
+4
+　
+viで確認すると4thがある状態になっている。このようにブランチを作成すると容易にバージョン間の移動ができる。
+上司に確認をもらったところこれでOKがでた。masterブランチにこの修正を加えよう。
+
+merge
+masterブランチにdevの変更を取り込みたいのでこういった場合はまずmasterブランチにcheckoutする。
+
+$ git checkout master
+Switched to branch 'master'
+そしてdevをmergeする。
+
+1
+$ git merge dev
+2
+Updating 266f605..2bf39e4
+3
+Fast-forward
+4
+ test.txt | 1 +
+5
+ 1 file changed, 1 insertion(+)
+mergeが成功した。git graphで確認
+
+$ git graph
+* 2bf39e4  (HEAD -> master, dev) 2020-01-23 mjpurin 4th追加
+* 266f605  2020-01-21 mjpurin third commit
+* 5cc2965  2020-01-21 mjpurin second commit
+* 27fae62  2020-01-21 mjpurin first commit
+masterブランチにdevで行った修正が取り込まれて同じ状態になったことがわかる。viで確認してみよう。4thがあることがわかる。これで修正が完了した。
+いらなくなったdevブランチを削除しておこう。
+
+　
+$ git branch -d dev
+Deleted branch dev (was 2bf39e4).
+　
+-dはdeleteのdだ。こうしてdevブランチを削除することができた。
+git graphで確認
+
+1
+$ git graph
+2
+* 2bf39e4  (HEAD -> master) 2020-01-23 mjpurin 4th追加
+3
+* 266f605  2020-01-21 mjpurin third commit
+4
+* 5cc2965  2020-01-21 mjpurin second commit
+5
+* 27fae62  2020-01-21 mjpurin first commit
+修正が反映されmasterブランチのコミット履歴が進んだ。
+
+このように実際の制作は作業ブランチを作ってそこで作業し、確認が済んだらmasterにコミットという手順で進んでいく

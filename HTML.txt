@@ -1,0 +1,1295 @@
+★1
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>画像の設置</title>
+</head>
+<body>
+ <img src="images/nightImage.jpg" alt="幻想的な夜のイメージ" />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1Yq_AvGael4" frameborder="0" allowfullscreen></iframe>
+</body>
+</html>
+
+---------------------------------------------------
+
+★2
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Hello CSS!</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+<link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<h1>Hello CSS!</h1>
+<p>CSSとはCascading Style Sheetsの略でHTMLの見た目を装飾します</p>
+<p class="red">Hello</p>
+<p class="red fs40">world</p>
+<p id="favoriteWord">経験にマイナスなし</p>
+</body>
+</html>
+
+h1{
+  color:blue;
+  font-size:30px;
+}
+.red{
+  color:red;
+}
+.fs40{
+  font-size:40px;
+}
+#favoriteWord{
+  width:400px;
+  padding-left:20px;
+  font-size:40px;
+  color:green;
+  border-left:5px solid green;
+  border-bottom:2px solid green;
+}
+
+---------------------------------------------------
+
+★3
+
+【１カラムレイアウト】
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>1カラムレイアウト</title>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+  <link rel="stylesheet" href="css/main_1.css"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      header
+    </header>
+    <main>
+      main
+    </main>
+    <footer>
+      footer
+    </footer>
+  </div>
+</body>
+</html>
+
+#container{
+  width:700px;
+  margin:0 auto;
+}
+header{
+  height:200px;
+  background-color:pink;
+}
+main{
+  height:500px;
+  background-color:aquamarine;
+}
+footer{
+  height:100px;
+  background-color:aqua;
+}
+
+今回はサイト幅700pxコンテンツ全体がセンタリング、１カラムレイアウトだ。1列にコンテンツが並ぶのはレイアウトの基本でレスポンシブ（スマホ対応)もやりやすいためとてもよく使われるレイアウトだ。
+
+全体を包む要素(今回はdiv)を作り、そこにwidthを指定し、margin:0 auto を指定すればよい。
+あとは中にheader main footer要素を順番に記述するだけだ。
+
+---------------------------------------------------
+
+★4
+
+【2カラムレイアウト】
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>2カラムレイアウト</title>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+  <link rel="stylesheet" href="css/main_2.css"/>
+</head>
+<body>
+  <div id="container">
+    <header>
+      header
+    </header>
+    <div id="contents">
+      <main>
+        main
+      </main>
+      <aside>
+        aside
+      </aside>
+    </div><!--contents-->
+    <footer>
+      footer
+    </footer>
+  </div><!--container-->
+</body>
+</html>
+
+#container{
+  width:700px;
+  margin:0 auto;
+}
+header{
+  height:200px;
+  background-color:pink;
+}
+#contents{
+  display: flex;
+}
+main{
+  flex:1;
+  height:500px;
+  background-color:aquamarine;
+}
+aside{
+  width:200px;
+  background-color:yellow;
+}
+footer{
+  height:100px;
+  background-color:aqua;
+}
+
+2カラムを実現するのに以前はfloatが主に用いられてきた。
+しかし、flexboxがほとんどのブラウザで問題なく使えるようになった現在では今回のようにflexboxを使うとよいだろう。親要素にdisplay:flexと指定するだけでブロック要素を横並びにすることができる。
+親要素にdisplay:flexを指定すると並べる方向(flex-direction)のデフォルト値がrowのため、子要素が横に並ぶ。
+mainで指定しているflex:1はflex-grow:1の省略形で残りの空白を全部使う指定となる。今asideで200px使っているので残りの空白500pxがこの要素の幅となる。
+今mainでheightを500pxに指定してasideも同じ高さになっているのはデフォルトの指定がalign-itemsがstretchのため。
+例えば親要素にalign-items: flex-start;などを付け加えると高さの自動ストレッチはなくなる。
+
+---------------------------------------------------
+
+★5
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>basic960site</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+<link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div id="header">Header</div>
+  </div>
+  <ul id="mainNav">
+    <li>Menu1</li>
+    <li>Menu2</li>
+    <li>Menu3</li>
+    <li>Menu4</li>
+    <li>Menu5</li>
+  </ul>
+  <div class="contents">
+    <h1>Heading1</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <h2>Heading2</h2>
+    <img src="images/art1.png" alt="サンプルアート">
+    <a href="">Click</a>
+  </div>
+  <div class="footer">&copy;Joytas.net</div>
+</div>
+</body>
+</html>
+
+.container{
+  width:960px;
+  margin:0 auto;
+}
+
+#header{
+  width:960px;
+  height:253px;
+  background:url(../images/header_bg.png) 0 0 no-repeat;
+  background-size:cover;
+  color:#555;
+  font-size:80px;
+  text-align: center;
+  line-height: 253px;
+}
+#mainNav{
+  background: #555;
+  text-align: right;
+  padding-right:30px;
+
+}
+#mainNav li{
+  display: inline-block;
+  color:white;
+  height:30px;
+  line-height: 30px;
+  text-align: center;
+  padding:10px;
+}
+#mainNav li:hover{
+  text-decoration: underline;
+cursor:pointer;
+}
+
+.contents{
+  background:#eee;
+  padding:30px;
+}
+
+h1,h2{
+  width:80%;
+  margin:0 auto;
+  font-size:30px;
+  border-bottom:2px solid #333;
+
+}
+
+.contents p{
+  width:75%;
+  margin:0 auto;
+  padding:10px 20px;
+  border-radius:10px;
+  background:white;
+  margin-top:20px;
+  margin-bottom:20px;
+  box-shadow:1px 2px 3px 1px #888;
+
+}
+.contents img{
+  display: block;
+  width:600px;
+  margin:20px auto;
+
+}
+.contents a{
+  display: block;
+  width:200px;
+  height:50px;
+  margin:0 auto;
+  border:2px solid white;
+  border-radius: 10px;
+  text-align: center;
+  line-height:50px;
+  font-size:30px;
+  text-decoration:none;
+  background:#999;
+  color:white;
+
+}
+
+.contents a:hover{
+  opacity:0.8;
+}
+
+.footer{
+  background: #555;
+  color:white;
+  text-align: center;
+  height:40px;
+  line-height: 40px;
+  font-size:14px;
+}
+
+---------------------------------------------------
+
+★6
+Html+CSS(1月の目標は?)
+html+cssで1月の目標をデザインしてください。
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>1月の目標</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <h1>毎日JNにアップする</h1>
+    </body>
+</html>
+
+body{
+    text-align:center;
+    background:#eee;
+}
+h1{
+    display:inline-block;
+    font-size:90px;
+    background:yellow;
+    color:orange;
+    border-radius:20px;
+    padding:10px 50px;
+    border:20px dotted orange;
+    text-shadow:2px 2px 1px #333;
+
+}
+
+★7
+Webサイト制作-6日目(form)
+今回はユーザーからのデータを受け取る時とかに使う。formについて学習しよう。
+デスクトップあたりにでもformLesson.htmlを作成し以下を入力しよう。
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>はじめてのフォーム</title>
+</head>
+<body>  
+<form>
+<div>お名前：<input type="text" name="username" value="田中" /></div>
+<input type="submit" value="送信" />
+</form>
+</body>
+</html>
+[ソースコード解説]
+8,11行目:formは<form>~</form>で括る。
+9行目:input type=”text”は文字入力ようのフォームが表示される。name属性は部品を識別するために、value属性はそのフォーム部品の値を管理する。どちらもプログラムで操作する上でとても重要。value属性にいれた値は初期値として表示される。
+10行目：input type=”submit”で送信ボタンを実装できる。これを押すことでフォームの値が送信される。valueでボタンに表示される文言を指定できる。
+
+続いてformLesson2.htmlを作成し以下のように入力する。
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>フォームの様々な部品</title>
+</head>
+<body>
+    <form action="" method="post">
+        <div>お名前：<input type="text" name="username" value="" /></div>
+        <div>年齢：<input type="number" name="age" value="20" /></div>
+         <div>
+             性別：<input type="radio" name="sex" value="man" />男
+             <input type="radio" name="sex" value="woman" />女
+         </div>
+         <div>
+             趣味：<input type="checkbox" name="hobby" value="camera" />カメラ
+             <input type="checkbox" name="hobby" value="movie" />映画
+             <input type="checkbox" name="hobby" value="cooking" />料理
+         </div>
+         <div>コメント:</div>
+         <div>
+             <textarea name="comment" rows="5" cols="40" >コメントを入れてください。</textarea>
+         </div>
+        <div><input type="submit" value="送信" /></div>
+    </form>
+</body>
+</html>
+
+[ソースコード解説]
+
+8:formタグ。formLesson.htmlとは違いactionとmethodのオプションが入っている。actionはデータが送信される宛先、具体的にはファイル名などが入る（今回は空）。methodは通信方法で今回はpostを指定している。
+
+10:typeにnumberと入れることで数字入力フォームが表示される。ただし、これはHTML５の機能なのでブラウザによっては対応していない。その場合単なるテキストフィールドが表示される。
+
+各ブラウザの対応状況はCan I useというサイトで確認できる。Number input typeの対応状況はこちら。緑系が対応なおでほぼすべてのブラウザで対応がされていることがわかる。
+
+12～13:type=”radio”でラジオボタンを作成できる。ラジオボタンというのはどれか一つを選択するときに使う。同じnameの中から一つだけが選択できる。
+
+16～18:type=”checkbox”でチェックボックスを作成できる。ラジオボタンが一つのみ選択なのに対し、チェックボックスは複数選択できる。
+
+22:テキストエリア。まとまった文章を入力してもらいたい場合に使う。inputタグと違い閉じタグがあるのに要注意。
+rowsで行数、colsで横幅を指定する。今回は半角40文字の横幅で5行の大きさを指定している。初期値は <textarea>～</textarea>とタグとタグの間に記述する。
+
+[色々なフォーム]
+その他にもHTML５ではたくさんのフォーム部品がある。以下で実際に挙動を試してみよう。
+
+日付（type=”date”）:
+ 年 /月/日
+ローカル日時（type=”datetime-local”）:
+ 年 /月/日 --:--
+月（type=”month”）:
+----年--月
+週（type=”week”）:
+----年第--週
+時間（type=”time”）:
+--:--
+レンジ（type=”range”）:
+色（type=”color”）:
+ブラウザの実装状況を確かめながら、どんどん使ってみるといいだろう。
+
+---------------------------------------------------
+
+★8
+
+午後のhtml_4
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="css/main.css"/>
+  </head>
+  <body>
+    <div class="blue">blue</div>
+    <div class="red">red</div>
+    <div id="box">
+      <div class="blue">blue</div>
+      <div class="red">red</div>
+      <div class="red">red</div>
+      <div class="blue">blue</div>
+    </div>
+  </body>
+</html>
+
+body{
+  text-align: center;
+  color:white;
+}
+body>div{
+  width:200px;
+  height:200px;
+}
+.blue{
+  background: blue;
+}
+.red{
+  background: red;
+}
+body>div:nth-child(-n+2){
+  line-height: 200px;
+}
+body>div:nth-child(2){
+  border-radius: 50%;
+}
+#box>div{
+ float:left;
+ width:50%;
+ height:50%;
+ line-height: 100px;
+}
+/*
+use flex-box
+#box{
+  display:flex;
+  flex-wrap: wrap;
+  line-height: 100px;
+}
+#box>div{
+  flex-basis:50%;
+}
+*/
+
+Day57
+
+Webサイト制作-7日目(JavaScript)
+
+JavaScriptは現在もっとも人気のある言語だ。この先も活躍の場が広がることが予想され、学んで損のないコスパの高い言語と言って良いだろう。
+それでは、さっそくやっていこう。まずは以下のようなjsLesson1.htmlを作成する。
+
+●jsLesson1.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+<div id="result"></div>
+09
+<script>
+10
+let x=10;
+11
+let y=20;
+12
+let z=x+y;
+13
+let str="x+y="+z;
+14
+console.log(str);
+15
+const ele=document.getElementById("result");
+16
+ele.textContent=str;
+17
+</script>
+18
+</body>
+19
+</html>
+ブラウザで実行してみよう。
+ブラウザと開発者画面（ChromeだったらWin:ctr+shift+j,Mac:command+option+j)のコンソールに以下のように「x+y=30」と表示されれば成功だ。
+
+
+[ソースコード解説]
+JSの活躍の局面は年々増えているが、基本はなんといってもhtmlの動的操作だ。なので今回もそれから行う。
+9~17行目:このようにscriptタグでくくるとスクリプトが実行される。
+10,11行目:変数を宣言している。JSは変数宣言の際頭にletをつける。型が無い訳ではなく右辺の情報をもとに判断される。JSの変数は型を知っていると覚えておくとよい。
+12行目:右辺での足し算の結果を左辺に代入している。演算子はこのほかに-,*,/,%などが使える。
+13行目：文字列と整数を連結している。文字列はダブルコーテーションか、シングルコーテーションでくくる。
+文字列と整数を連結すると新たな文字列を生成する。
+14行目：コンソールへの出力。デバッグしたいときなどに利用する。ブラウザへの表示には影響がない。
+15行目：document.getElementById（id）でhtmlの中からそのidの要素を探してきて返却する。今回はその結果をeleに代入している。再代入が行われない変数はconstを使って定数とするとよい。
+16行目：上で取得したオブジェクトのプロパティtextContentに値を代入している。その結果がブラウザに表示される。
+開発者画面で見てみよう。空っぽだったdivが動的に書き換えられているのがわかる。
+
+
+続いてjsLesson2.htmlを以下のように作成する。
+[関数]
+●jsLesson2.html
+
+01
+<html>
+02
+<head>
+03
+<meta charset="UTF-8"/>
+04
+<title>jsレッスン</title>
+05
+</head>
+06
+<body>
+07
+  <input type="text" id="itAge" value="" placeholder="Enter your age">
+08
+  <button onclick="btCheck()">Check!</button>
+09
+  <div id="result"></div>
+10
+<script>
+11
+const btCheck=()=>{
+12
+    let age=document.getElementById("itAge").value;
+13
+    age=parseInt(age);
+14
+    let str;
+15
+    if(age >= 20){
+16
+        str='おとな';
+17
+    }else{
+18
+        str='こども';
+19
+    }
+20
+    document.getElementById("result").textContent=str;
+21
+};
+22
+ 
+23
+</script>
+24
+</body>
+25
+</html>
+実行して、年齢を入力し「おとな」や「こども」と出力されれば成功だ。
+
+[ソースコード解説]
+8行目:htmlレベルの話だが、placeholder属性を書いておくと入力ヒントとして表示される。
+9行目:button要素のonclick属性にbtCheck()と記述。こうすることでこのボタンがクリックされたときにbtCheck関数を実行することができる。
+10行目：結果表示ようの空要素。
+12行目：functionの定義
+13行目:document.getElementById(“itAge”).value;によってidがitAgeのvalueを取得(入力されている値を文字列として取得する)
+14行目:文字列としての数字を数値に変換
+15~19行目:if文による分岐
+20行目:結果を出力
+
+続いてjsLesson3.htmlを以下のように入力
+[for文]
+●jsLesson3.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+  <h1>正の整数を入力してください</h1>
+09
+  <input type="number" id="inNum" min="1" value="" placeholder="Enter a Number">
+10
+  <button onclick="btCalc()">Calc!</button>
+11
+  <div id="result"></div>
+12
+<script>
+13
+const btCalc=()=>{
+14
+    let num=document.getElementById("inNum").value;
+15
+    num=parseInt(num);
+16
+    let sum=0;
+17
+    for(let i=0;i<=num;i++){
+18
+        sum+=i;
+19
+    }
+20
+    let str='1から'+num+'までの和は'+sum+'です。';
+21
+    document.getElementById("result").textContent=str;
+22
+};
+23
+</script>
+24
+</body>
+25
+</html>
+数値をいれて、１からその数値までの合計が表示されれば成功だ。
+
+
+次に進もう。jsLesson4.htmlとして以下を入力
+[配列1]
+●jsLesson4.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+  <h1>平均の計算</h1>
+09
+  <h2 id="data"></h2>
+10
+  <button onclick="btCalc()">Calc!</button>
+11
+  <div id="result"></div>
+12
+<script>
+13
+const nums=[10,32,18,20,40];
+14
+let str="";
+15
+let sum=0;
+16
+for(let i=0;i<nums.length;i++){
+17
+  str += nums[i]+(i==nums.length-1?"":",");
+18
+  sum += nums[i];
+19
+}
+20
+document.getElementById("data").textContent=str;
+21
+const btCalc=()=>{
+22
+    let msg="要素の平均は"+sum/nums.length+"です。";
+23
+    document.getElementById("result").textContent=msg;
+24
+};
+25
+</script>
+26
+</body>
+27
+</html>
+最初に配列の要素が表示され、calcボタンを押すと要素の平均が表示されれば成功だ。
+
+
+[ソースコード解説]
+13:nums=[10,32,18,20,40];で要素が５個の配列を生成している。[]直カッコを用いて配列を作る。
+16:配列の要素数はlengthで求められる。
+17：(i==nums.length-1?””:”,”);の部分は三項演算子。最後の要素でなければカンマを追加している。
+
+次に進もう。jsLesson5.htmlとして以下を入力
+[配列2]
+●jsLesson5.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+  <h1>平均の計算</h1>
+09
+  <input type="number" id="num" value="" placeholder="数値を入力"/>
+10
+  <button onclick="add()">Add</button>
+11
+  <button onclick="btCalc()">Calc!</button>
+12
+  <div id="showArray"></div>
+13
+  <div id="result"></div>
+14
+<script>
+15
+const nums=[];
+16
+const eleNum=document.getElementById("num");
+17
+const eleShowArray=document.getElementById("showArray");
+18
+const result=document.getElementById("result");
+19
+const add=()=>{
+20
+    let num=parseInt(eleNum.value);
+21
+    nums.push(num);
+22
+     
+23
+    eleNum.value="";
+24
+    eleShowArray.textContent=nums.join(',');//配列をカンマで結合(カンマは引数省略でも可)
+25
+};
+26
+ 
+27
+const btCalc=()=>{
+28
+     
+29
+    let sum=0;
+30
+    for(let i=0;i<nums.length;i++){
+31
+        sum+=nums[i];
+32
+    }
+33
+    let msg="要素の平均は"+sum/nums.length+"です。";
+34
+    result.textContent=msg;
+35
+}
+36
+</script>
+37
+</body>
+38
+</html>
+以下のようになれば成功だ。
+１.スタート画面
+
+2.数値をいれてAddを押すと配列に要素を加え、その旨を表示する。
+
+3.いくつか数値を加えたのち、Calcボタンを押すと配列の要素と平均が表示される。
+
+
+[ソースコード解説]
+14:var nums=[];で空の配列を生成。
+18:var num=parseInt(eleNum.value);フォームからの入力は全て文字列なのでそれを明示的に整数に変換している。
+19：nums.push(num);で配列に要素を追加する。
+
+[練習問題]
+二つの整数を入力し、演算子を選ぶと結果を表示するアプリを作成せよ。
+
+[実行例]
+1.スタート画面
+
+2. 二つの整数を入力し、演算子ボタンを押すと結果が表示される。
+
+
+[解答例]
+
+ソースを表示印刷SyntaxHighlighterについて
+01
+<!DOCTYPE html>
+02
+<html lang="ja">
+03
+<head>
+04
+    <meta charset="UTF-8">
+05
+    <title>Document</title>
+06
+</head>
+07
+<body>
+08
+  x:<input type="number" id="num1"><br>
+09
+  y:<input type="number" id="num2"><br>
+10
+  <button onclick="calc('plus')">+</button>
+11
+  <button onclick="calc('minus')">-</button>
+12
+  <button onclick="calc('multi')">*</button>
+13
+  <button onclick="calc('div')">/</button>
+14
+  <button onclick="calc('mod')">%</button>
+15
+  <div id="result"></div>
+16
+  <script>
+17
+      const num1=document.getElementById('num1');
+18
+      const num2=document.getElementById('num2');
+19
+      const result=document.getElementById('result');
+20
+      const calc=(ope)=>{
+21
+          let n1=parseInt(num1.value);
+22
+          let n2=parseInt(num2.value);
+23
+          let str='';
+24
+          switch(ope){
+25
+              case 'plus':
+26
+                str=`${n1}+${n2}=${n1+n2}`;
+27
+              break;
+28
+              case 'minus':
+29
+                str=`${n1}-${n2}=${n1-n2}`;
+30
+              break;
+31
+              case 'multi':
+32
+                str=`${n1}*${n2}=${n1*n2}`;
+33
+              break;
+34
+              case 'div':
+35
+                str=`${n1}/${n2}=${n1/n2}`;
+36
+              break;
+37
+              case 'mod':
+38
+                str=`${n1}%${n2}=${n1%n2}`;
+39
+              break;
+40
+          }
+41
+          result.textContent=str;
+42
+      };
+43
+  </script>
+44
+</body>
+45
+</html>
+
+★Day59
+
+JSによって動的に要素を作成し追加できる。さっそくやってみよう。
+[実行例]
+ボタンがある。
+
+押すと要素が追加される。
+
+押すたびに要素が追加されていく。
+
+
+[作例]
+web11フォルダを作成しその中にlesson1.htmlを以下のように作成する。
+
+●lesson1.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+<button id="btn">追加</button>
+09
+<ol id="list"></ol>
+10
+<script>
+11
+var ol=document.getElementById('list');
+12
+var btn=document.getElementById('btn');
+13
+var count=0;
+14
+btn.addEventListener('click',function(){
+15
+  var li=document.createElement('li');
+16
+  li.textContent='Item'+(++count);
+17
+  ol.appendChild(li);
+18
+});
+19
+ </script>
+20
+</body>
+21
+</html>
+[解説]
+document.createElement(‘li’)でli要素を作成し、親要素がappendChildでその要素を追加している。
+
+DOMの操作が以下のサイトによくまとまっている。参考にすること。
+
+ライブラリを使わない素のJavaScriptでDOM操作
+
+[やってみよう]
+
+以下のlesson2.htmlを利用し、九九の表を作成せよ。(idがtableのテーブルタグに要素を追加して作成すること)
+
+●lesson2.html
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+<table id="table" border="1"></table>
+09
+<script>
+10
+window.onload=function(){
+11
+  ~ここに記述する~
+12
+};
+13
+</script>
+14
+</body>
+15
+</html>
+[解答例]
+
+01
+<!DOCTYPE html>
+02
+<html>
+03
+<head>
+04
+<meta charset="UTF-8"/>
+05
+<title>jsレッスン</title>
+06
+</head>
+07
+<body>
+08
+<table id="table" border="1"></table>
+09
+<script>
+10
+window.onload=function(){
+11
+  var table=document.getElementById('table');
+12
+  for(var i=1;i<=9;i++){
+13
+    var tr=document.createElement('tr');
+14
+    for(var j=1;j<=9;j++){
+15
+      var td=document.createElement('td');
+16
+      td.textContent=i+'*'+j+'='+(i*j);
+17
+      tr.appendChild(td);
+18
+    }
+19
+    table.appendChild(tr);
+20
+  }
+21
+};
+22
+</script>
+23
+</body>
+24
+</html>
+●演習問題
+以下のような九九練習アプリを作成してみよう。
+実行すると九九の表が表示される。
+
+項目をクリックするとダイアログで問題と入力欄が表示される
+
+正しい答えを入力すると緑で着色される。（間違えはピンク)
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>jsレッスン</title>
+</head>
+<body>
+<table id="table" border="1"></table>
+<script>
+window.onload=function(){
+  var eleTable=document.getElementById('table');
+  for(var i=1;i<=9;i++){
+	  var tr=document.createElement("tr");
+	  for(var j=1;j<=9;j++){
+		  var td=document.createElement("td");
+		  td.textContent=i+"*"+j+"=";
+		  td.x=i;
+		  td.y=j;
+		  td.ans=i*j;
+		  td.addEventListener("mouseenter",function(){
+			  this.style.textDecoration="underline";
+		  });
+		  td.addEventListener("mouseleave",function(){
+			  this.style.textDecoration="none";
+		  });
+		  td.addEventListener("click",function(){
+			  var userAns=window.prompt(this.x+"*"+this.y+"=");
+			  if(this.ans==userAns){
+				  this.style.backgroundColor="lightgreen";
+			  }else{
+				this.style.backgroundColor="pink";
+			  }
+		  });
+		  tr.appendChild(td);
+	  }
+	  eleTable.appendChild(tr);
+  }
+};
+</script>
+</body>
+</html>
+
+
+JSによるゲーム制作-(PanelPazzle)
+
+パネルをスライドさせてもとの配置に戻すゲームを作成してみよう。
+[実行例]
+スタート画面
+
+スタートボタンを押すとシャッフルされる。
+
+15パズルの要領で移動させていく、動かせるパネルをクリックすると移動する。
+
+完成するとComplete!の文字が表示される。
+
+
+[作例]
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>パネルパズル</title>
+  <style>
+  #table{
+    margin:0 auto;
+    background:#eee;
+    padding:10px;
+  }
+  td{
+    font-size:24px;
+    text-align: center;
+    width:60px;
+    height:60px;
+    line-height: 60px;
+    border:2px solid #333;
+    border-radius: 15px;
+    background: #ddfeff;
+  }
+  td.empty{
+    background-color:#eee;
+    border-color:#eee;
+  }
+  td.ok{
+    border-color:lightgreen;
+  }
+  #startBt{
+    display:block;
+    width:200px;
+    margin:0px auto;
+    height:50px;
+    box-shadow:0 3px 0 5px #777;
+
+  }
+  #startBt:hover{
+    cursor: pointer;
+    opacity: 0.8;
+  }
+  #msgBox{
+    width:200px;
+    margin:10px auto;
+    text-align: center;
+    font-size:20px;
+    height:30px;
+    line-height: 30px;
+
+  }
+  </style>
+</head>
+<body>
+<table id="table"></table>
+<p id="msgBox"></p>
+<button id="startBt">START</button>
+<script>
+'use strict';
+window.onload=function(){
+  var size=4;
+  var shuffleCount;
+  var panels;
+  var isShuffled;
+  var table=document.getElementById("table");
+  var msgBox=document.getElementById("msgBox");
+  var startBt=document.getElementById("startBt");
+
+  function init(){
+    shuffleCount=size*1000;
+    isShuffled=false;
+    panels=[];
+    table.textContent=null;
+    msgBox.textContent=null;
+    createStage();
+  }
+
+  function createStage(){
+    for(var i=0;i<size;i++){
+      var tr=document.createElement("tr");
+      for(var j=0;j<size;j++){
+        var td=document.createElement("td");
+        var index=i*size+j;
+        td.posId=index;
+        td.textContent=index==size*size-1 ? "":index+1;
+        td.onclick=click;
+        if(index==size*size-1){
+          td.classList.add('empty');
+        }
+        panels.push(td);
+        tr.appendChild(td);
+      }
+      table.appendChild(tr);
+    }
+  }
+  startBt.addEventListener("click",function(){
+    init();
+    shuffle(shuffleCount);
+  });
+
+  function shuffle(shuffleCount){
+    for(var i=0;i<shuffleCount;i++){
+      click({target:{posId:Math.floor(Math.random()*size*size)}});
+    }
+    isShuffled=true;
+  }
+  function click(e){
+    var pos=e.target.posId;
+    if(pos-size>=0 && panels[pos-size].textContent==''){
+      swap(pos,pos-size);
+    }else if(pos+size <size*size && panels[pos+size].textContent==''){
+      swap(pos,pos+size);
+    }else if((pos+1) % size != 0 && panels[pos+1].textContent==''){
+      swap(pos,pos+1);
+    }else if(pos % size !=0 && panels[pos-1].textContent==''){
+      swap(pos,pos-1);
+    }
+  }
+  function swap(p1,p2){
+    var temp=panels[p1].textContent;
+    panels[p1].textContent=panels[p2].textContent;
+    panels[p2].textContent=temp;
+
+    panels[p1].classList.add('empty');
+    panels[p2].classList.remove('empty');
+    check();
+  }
+  function check(){
+    var okCount=0;
+    for(var i=0;i<panels.length;i++){
+      if(panels[i].posId==parseInt(panels[i].textContent)-1){
+        okCount++;
+        panels[i].classList.add("ok");
+      }else{
+        panels[i].classList.remove("ok");
+      }
+    }
+    if(isShuffled && okCount===size*size-1){
+      msgBox.textContent="Complete!";
+    }
+  }
+
+  init();
+};
+</script>
+</body>
+</html>
+
+
+

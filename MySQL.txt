@@ -1,0 +1,560 @@
+★Day37
+
+SQL環境構築
+
+SQLの開発環境を整えよう。
+
+Windows10
+windowsはxamppを使って行う。
+https://itsakura.com/php-xampp
+
+MacOS
+macはdockerを使って行う。
+[インストール]
+https://qiita.com/kurkuru/items/127fa99ef5b2f0288b81
+
+[SQLフォルダ作成]
+ターミナルから以下のフォルダを作成
+$ mkdir -p ~/docker/mysql/db-volume
+
+[Dockerにてmysql5.7コンテナ起動]
+ターミナルから以下のコマンドを打ち込む
+ユーザーネームのところは自分のユーザーネームをいれること
+
+$ docker run --name mysql -v /Users/ユーザーネーム/docker/mysql/db-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
+[dockerにてphpmyadminコンテナ起動]
+
+docker run --name phpmyadmin --link mysql:db -p 8111:80 -d phpmyadmin/phpmyadmin
+[ブラウザで確認]
+localhost:8111
+
+[コンテナ停止]
+
+$ docker stop mysql
+$ docker stop phpmyadmin
+[コンテナ起動]
+
+$ docker start mysql
+$ docker start phpmyadmin
+dockerのMySQLに外部から接続する
+まずは稼働中のmysqlとphpmyadminのコンテナを停止する。
+
+$ docker stop mysql
+$ docker stop phpmyadmin
+新規に外部接続できるMySQLコンテナを作成する。
+
+$ docker run --name mysqlserver -v /Users/ユーザーネーム/docker/mysql/db-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:5.7
+あらたにmysqlserverをブラウズできるphpmyadminコンテナを作成
+
+$ docker run --name phpmyadminserver --link mysqlserver:db -p 8112:80 -d phpmyadmin/phpmyadmin
+[ブラウザで確認]
+localhost:8112
+
+
+★Day38
+
+MySQL-1日目(基礎文法1)
+
+MySQLを4つの基本機能CRUDを中心に解説する。
+今回はもっともベーシックな部分だ。
+
+●データベース作成
+
+CREATE DATABASE myapp
+DEFAULT CHARACTER SET utf8;
+●データベース削除
+
+DROP DATABASE  IF EXISTS myapp;
+●テーブル作成
+
+CREATE TABLE members(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(30),
+depart VARCHAR(20) DEFAULT '無所属',
+age INT,
+updated DATE
+);
+●テーブル削除
+
+DROP TABLE IF EXISTS members;
+●カラムには型を指定する。よく使う型の一覧
+INT
+FLOAT
+DOUBLE
+CHAR /*固定長文字列*/
+VARCHAR(len) /*len桁の可変長文字列*/
+TEXT /*長い文字列*/
+DATETIME /*日付時刻 2017-08-31 23:10:20*/
+DATE /*日付 2017-08-31*/
+TIME /*23:10:20*/
+BLOB /*バイナリデータ*/
+
+●●4つの基本機能CRUD(CREATE,READ,UPDATE,DELETE)
+SQLでは
+CREATE:INSERT
+READ:SELECT
+UPDATE=UPDATE
+DELETE=DELETE
+
+●INSERT(INSERT INTO テーブル名(カラムの並び) VALUES(値の並び))
+
+INSERT INTO members(id,name,depart,age,updated)
+VALUES(1,'山田太郎','営業部',40,'2014-12-01');
+ 
+INSERT INTO members(name,age)
+VALUES ('鈴木さくら',25);
+ 
+/*全カラムに対して挿入はカラムの並び省略化)*/
+INSERT INTO members
+VALUES(3,'佐藤次郎','人事部',35,'2015-01-15');
+ 
+/*連続入力化*/
+INSERT INTO members(name,depart,age)
+VALUES('田中一郎','経理部',48),
+('山口弘子','営業部',28),
+('渡辺順二','人事部',58),
+('中島博之','総務部',49),
+('山下圭吾','経理部',23);
+●SELECT(SELECT 欲しいもの FROM テーブル)
+
+/*全件抽出*/
+SELECT * FROM members;
+ 
+/*nameカラム取得*/
+SELECT name FROM members;
+ 
+/*name,ageカラム取得*/
+SELECT name,age FROM members;
+ 
+/*WHERE句で絞り込み*/
+SELECT * FROM members WHERE age=25;
+SELECT * FROM members WHERE age>25;
+SELECT * FROM members WHERE age>=25;
+//<>でない
+SELECT * FROM members WHERE age<>25;
+SELECT * FROM members WHERE age>25 AND age <40
+SELECT * FROM members WHERE age>25 OR updated <='2015-01-15'
+//BETWEEN(端の値含む)
+SELECT * FROM members WHERE updated BETWEEN '2015-01-15' AND '2015-02-15'
+//INの中にあるデータを抽出
+SELECT * FROM members WHERE depart IN('営業部','人事部');
+//null判定
+SELECT * FROM members WHERE updated IS NULL;
+SELECT * FROM members WHERE updated IS NOT NULL;
+//あいまい検索
+SELECT * FROM members WHERE name LIKE '鈴木%';
+SELECT * FROM members WHERE name LIKE '%木%';
+SELECT * FROM members WHERE name LIKE '%田';
+//北が含まれない
+SELECT * FROM members WHERE name NOT LIKE '%北%';
+ 
+/*ORDER BY （並び替え)*/
+//年齢降順
+SELECT * FROM members ORDER BY age DESC;
+//updatedがnullでないデータを年齢昇順
+SELECT * FROM members WHERE updated IS NOT NULL
+ORDER BY age ASC;
+//ORDER BYは複数指定できる
+SELECT * FROM members ORDER BY age DESC,name ASC;
+//LIMIT 件数を制限できる
+SELECT * FROM members ORDER BY age DESC LIMIT 3;
+ 
+/*LIMIT と合わせてOFFSET指定＊/
+//２番目に年齢を高い人から3人取得
+SELECT * FROM members ORDER BY age DESC LIMIT 3 OFFSET 1;
+●UPDATE(UPDATE テーブル　SET カラム=値　)
+
+/*鈴木さくらの部署を人事部に変更*/
+UPDATE members SET depart='人事部'
+WHERE name='鈴木さくら';
+/*鈴木さくらの部署を人事部に変更,年齢を1歳あげる*/
+UPDATE members SET depart='人事部',age=age+1
+WHERE name='鈴木さくら';
+●DELETE(DELETE FROM テーブル　)
+/*WHERE句で絞り込まないと全件削除してしまうので注意!*/
+//idが3のデータを削除
+
+DELETE FROM members WHERE id=3;
+[集計関数]
+
+/*集計関数。結果は基本1行*/
+/*count(*) 登録データ件数*/
+SELECT count(*) FROM members;
+ 
+/*avg(age) 年齢の平均*/
+SELECT avg(age) FROM members;
+ 
+/*max(age)　年齢の最大*/
+SELECT max(age) FROM members;
+ 
+/*min(age)*　年齢の最小/
+SELECT min(age) FROM members;
+ 
+/*sum(age)*　年齢の合計/
+SELECT sum(age) FROM members;
+[GROUP BY(同一項目をまとめる、主に集計関数と共に使う。結果はGROUP BYした項目数行)]
+/*departでGROUP BY 結果はdepartの種類の数出力される。*/
+/*GROUP BYした項目は取得カラムに設定可能*/
+
+SELECT depart,avg(age) FROM members 
+GROUP BY depart;
+[HAVING(GROUP BY した結果に対する絞込み)]
+/*departでGROUP BYしてその平均年齢を集計し平均年齢30以上を取得*/
+
+ソースを表示印刷SyntaxHighlighterについて
+SELECT depart,avg(age) FROM members 
+GROUP BY depart
+HAVING avg(age) >= 30;
+
+
+★Day40
+MySQL(初級課題)
+
+1.新規にデータベースを作成する。データベース名はsyain_app
+（文字コードはutf8)
+
+2.syain_appにテーブルを作成する。テーブル名はsyain
+id INT 主キー 自動連番
+name VARCHAR(30) NOT NULL
+gender CHAR(1)
+birth DATE
+salary INT
+
+3.以下のデータを挿入する。 (コピペして良い)
+
+('田中 一郎','男','1990-02-10',202000)
+,('山田 二郎','男','1986-05-14',302000)
+,('鈴木 みつ子','女','1972-11-03',602000)
+,('高橋　四郎','男','1961-05-11',1009000)
+,('佐藤 二郎','男','1989-03-14',232000)
+,('田中　こずえ','女','2000-04-14',156000)
+,('竹下　かおる','女','1987-08-31',302000)
+4.苗字と名前の間に全角が入っているデータを半角に変更せよ。
+なお文字の置換は
+REPLACE(str,from_str,to_str)
+で行える。
+
+5.以下の出力を得るsqlを記述せよ。(実行日によって年齢は変わって良い)
+なお、生年月日をもとにする現在年齢は
+TIMESTAMPDIFF(YEAR, birth, CURDATE())
+で求めることができる。(YEARは定数でこれで何年経過しているかがわかる)
+
+
+6.男女別の平均給与,最高給与を以下のように表示せよ
+（平均給与は少数点以下切り捨てとする)
+
+
+7.以下の年収と年収に応じたランク表を出力せよ。なおランクは
+10000000以上がS
+6000000以上がA
+その他がB
+とする。
+
+★Day41
+
+MySQL-3日目(基礎文法2)
+
+MySQLを基本文法の2回目だ。
+MySQLを使いこなす上で必須の技数々。
+
+以下の内容を実行を伴って行いたい人は、以下ファイルをダウンロードして。インポートし、データベースを作成した後行うとよい。
+Icon
+下からダウンロード
+ 1 file(s)    2.41 KB
+●カラム別名 AS(取得項目名をAS句の内容で表示)
+
+/*(カラム別名は文字列であってもコーテーションで囲う必要ない)*/
+SELECT title AS タイトル,price AS 価格 FROM books;
+●重複削除 DISTINCT(重複をなくした状態で取得する)
+
+/*カテゴリー一覧を取得できる*/
+SELECT DISTINCT category FROM books;
+●取得カラムに書ける色々
+
+/*priceカラム、priceカラムに100足した値、固定値*/
+SELECT price,price+100,'固定値' FROM books;
+●切り捨て floor()
+
+/*計算結果の小数部を切り捨てる*/
+SELECT floor(120*1.08);
+●３桁毎,挿入 format(値,小数点以下の桁数)
+
+SELECT format(12345678,0);
+●CASE WHEN (switch case的に分岐できる)
+
+/*categoryによって販売階を表示*/
+SELECT title AS 書名,category AS 分類,
+CASE category WHEN '雑誌' THEN '1F'
+WHEN '漫画' THEN '1F'
+ELSE '2F' 
+END AS 階
+FROM books;
+
+
+●CASE WHEN (if的に分岐できる)
+
+SELECT title AS 書名,price AS 価格,
+CASE WHEN price < 500 THEN 'えんぴつ'
+WHEN price < 1000 THEN 'キーホルダー'
+WHEN price < 3000 THEN 'ポスター'
+END AS プレゼント
+FROM books;
+
+
+●文字数 char_length()
+
+SELECT title,char_length(title) FROM books;
+●現在日の入力 curdate()
+
+INSERT INTO books(title,price,updated)
+VALUES('SQL入門',2800,curdate());
+●現在日時の入力 now()
+
+SELECT now();
+
+
+●文字列連結 concat(文字列,文字列,･・・)
+
+/*数値が入っている場合自動的に文字列に変換*/
+SELECT concat(title,':',price,'円') FROM books;
+●最初のnullでない値を返す。 coalesce(引数,引数,･・・)
+
+/*updatedがnullのカラムは'更新日未記入'と表示*/
+SELECT title,coalesce(updated,'更新日未記入')
+FROM books;
+●副問い合わせ(最初にカッコ内の処理を行いその結果を利用)
+
+/*先にmaxを求めてその値を利用*/
+SELECT title,price FROM books 
+WHERE price=(SELECT max(price) FROM books);
+●●テーブルの結合
+以下の内容を実行を伴いながら行いたい人は、下からダウンロードした後インポートしてから行う。
+Icon
+下からダウンロード
+ 1 file(s)    2.21 KB
+●内部結合 JOIN(それぞれのテーブルの指定した列の値が一致するデータだけを取得)
+/*cdsの目蒲線物語や、categoryのDANCEは表示されていない*/
+
+SELECT * FROM cds
+JOIN categories
+ON cds.cat_id=categories.id;
+●左結合 LEFT JOIN(左結合はそれぞれのテーブルの指定した列の値が一致するデータに加えて基準テーブルにしか存在しないデータについても取得する(下の例だとcdsのデータは全部表示する))
+/*cdsの目蒲線物語が表示される*/
+
+SELECT * FROM cds
+LEFT JOIN categories
+ON cds.cat_id=categories.id;
+●右結合 RIGHT JOIN(右結合はそれぞれのテーブルの指定した列の値が一致するデータに加えて結合するテーブルにしか存在しないデータについても取得する(下の例だとcategoriesのデータは全部表示する))
+/*categoriesのDANCEが表示される*/
+
+SELECT * FROM cds
+RIGHT JOIN categories
+ON cds.cat_id=categories.id;
+●取得カラムの指定
+/*原則テーブル名.カラム名で指定する*/
+
+SELECT cds.title,categories.category,cds.price FROM cds
+LEFT JOIN categories
+ON cds.cat_id=categories.id;
+●テーブルに別名
+/*テーブルに別名をつけることができ、以後その文脈中では別名をつかう(元のテーブル名はつかえない)*/
+
+SELECT cd.title,cat.category,cd.price FROM cds AS cd
+LEFT JOIN categories AS cat
+ON cd.cat_id=cat.id;
+
+MySQL-4日目(基本文法2演習)
+
+MySQLを使って以下の手順で作業を進めよ。
+
+●sales_appデータベースを文字コードUTF-8で作成する。
+
+CREATE DATABASE sales_app
+DEFAULT CHARACTER SET utf8;
+●sales_appにdepsテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+dep 可変長文字列(30) NOT NULL
+
+CREATE TABLE deps(
+id INT PRIMARY KEY AUTO_INCREMENT,
+dep VARCHAR(30) NOT NULL
+);
+●depsテーブルに以下の情報を追加する(コピペしてよい)
+
+INSERT INTO deps(dep) VALUES
+('営業1課'),('営業2課'),('経理部'),('総務部'),('人事部');
+●sales_appにempsテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+name 可変長文字列(30) NOT NULL,
+age 整数
+dep_id 整数
+
+CREATE TABLE emps(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL,
+age INT,
+dep_id INT
+);
+●empsテーブルに以下のデータを挿入する。(コピペしてよい)
+
+INSERT INTO emps(name,age,dep_id) VALUES
+('佐藤',40,3),
+('高橋',28,1),
+('中川',20,2),
+('渡辺',20,1),
+('西澤',35,4),
+('中村',26,2),
+('田中',24,2),
+('鈴木',42,5);
+●sales_appにsalesテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+emp_id INT,
+sale INT,
+s_date DATE
+
+CREATE TABLE sales(
+id INT PRIMARY KEY AUTO_INCREMENT,
+emp_id INT,
+sale INT,
+s_date DATE
+);
+●salesテーブルに以下のデータを挿入する。(コピペしてよい)
+
+INSERT INTO sales(emp_id,sale,s_date) VALUES
+(3,100,'2017-09-01'),
+(8,63,'2017-09-01'),
+(2,82,'2017-09-01'),
+(1,32,'2017-09-02'),
+(5,98,'2017-09-02'),
+(3,87,'2017-09-03'),
+(3,66,'2017-09-03'),
+(1,42,'2017-09-03'),
+(6,164,'2017-09-04'),
+(2,28,'2017-09-04'),
+(3,35,'2017-09-04'),
+(5,43,'2017-09-05'),
+(4,26,'2017-09-05'),
+(3,83,'2017-09-05'),
+(8,55,'2017-09-05'),
+(5,29,'2017-09-06');
+上記で作成したテーブルにおいて以下の処理を実現するSQL文を記せ。
+●empsテーブルに、山田,22,1を追加せよ。
+
+INSERT INTO emps(name,age,dep_id) 
+VALUES('山田',22,1)
+●depsの全てのデータを抽出せよ。
+
+SELECT * FROM deps;
+●empsテーブルidが5のデータの年齢を１加えよ。
+
+UPDATE emps SET age=age+1
+WHERE id=5;
+●salesテーブルidが16のデータを削除せよ。
+
+DELETE FROM sales WHERE id=16;
+●salesテーブル。sale降順に並び替えろ。
+
+SELECT * FROM sales 
+ORDER BY sale DESC;
+●empsのデータを年齢降順に抽出せよ。取得項目は、名前、年齢とする。
+
+SELECT name AS 名前,age AS 年齢 FROM emps
+ORDER BY age DESC;
+●empsテーブル。年齢が30以上でdep_idが４でないデータを抽出。
+
+SELECT * FROM emps
+WHERE age>=30
+AND dep_id <> 4;
+●empsテーブル。名前に[中]が含まれない人を抽出せよ。
+
+SELECT * FROM emps 
+WHERE name NOT LIKE '%中%';
+●salesテーブル。2017-09-01~2017-09-03のデータを抽出する。
+
+SELECT * FROM sales 
+WHERE s_date BETWEEN '2017-09-01' AND '2017-09-03';
+●salesとempsを内部結合。売上を記録した人の名前を抽出。重複は除外すること。
+
+SELECT DISTINCT e.name 
+FROM sales AS s 
+JOIN emps AS e 
+ON s.emp_id=e.id
+●depsテーブル。idの1,2は本社ビル7F,3,4は本社ビル6F,その他は本社ビル5Fである。
+以下の項目名で取得せよ。部署名、所在地
+
+SELECT dep AS 部署名, 
+CASE WHEN id IN(1,2) THEN '本社ビル7F'
+WHEN id IN(3,4) THEN '本社ビル6F' 
+ELSE '本社ビル5F' 
+END AS 所在地 FROM deps;
+●empsテーブル。全件抽出。ただし年齢が23歳以下の人には名前の前に(新)を付与すること。
+取得項目は名前、年齢
+
+SELECT 
+CASE WHEN age<=23 THEN concat('(新)',name)
+ELSE name
+END AS 名前, 
+age AS 年齢
+FROM emps;
+●salesテーブル。sale昇順に並び替え。saleに1000を掛け３桁毎にカンマを挿入し末尾に円を付与したものを売上高とする。
+取得項目は日付、売上高
+
+SELECT s_date AS 日付,concat(format(sale*1000,0),'円') AS 売上高 
+FROM sales
+ORDER BY sale;
+●salesテーブル。売上の合計、最大、最小、平均、データ数を表示する。
+
+SELECT sum(sale),max(sale),min(sale),avg(sale),count(*)
+FROM sales;
+●salesテーブル。2017-09-03の日別売上を求めよ。項目名は日付、件数、日別売上とする。
+
+SELECT s_date AS 日付,
+count(*) AS 件数,
+sum(sale) AS 日別売上 
+FROM sales 
+GROUP BY s_date 
+HAVING s_date='2017-09-03'
+●depsとempsを内部結合し年齢昇順に抽出せよ。ただし年齢は30歳未満。取得項目は、名前、年齢、部署名とする。年齢が同じ場合は部署名を辞書順に並べること。
+
+
+SELECT e.name AS 名前,e.age AS 年齢,d.dep AS 部署名
+FROM deps AS d
+JOIN emps AS e
+ON d.id=e.dep_id
+WHERE e.age<30
+ORDER BY age ASC,dep ASC;
+●salesとempsとdepsを内部結合し、取得項目名を日付,名前,年齢,部署名,売上高として全件抽出せよ。
+
+SELECT s.s_date AS 日付,
+e.name AS 名前,
+e.age AS 年齢,
+d.dep AS 部署名,
+s.sale AS 売上高
+FROM sales AS s
+JOIN emps AS e
+ON s.emp_id=e.id
+JOIN deps AS d
+ON e.dep_id = d.id;
+●salesとempsとdepsを左結合し、総売上個人ランキングトップ３を降順で取得する。取得項目は名前、部署名、総売上とする。
+
+SELECT e.name AS 名前,
+d.dep AS 部署名,
+sum(s.sale) AS 総売上 
+FROM sales AS s
+LEFT JOIN emps AS e
+ON s.emp_id=e.id
+LEFT JOIN deps AS d
+ON e.dep_id=d.id
+GROUP BY s.emp_id
+ORDER BY 総売上 DESC
+LIMIT 3;
+●まだ売上を上げていない社員名を抽出せよ。
+
+SELECT name FROM emps
+WHERE id NOT IN(SELECT emp_id FROM sales);
+FacebookTwitterLineHatena共有
+
+
+
+
+

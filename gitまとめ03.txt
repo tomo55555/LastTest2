@@ -1,0 +1,486 @@
+Git超絶まとめ
+Git
+この記事は最終更新日から3年以上が経過しています。
+ファイル保存領域
+ワーク（ワーキング）ツリー
+インデックス（ステージング）
+リポジトリ
+ワーク（ワーキング）ツリー
+ユーザーが作業しているディレクトリ領域
+インデックス（ステージング）
+ワークツリーとリポジトリの中間領域（一時領域）
+コミット対象のファイルを登録する領域
+リポジトリ
+ファイルやディレクトリの状態を管理する領域
+ブランチ
+履歴の流れを分岐して保存していくための機能
+- masterブランチ
+- 追跡ブランチ
+- HEAD
+
+masterブランチ
+gitリポジトリに最初にコミットすると作成されるブランチ
+
+追跡ブランチ
+リモートブランチの状態を監視するためのブランチでローカルブランチの一種
+git branch -a
+* master //作業ブランチ
+  remotes/origin/HEAD -> origin/master //HEADの位置
+  remotes/origin/master //追跡ブランチ
+
+git branch -aで表示されるブランチは作業ブランチと追跡ブランチ（remotes/<remote>/<branch>）で、共にローカルに存在する。（"作業ブランチ"という名前は仮。追跡ブランチと区別するため）
+remotes/<remote>/<branch>はリモート先のブランチを指しているのではなく、「リモートにある<remote>/<branch>を追跡するためのローカルブランチ」という意味
+remotes/origin/HEAD -> origin/masterは現在のリポジトリのHEADが存在するブランチを指す。（変更したい場合はgit remote set-head <remote> <branch>）
+remotes/origin/HEAD -> origin/masterは「リモートのorigin/HEADから追跡ブランチorigin/masterをローカルに作成した」という意味
+git fetchすることでリモートブランチの内容を追跡ブランチに取得
+git branch <branch> <repository>/<branch>で追跡ブランチ<repository>/<branch>を元に新規ブランチ<branch>を作成
+追跡ブランチの生成と作業ブランチとの紐付きについて
+git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+
+# ローカルにブランチを作成しただけでは追跡ブランチは作成されない
+git branch hoge
+git branch -a
+* master
+  hoge
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+
+# pushすると自動的に作成される
+git push origin hoge
+git branch -a
+* master
+  hoge
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/hoge
+
+# ====================================================
+
+# ブランチをフェッチしてきた場合、追跡ブランチが作成される
+git fetch origin fuga
+...
+ * branch            fuga -> FETCH_HEAD
+ * [new branch]      fuga -> origin/fuga
+
+# フェッチしただけでは作業ブランチは作成されていない
+git branch -a
+* master
+  hoge
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/hoge
+  remotes/origin/fuga
+
+# ブランチ作成時に追跡ブランチを指定
+git branch fuga origin/fuga
+git branch -a
+* master
+  hoge
+  fuga
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/hoge
+  remotes/origin/fuga
+
+# 作業ブランチと追跡ブランチの関連を確認
+git branch -vv
+  master     23a2b23 [origin/master]
+  hoge       23a2b23 [origin/hoge]
+  fuga       23a2b23 [origin/fuga]
+
+# 作業ブランチと追跡ブランチの紐付けができていない場合、--set-upstreamを使用
+git branch --set-upstream hoge
+追跡ブランチの更新/削除
+# 更新
+git remote update -p
+# まとめて削除
+git branch -a | grep remotes | sed -e 's/remotes\///g' | xargs -L 1 git branch -rd
+HEAD
+今いるブランチの最新コミット
+ブランチを移動（チェックアウト）すればHEADの位置も変わる
+HEAD^、HEAD~はHEADから一つ前のコミットという意味
+HEAD^^^、HEAD~~~、HEAD~3のような方法でいくつ前のコミットか指定
+コマンド
+status
+現在のコミット状況や変更ファイルの一覧などを確認
+git status
+add
+ワークツリーからインデックスに登録（ステージング）するファイルについて操作
+# ワークツリーに新規作成、もしくは変更されたファイルをステージング
+#（git rmで削除されたファイルはステージングされない）
+git add ./
+git add .
+
+# ワークツリーで削除(git rm)、変更されたファイルをステージング
+# （新規作成されたファイルはステージングされない）
+git add -u
+
+# ワークツリーに新規作成されたファイル、変更されたファイル、削除（git rm）されたファイルをステージング
+# （git add . と git add -u を足した機能）
+git add -A
+
+# 変更の内容を分割してステージング
+git add -p
+
+# オプション
+...
+Stage this hunk [y,n,q,a,d,/,j,J,g,s,e,?]?
+# y：このハンクをステージします。
+# n：このハンクをステージしません。
+# q：終了します。このハンクおよび以降のハンクはステージしません。
+# a：このハンクおよびそのファイルのそれ以降のハンクを全てステージします。
+# d：このハンクおよびそのファイルのそれ以降のハンクはステージしません。
+# g：処理対象となる(別の)ハンクを選択します。
+# /：入力した正規表現にマッチするハンクを検索します。
+# j：このハンクを保留にし、次の保留されているハンクを表示します。
+# J：このハンクを保留にし、次のハンクを表示します。
+# k：このハンクを保留にし、ひとつ前の保留されているハンクを表示します。
+# K：このハンクを保留にし、ひとつ前のハンクを表示します。
+# s：現在のハンクを小さいハンクに分割します。
+# e：現在のハンクを手動で編集します。
+# ?：ヘルプを表示します。
+
+# ステージングされるファイルを表示
+git add -n ./ # 新規作成、変更したファイル一覧を表示
+git add -nu # 変更、削除したファイル一覧を表示
+git add -nA # 新規作成、削除、変更したファイル一覧を表示
+commit
+インデックスからローカルリポジトリに変更内容を登録
+# コミットメッセージをつけてコミット
+git commit -m 'fast commit'
+
+# 直前のコミットを取り消してコミットし直す
+git commit --amend -m 'first commit'
+# 注意！リモートにプッシュした後に使うと、リモートとのコミットポイントに差異が生じ別途マージしなければならないため使用しない。
+push
+ローカルリポジトリの変更内容をリモートリポジトリに登録
+# origin（リモートリポジトリ）のmasterブランチにローカルのmasterブランチの変更内容を登録
+git push origin master
+
+# より詳細な指定
+git push origin master:master
+# -> git push <リモートリポジトリ> <ローカルブランチ>:<リモートブランチ>
+# git push origin master:b_100の場合
+# ローカルのmasterブランチをリモートのb_100ブランチにプッシュしている
+# 理論的には可能だが、基本的に使用しない
+diff
+各領域間での差分を表示
+# ワークツリーとインデックスの差分
+git diff
+
+# ワークツリーとHEAD（現在ブランチの最新コミット）との差分
+git diff HEAD
+
+# インデックスとHEADとの差分
+git diff --staged(--cached)
+
+# 差分の統計情報を表示
+git diff --stat
+
+# 差分のあるファイル一覧を表示
+git diff --name-only
+reset
+HEAD、インデックス、ワークツリーの内容を変更
+--soft：HEADの位置を変更
+--mixed（または指定なし）：HEADの位置、インデックスの内容を変更
+--hard：HEADの位置、インデックス、ワークツリーの内容を変更
+# addを取り消したい場合
+git reset (--mixed) HEAD
+
+# ワークツリーで修正した内容をなかったことにしたい場合
+git reset --hard HEAD
+
+# コミットを取り消したい場合に使用
+git reset --hard HEAD^
+
+# 間違えてresetしてしまい、reset前の状態（ORIG_HEAD）に戻したい場合に使用
+git reset --hard ORIG_HEAD
+clone
+リモートリポジトリをローカルにコピーする
+# リモートリポジトリを指定してコピー
+git clone <url + repository>
+
+# <path>にリモートリポジトリを指定してコピー
+git clone <url + repository> <path>
+fetch
+リモートリポジトリから変更をローカルリポジトリに取得
+# 指定したリモートリポジトリの変更を取得
+git fetch origin
+
+# 指定したリモートリポジトリ、ブランチの変更を取得
+git fetch origin master
+
+# リモートリポジトリの変更をすべて取得
+git fetch --all
+branch
+ブランチを操作
+# 現在のリポジトリのブランチ一覧を表示
+git branch
+
+# 新規ブランチ<branch>を作成
+git branch <branch>
+
+# 追跡ブランチを作成
+git branch <branch> <repository>/<branch>
+
+# ブランチ<branch>を削除、マージされていない内容が残っている場合はエラーになる。
+git branch -d <branch>
+
+# ブランチ<branch>を削除、マージされていない内容が残っていても強制的に削除
+git branch -D <branch>
+
+# 現在のブランチ名を<branch>に変更
+git branch -m <branch>
+
+# 各ブランチの直近のコミットを一覧表示
+git branch -v
+
+# ローカルのブランチとリモート追跡ブランチの両方のブランチを表示
+git branch -a
+
+# リモート追跡ブランチを表示
+git branch -r
+
+# 追跡ブランチとローカルブランチ（作業ブランチ）を紐付ける
+git branch --set-upstream <branch>
+
+# 追跡ブランチとローカルブランチ（作業ブランチ）を紐付けを表示
+git branch -vv
+
+checkout
+ファイルやブランチの状態を指定の状態に変更する操作
+#<branch>に切り替える
+git checkout <branch>
+
+#<commit>時の状態にする
+git checkout <commit>
+
+#<file>を<commit>時の状態にする
+git checkout <commit> <file>
+
+#<branch>を作成して切り替える
+git checkout -b <branch>
+
+# <commit>から<branch>を作成して切り替える
+git checkout -b <branch> <commit>
+
+# 履歴のないブランチを作成
+git checkout --orphan ORPHAN-BRANCH
+
+merge
+ブランチを統合する操作
+# 現在のブランチに<branch>をマージする
+git merge <branch>
+
+# マージメッセージをつけてマージする
+git merge -m "message" <branch>
+
+# マージ後にコミットしない
+git merge --no-commit <branch>
+
+# マージ対象のブランチの変更をひとつのコミットにまとめる
+git merge --squash <branch>
+
+# マージした時に必ずコミットする
+git merge --no-ff other-branch
+
+# マージを中止して元の状態に戻す
+git merge --abort
+fast forward
+あるブランチにいくつか変更があり、その親ブランチの状態が、あるブランチが作成されてから変更されていない状態
+
+fast forward な関係
+親ブランチ：A -> B
+子ブランチ：A -> B -> C
+
+# Bコミットから子ブランチが作成
+# 子ブランチにCコミットがあるが、親ブランチは変更されていない
+fast forward でない関係
+親ブランチ：A -> B -> D
+子ブランチ：A -> B -> C
+
+# Bコミットから子ブランチが作成
+# 子ブランチにCコミットがあり、親ブランチにもDコミットがある
+git mergeは二つのブランチがfast forward でない関係の場合、マージ後に自動的にコミットする(first forwardな関係の場合コミットされない)
+--no-ffオプションはfirst forwardな関係であっても強制的にコミットする
+参考
+remote
+リモートリポジトリの情報を確認
+# リモートリポジトリの一覧を表示
+git remote -v
+
+# 接続するリモートリポジトリを追加
+git remote add <remote> <url>
+
+# 接続しているリモートリポジトリを解除
+git remote rm <remote>
+
+# リモートリポジトリの情報を表示
+git remote show <remote>
+
+# ローカルの追跡ブランチの情報を更新（リモートブランチの情報と同期）
+git remote update -p
+rebase
+ベースブランチに対象ブランチのコミットをまとめる
+# <branch>に現在のブランチのコミットを適用する
+# mergeとはブランチの指定が逆なので注意!
+git rebase <branch>
+
+# <commit>以降のコミット、または<branch>のコミットの内容を変更
+git rebase -i <commit>
+git rebase -i <branch>
+
+## 対話コマンドの内容
+# p, pick：コミットを採用
+# r, reword：コミットを採用するが、コミットメッセージを変更
+# e, edit：コミットを採用するが、ファイルを修正する
+# s, squash：一個前のコミットと合体させる
+# f, fixup：コミットメッセージを変更しない点以外、squashと同じ
+# x, exec：shellでコマンドを実行する
+
+参考1
+参考2
+cherry-pick
+現在のブランチに特定のコミットだけを適用する
+# <commit>の内容を現在のブランチに適用
+git cherry-pick <commit>
+
+# 現在のブランチのワークツリーとインデックスに<commit>を適用する（コミットしない）
+git cherry-pick -n <commit>
+指定のコミットが他のコミット（それより前のコミット）に依存している場合、競合する
+reflog
+操作履歴の一覧を表示
+# 特定の操作時点まで戻したい場合
+git reflog
+git reset --hard <reflog_point>
+rm
+指定ファイルを各領域から削除
+# ワークツリーとインデックスから削除
+git rm hoge/
+
+# 再帰的にディレクトリを削除
+git rm -r hoge/
+
+# インデックスからのみ削除
+git rm --cached fuga.txt
+
+# 削除対象ファイルを表示
+git rm -n hoge/
+
+# 管理済みディレクトリ（ファイル）を.gitignoreで無視するが
+# ワークツリーには残しておきたい場合に使用
+# 削除後、コミット・プッシュ
+git rm -r --cached hoge/(fuga.txt)
+clean
+追跡していないファイルを削除
+# 削除対象を確認
+git clean -n
+
+# 削除
+git clean -f
+
+# ディレクトリも合わせて削除
+git clean -d -f
+ls-files
+gitで管理しているファイルの一覧を表示
+# 全ての管理済ファイルを表示
+git ls-files -c
+
+# ワークツリーで変更済のファイルを表示
+git ls-files -m
+
+# ワークツリーで削除済のファイルを表示
+git ls-files -d
+
+# 無視リストに載っているが管理済のファイルを表示
+git ls-files -i --exclude-standard
+
+# 全ての未管理ファイルを表示
+git ls-files -o
+
+# ワークツリーで新規作成されたファイルを表示
+git ls-files -o --exclude-standard
+
+# 無視リストに載っていて未管理のファイルを表示
+git ls-files -io --exclude-standard
+update-index
+監視対象のファイルを無視する
+assume-unchanged
+作業ツリー上で変更されていても無視される
+マージ時はマージ先の内容が取り込まれる
+# 登録
+git update-index --assume-unchanged [ファイル名]
+# 解除
+git update-index --no-assume-unchanged [ファイル名]
+skip-worktree
+作業ツリー上の変更が維持される
+マージ時はマージ先の内容を取り込まない
+# 登録
+git update-index --skip-worktree [ファイル名]
+# 解除
+git update-index --no-skip-worktree [ファイル名]
+config
+# グローバルconfigファイルのパス
+~/.gitconfig
+
+#各リポジトリのconfigファイルのパス
+.git/.gitconfig
+
+# config一覧を表示
+git config -l
+
+# <item>を表示
+git config --get <item>
+
+# .gitconfigファイルを編集
+git config -e
+
+# メールアドレス
+git config --global user.email "Your email"
+
+# ユーザー名
+git config --global user.name "Your name"
+
+# 編集用エディタ
+git config --global core.editor vim
+
+# ページャー
+git config --global core.pager "lv -c"
+
+# ターミナルの出力に色をつける
+git config --global color.ui auto
+
+# エイリアス
+git config --global alias.co "checkout" # -> git co
+git config --global alias.ci "commit" # -> git ci
+
+# 改行コードの自動変換 CRLF(windows) <-> LF(linux系)
+git config --global core.autocrlf true
+その他の項目
+エイリアス例1
+エイリアス例2
+その他
+.gitignore
+Git管理から除外したいディレクトリ・ファイルを指定
+ls-filesコマンドで管理対象を確認できる
+すでに管理済みのファイルを無視する場合は、git rm --cachedコマンドを使用
+# ルートディレクトリ（.gitignoreファイルが設置されているディレクトリ）直下のhogeディレクトリ配下をすべて無視
+/hoge/*
+
+# ルートディレクトリ配下にあるすべてのhogeディレクトリ配下を無視
+hoge/*
+
+# ただし、/hoge/fuga配下だけは無視しない
+!/hoge/fuga/*
+
+# 空のディレクトリ管理用に.gitkeepを使用する場合、すべての.gitkeepファイルを無視
+!.gitkeep
+
+主な参考
+Git
+サルでもわかるGit入門
+Git 使い方 見出し一覧
+Gitチュートリアル

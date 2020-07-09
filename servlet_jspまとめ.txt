@@ -1,0 +1,572 @@
+ざっくりJava JSP/サーブレット
+Java
+JSP
+servlet
+この記事は最終更新日から3年以上が経過しています。
+書いてる人
+プログラミング学習サービスやら、ペットサロン予約サービス、風俗検索サービスなど色々とやっている「かずきち」です。
+■運営サービス一部
+http://crazy-wp.com/
+http://webukatu.com/
+新宿のホストから不動産・保険の営業を経て、HTMLって何？という状態から３ヶ月独学でプログラミングやデザインを学び、IT業界で１年間実務経験を積んで年収は１本超え。現在は起業家としてサービス運営やら不動産運営をしています。
+Qiita内にそれ系の記事も書いてます。
+エンジニアで稼ぐために大切な１３のコト
+WEBサービスで起業したい人に読んで欲しい１８のコト
+
+JSPってなに？
+JSP(Java Server Pages)と言って、PHPなどと同じようにタグを使ってhtml内にそのまま記述出来るもの。
+同じくサーブレットというものがあるが、それをもっと使いやすくした感じ。
+Javaのお手軽版的な。
+
+サーブレットって？
+簡単に言うと、サーバーで動的なコンテンツを生成するプログラムを作るための技術。
+Javaサーバーで動く小さなプログラムで、JSPの原型。
+JSPはJavaサーバーがJSPのコードを読み込み、それをサーブレットのソースコードに変換。
+HTMLのタグなど、すべてprintlnで書きだすように変換される。
+そして、生成されたサーブレットのソースコードをコンパイルし、サーブレットを生成してそれを呼び出す。
+
+JSPファイル　⇒　サーブレットファイル　⇒　クラスファイル　⇒　実行
+※サーブレットはバージョンがあり、サーバーによって対応していなかったりするので注意
+
+サーブレット
+サーブレットとは？
+サーブレットは、Javaを使ってサーバサイドプログラムを作るための技術。
+WEBサービスなどをJavaで作る場合には、必須のもの。
+サーブレットや同じ感じのJSPという技術を使うには、JavaSEではなくJavaEEの技術が必要。
+（JavaEEをPCにインストールする必要がある）
+サーブレットはブラウザからリクエストがあるとアプリケーション・サーバーがサーブレットクラスのインスタンスを生成する。
+毎回リクエストの度にインスタンスを生成するのはサーバーに負荷がかかるため、一回目作ったインスタンスをリクエスト応答後も破棄せずに次のリクエストでも再利用する。
+（サーバーが終了するなどの時にインスタンスがサーバーによって破棄される）
+
+サーブレットの書き方
+Sample.java
+//①お決まりのインポート文（Eclipseでサーブレットクラスを作成すると自動で書いてくれる）
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+//②サーブレットクラスを作るにはサーブレットクラスの元になるHttpServletクラスを継承する必要がある。
+public class Sample extends HttpServlet{
+    //③サーブレットクラスがGETで呼ばれた場合のdoGetメソッドをオーバーライドする。書き方は基本このお決まりの書き方になる。
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+            //処理を書く
+
+    }
+    //④サーブレットクラスがPOSTで呼ばれた場合のdoPostメソッドをオーバーライドする。書き方は基本このお決まりの書き方になる。
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException{
+            //処理を書く
+
+    }
+}
+ブラウザからリクエストを受けるとアプリケーションサーバーがサーブレットクラスのdoGet()を呼び出す。
+その時に引数として、ブラウザから届いたリクエスト情報の入った「HttpServletRequest」とサーバーから送るレスポンスに関係する情報や機能をもつ「HttpServletResponse」を渡している。
+HttpServletRequestインスタンスに格納された情報を元に処理を行い、HttpServletResponseインスタンスを使ってブラウザへ結果を返している。
+
+サーブレットからHTMLを出力する
+Sample.java
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        response.setContentType("text/html; charset=UTF-8"); //①ブラウザへ渡す情報の文字コードを指定
+
+        //②htmlを出力
+        PrintWriter out = response.getWriter(); 
+        out.println("<html>");
+        out.println("<head>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("<p>Hellooooo!</p>");
+        out.println("</body>");
+        out.println("</html>");
+    }
+サーブレットクラスのコンパイル
+サーブレットクラスのソースファイル　→　コンパイル　→　サーブレットクラスのクラスファイルが生成される　→　ブラウザがリクエスト　→　サーブレットクラスのクラスファイルが実行される　→　サーブレットクラスのクラスファイルからインスタンス化　→　サーブレットクラスのインスタンスが実行される
+
+サーブレットクラスとURL
+サーブレットを呼び出す際のURLは以下の仕組みになっている。
+
+http://サーバー名/アプリケーション名/URLパターン
+URLパターンというのはサーブレットクラスでつける「アダ名」のようなもの。
+サーブレットクラスでURLパターンを設定しておくことで、それをURLとして呼び出すことができる。
+このURLをhtmlのaタグのhref属性やformのaction属性に設定すれば、サーブレットへ飛ばせる。
+
+URLパターンの設定
+URLパターンをサーブレットクラスで設定するには、「@WebServletアノテーション」を使う。
+
+サーブレットファイル：sample.java
+import javax.servlet.annotation.WebServlet; //①アノテーションを使うために読み込んどく
+・・・省略
+@WebServlet("/sample") //②URLパターンを「sample」として設定
+public class Sample extends ・・・省略
+URLパターンをスラッシュで区切って階層を増やすことも出来る。
+※URLパターンの設定方法には、アノテーションの他にweb.xmlという設定ファイルを使用する方法がある
+※Eclipseでは、サーブレットクラスを作ると自動的にアノテーションに「/クラス名」と設定される。
+
+サーブレットの注意
+サーブレットクラスのコードを修正しても、すぐには反映されない。
+Eclipseでは、修正後にしばらく（数秒から数十秒ほど）待つとコンソールビューに「再ロードが完了しました」と出る。そうすれｂ反映されてる。
+もしくは、サーバーを再起動させる。
+
+JSP
+JSPファイルから作成されるサーブレットクラスの場所
+Eclipseを使っている場合、ワークスペースで指定した場所内の以下の場所にある
+
+〜ワークスペース/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/work/Catalina/localhost/プロジェクト名/org/apache/jsp
+jspを作成して実行した場合、上記の場所にjavaファイルとclassファイルが作成される。
+たまにjspファイルを修正されても反映されない場合は、このディレクトリにあるjavaファイルやclassファイルが古いままの場合があるので、削除して実行しなおす。
+
+JSPファイルのURL
+jspファイルはhtmlファイルと同じ扱いで、WebContentフォルダの中に配置し、jspファイル名がURLになる。
+実際のURLは下記の通り。
+
+http://サーバ名/アプリケーション名/WebContentからのパス
+JSPの注意
+Eclipseでjspを書く場合、文法エラーがある場合はコードの左側に☓印とコード内に波線が出て表示してくれるが、
+エラーがない場合でもこれが出てしまう場合がある。
+なので、そういう場合にはエラーが出たら一回切り取りして貼り付けし、上書き保存をすると直る。
+直らなければ本当にエラーがあるってこと。
+
+JSP＆サーブレットを使う
+JSPからサーブレットへの値の受け渡し方法
+ブラウザからGETやPOSTで送られたリクエストパラメータはHttpServletRequestインスタンスに格納され、送信先のJSPやサーブレットへ送られる。
+
+doPostやdoGetメソッド内で書く
+//リクエストパラメータの文字コードを指定
+request.setCharacterEncoding("UTF-8");
+
+//リクエストパラメータの取得
+String name = request.getParameter("name"); //getParameter("属性名");
+String gender = request.getParameter("gender");
+リクエストパラメータをJSPファイルで受け取る
+jspファイル内で書く
+<%
+//リクエストパラメータの文字コードを指定
+request.setCharacterEncoding("UTF-8");
+
+//リクエストパラメータの取得
+String name = request.getParameter("name"); //getParameter("属性名");
+String gender = request.getParameter("gender");
+%>
+requestなどは暗黙オブジェクトのため、宣言せずに使える。
+
+MVCモデル
+コントローラ　・・・　ブラウザからのリクエストを受け取る役割（サーブレット）
+ビュー　・・・　レスポンスとして返すファイル（JSPファイル）
+モデル　・・・　実際の処理を行う役割（普通のjava）
+フォワードとリダイレクト
+フォワード
+サーバー側で他のファイルの処理へ移すことができる。
+ブラウザ側のURLが変わらずに画面など変えられる。
+
+サーブレットからJSPファイルへフォワードさせる
+javax.servlet.RequestDispatcherをインポートした上で下記のように書く
+
+RequestDispatcher dispatcher = request.getRequestDispatcher("フォワード先のパス");
+dispatcher.forward(request,response);
+フォワード先のパスはJSPファイルなら/WebContentからのパス
+サーブレットなら/URLパターンとなる。
+
+JSPファイル配置とリクエスト
+JSPファイルを以下に配置するとブラウザからは直接リクエストできないようになる。
+JSPファイルは基本サーブレットが呼び出してブラウザへ返すものなので、以下に配置する。
+
+/WebContent
+ |___ /WEB-INF
+         |___ /jsp
+                |___この中にフォワードするjspを配置しとく
+リダイレクト
+サーバー側で一旦「こっちのファイルを呼んで！」とレスポンスを返し、
+受け取ったブラウザ側は再度そっちのファイルへリクエストを送るもの。
+
+リダイレクト方法
+response.sendRedirect("リダイレクト先のURL");
+リダイレクト先は同じサーバー内の場合以下のようにも指定できる
+
+サーブレットの場合　→　/アプリケーション名/URLパターン
+JSPファイルの場合　→　/アプリケーション名/WebContentからのパス
+スコープ（画面間でのデータの引き継ぎ方法）
+Java内で値を持ち回すにはJavaBeansを使い、インスタンスを持ち回す。
+インスタンスを保持できる範囲・期間によって、４種類のスコープがある。
+
+・ページスコープ
+・リクエストスコープ
+・セッションスコープ
+・アプリケーションスコープ
+ページスコープ
+１画面内でしか使いまわすことはできない。
+基本、意識する必要はないものなので省略。
+
+リクエストスコープ
+クライアントからリクエストを投げて、サーバーがレスポンスを返すまでの間だけ保持される。
+なので、リダイレクトすると消える。が、フォワードの場合は情報は消えない。
+
+サーブレット内でのリクエストスコープへのインスタンス保存と取り出し
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException{
+
+        //リクエストスコープへ保存するインスタンス生成
+        Human human = new Human("かずきち", 29);
+
+        //リクエストスコープにインスタンス保存
+        request.setAttribute("human",human); //第一引数は「属性名」、第二引数はインスタンス
+
+        //リクエストスコープからインスタンス取得
+        human h = (Human) request.getAttribute("human"); //取得したインスタンスはObject型になっているので元の型へキャスト（型変換）する必要がある
+}
+JSP内でのリクエストスコープからインスタンス取り出し
+<%@ page import = "bean.Human" %> //取得したいインスタンスのクラスをインポートする
+<%
+//リクエストスコープからインスタンスを取得する
+Human h = (Human) request.getAttribute("human");
+%>
+<%= h.getName() %>さんの年齢は<%= h.getAge() %>歳です。 //インスタンスのプロパティにアクセスし、値を取り出す
+
+セッションスコープ
+いわゆる、「セッション」と呼ばれるもの。
+セッションスコープに保存した値は、インスタンスを削除するかブラウザを閉じるまで利用できる。（なので、リダイレクト先でも値を引き継いで利用できる）
+Cookieという仕組みを使って値を保存しておく。セッションはCookieに関しての説明は面倒なので省略します。
+セッションス
+コープを使うには、javax.servlet.ttp.HttpSession型のインスタンスを使う。
+
+サーブレットでセッションスコープを利用する例
+Human human = new Human();
+human.setName("かずきち");
+human.setAge(29);
+
+//HttpSessionインスタンスの取得（javax.servlet.ttp.HttpSessionをインポートしておく必要がある）
+HttpSession session = request.getSession();
+
+//セッションスコープにインスタンスを保存
+session.setAttribute("human", human);
+
+//セッションスコープからインスタンスを取得
+Human h = (Human) session.getAttribute("human");
+
+//セッションスコープからインスタンスを削除
+session.removeAttribute("human");
+
+//セッションスコープ自体を削除したい場合
+session.invalidate(); //スコープ自体が削除され、保存していたすべてのインスタンスが破棄される。ショッピングサイトなどで、ユーザーがログアウトを行った時などに利用する
+アプリケーションスコープ
+WEBアプリケーションが終了するまでずっと値が保持される。
+なので、サーバーを再起動するまでずっと保持しておけるってこと。
+データベースに保存するまでもない情報などはアプリケーションスコープで保存しておくといい。
+
+サーブレットでアプリケーションを利用する例
+Human human = new Human("かずきち",29);
+
+//ServletContextインスタンスの取得
+ServletContext app = this.getServletContext(); //javax.servlet.http.ServletContextをインポートする必要がある
+
+//アプリケーションスコープにインスタンスを保存
+app.setAttriute("human", human);
+
+//アプリケーションスコープからインスタンスを取得
+Human　h = (Human) app.getAttribute("human");
+
+//アプリケーションスコープからインスタンスを削除
+app.removeAttribute("human");
+
+jspファイルでアプリケーションスコープを利用する
+<%@ page import = "bean.Human" %>
+<%
+//アプリケーションスコープからインスタンスを取得
+Human h = (Human) app.getAttribute("human");
+%>
+<%= h.getName() %>さんの年齢は<%= getAge() %>際です
+フィルタ（同じ処理はまとめて実行！）
+サーブレット内などで毎回書くrequest.setCharacterEncoding("UTF-8");やログインしていないと見れないページなどで毎回ログインしているかをチェックする処理を書く際など、フィルタという仕組みを使うことで毎回書く必要がなくなる。
+
+フィルタのサンプル
+@WebFilter("/*") //①
+public class FilterSample implements Filter {
+    public void init(FilterConfig fConfig) throws ServletException{ } //フィルタがインスタンス化された直後に行いたい処理を書く場所
+
+    //設定したサーブレットクラスが呼ばれた（リクエストされた）時に行いたい処理を書く場所
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException{
+            request.setCharacterEncoding("UTF-8");
+            chain.doFilter(request, response);
+    }
+
+    public void destroy(){ } //フィルタのインスタンスが破棄される直前に行いたい処理を書く場所
+}
+①　フィルタには＠WebFilterアノテーションをつける。アノテーションをつけることで、フィルタをどこまでの範囲に適用するかを指定する。
+
+@WebFilterの書き方
+@WebFilter("/フィルタを設定するサーブレットクラスのURLパターン")
+※javax.servlet.annotation.WebFilterをインポートする必要がある
+@WebFilterの例
+@WebFilter("/Sample") //Sampleのサーブレットクラスに設定
+@WebFilter("/Sample/*") //Sample以下のサーブレットクラスに設定
+@WebFilter("/*") //全てのサーブレットクラスに設定
+jspファイルを分割してインクルードする
+jspファイルでもヘッダーやフッターなど共通な部分がある。
+そういった時に毎回jspファイルにヘッダーフッターを記述するのは面倒だし、ヘッダー部分に修正があった場合、全てのjspファイルに対して修正をしないといけないので面倒。
+なので、ヘッダーやフッターなどを共通化してそれぞれjspファイルにし、そのjspファイルを読み込むようにする。
+
+jspファイル内で他のjspを読み込む（サーブレット内でも使える）
+<%
+RequestDispatcher dpc = request.getRequestDispatcher("インクルード先");
+dpc.include(request, response);
+%>
+もしくは、jspなら下記のようにアクションタグを使って読み込むこともできる
+
+<jsp:include page="インクルード先" />
+インクルード先の指定方法はフォワードの時と同じ。
+アクションタグには最初から用意されているものがある。それを「標準アクションタグ」という。
+
+標準アクションタグ
+主に以下のようなものがある
+
+<jsp:useBean>　・・・　スコープからJavaBeansインスタンスを取得。取得できない場合は、インスタンスを新規作成してスコープに保存する。
+<jsp:setProperty>　・・・　JavaBeanのプロパティの値を設定
+<jsp:getProperty>　・・・　JavaBeanのプロパティの値を取得
+<jsp:include>　・・・　インクルードできる
+<jsp:forward>　・・・　フォワードできる
+htmlのタグのように書けるが、大文字小文字は区別されるので注意。
+
+動的インクルードと静的インクルード
+インクルードには２種類ある。
+動的インクルードは、ファイルを実行中にインクルードで他のjspファイルなど呼び出し、そのファイルの処理を実行し、結果を元のファイルに戻すというもの。
+静的インクルードは、ファイルを実行中にインクルードで他のjspファイルなどの処理をそのまま自身のファイルへ取り込み、自身のファイルとして実行するもの。
+動的インクルードだと別のファイルとして実行しているため、別ファイルで定義した変数や生成したインスタンス、インポートしたクラスやタグライブラリなどなどは自身のファイルで使えない。
+静的インクルードは、一つのファイルとして実行されるので、別ファイルで定義した変数や生成したインスタンス、インポートしたクラスやタグライブラリなどは自身のファイル内で使える。（が、変数名などバッティングしないように気をつける必要がある）
+
+静的インクルードの方法
+includeディレクティブを使う
+
+jspファイル内で
+<%@ include file="インクルード先" @>
+※インクルード先は/WebContentからのパスを指定
+※サーブレットクラスはインクルードできないので注意
+※インクルード先のファイルを更新したら、インクルード元のファイルも更新しないと実行結果に反映されないので注意
+
+EL式
+EL式を使うとスコープに保存された値を取得するのが楽になる。
+インポートとスコープからの取得が不要に。
+
+普通に取得する場合
+<%@ page import="model.Sample" @>
+<@ Sample sp = *Smaple) session.getATtribute("sample"); @>
+<@= sp.getName() @>
+EL式を使った場合
+${ sp.name }
+${ sp[2].name } //リストから取得もできる
+EL式の書き方
+//スコープに保存されているインスタンスを取得する
+${属性名}
+//スコープに保存されているインスタンスのプロパティを取得する
+${属性名.プロパティ}
+//※指定したプロパティのgetterが自動で実行される。
+※EL式は指定した属性名のインスタンスを下記の順序で探す
+
+ページスコープ　→　リクエストスコープ　→　セッションスコープ　→　アプリケーションスコープ
+※何も見つからなくても例外はスローされず、ただそこには表示されないだけ。
+
+もし、セッションスコープに保存されているインスタンスを利用したいなどスコープを指定する場合は下記の通り
+
+セッションスコープから取得したい場合
+${ sessionScope.msg }
+EL式は後述のスクリプトレットやスクリプト式内で使うことが出来ない。なので、if文やfor文の中に使いたい場合は後述のJSTLを使う必要がある。
+
+JSTL
+カスタムタグと言われるもので、開発者が独自に開発したアクションタグのことをいう。
+jspでは<jsp:forward>のように標準で用意されているアクションタグのほか、独自で作成もできる。
+独自作成したアクションタグはタグライブラリにまとめて、他の人に配布できる。（タグのプラグイン的な）
+JSTLは５つのタグライブラリで構成されている。
+DB操作や条件分岐、繰り返しなど色々なタグがある。
+
+JSTLの利用方法
+JSTLを使うにはネットからJSTLのJARファイルをダウンロードし、WEB-INF/libに配置する。
+JSPでタグライブラリを使うには、下記のようにtaglibディレクティブで使用するタグライブラリを指定する。
+
+JSP内でのタグライブラリ指定方法
+<%@ tablib prefix="接頭辞" url="使用するタグライブラリのURI" %>
+Coreタグライブラリ
+条件分岐などできるライブラリ。使い方は以下の通り。
+
+例
+<c:out value="変数名"> //変数の値を出力。エスケープ処理も行ってくれる。
+<c:out value="${sample.name}"> //EL式も使える
+
+//分岐１
+<c:if test="条件式">
+    trueの場合の処理
+</c:if>
+
+//分岐１（EL式使った場合）
+<c:if test="${sample.age == 20}">
+    //trueの場合の処理
+</c:if>
+
+//分岐２（if-elseにしたい場合にはこっちを使う）
+<c:choose>
+    <c:when test="条件式">
+        //trueの場合の処理
+    </c:when>
+    <c:otherwise>
+        //falseの場合の処理
+    </c:otherwise>
+</c:choose>
+
+//繰り返し
+<c:forEach var="i" bigin="0" end="9" step="1" >
+    //繰り返したい処理
+</c:forEach>
+
+//繰り返し（拡張for文）
+<c:forEach var="変数名" items="配列など">
+    //繰り返したい処理。varに指定した変数名を使って色々できる。
+</c:forEach>
+
+JSPのタグの種類
+主なタグは５種類
+
+アクションタグ　・・・　<jsp: 内容 />
+1.アクションタグ　・・・　定型的な処理をタグ形式で記述
+2.ディレクティブタグ　・・・　ページ単位での処理方法を指定する。htmlでいうmetaタグ的な。
+3.宣言部　・・・　変数やメソッドの定義のみ書くもの
+4.スクリプトレット　・・・　ページの処理方法を記述。Javaコードなんでも書いてOK
+5.式　・・・System.out.println(変数)と同じ機能。println書くならこっち使った方が楽。
+ディレクティブ
+基本構文
+<%@ ディレクティブ名 属性名="属性値1" 属性名2="属性値2" …　 %>
+※属性値は必ずダブルクウォートで囲む
+
+主なディレクティブ
+@page　・・・　基本的な処理方法を決める
+@include　・・・　外部ファイルをインクルードする
+@taglib　・・・　ページ内で使用するタグライブラリを宣言
+@pageディレクティブの主な属性
+contentType　・・・　ページの出力コンテンツタイプ（文字コードなど）を設定。基本は「text/html」でいい。
+　　　　　　　　　　　　画像や動画を出力する場合は「image/jpeg」「video/mpeg」などを値に指定。
+pageEncoding　・・・　jspファイルの文字コード
+import　・・・　インポートするパッケージやクラスを指定。「java.util.Date」などと値を指定。
+errorPage　・・・　例外発生時に表示するエラーページのパス
+スクリプトレット
+基本構文
+<% 内容 %>
+例
+<%
+for(int i= 0; i<5; i++){
+ out.prinln("テストです。");
+}
+%>
+※暗黙オブジェクト（インスタンス化とかしないでいきなり使えるやつ）も使える
+※ここで宣言した変数はページ処理終わるたびに破棄される。
+
+例
+<% for(int i= 0; i<5; i++){ %>
+ テストです。<br>
+<% } %>
+※phpと同じように挟んでも書ける
+
+宣言部
+基本構文
+<%! 内容 %> 
+例
+<%!
+public String repeat(String msg, int n){
+  String rst = null;
+  for(int i=0; i<n; i++){ rst+= msg; }
+  return rst;
+}
+%> 
+※スクリプトレットのような処理の記述はできない。メソッド定義や変数定義のみ。
+※暗黙オブジェクトはこの中では使えない
+※ここで宣言した変数はApacheなどのWebサーバーが起動してる間ずっと残る。
+※ブラウザがリロードしても、ほかのPCから見ても、変数の中身は共有。
+（なので、読み取り専用の変数だけを定義した方がいい）
+
+式
+基本構文
+<%=変数 %>
+例
+<%=result %>
+※変数を複数記述したり、計算式をそのまま記述はできない。メソッドはok。
+
+実際の使い方の流れ
+1．ファイルを作成する
+JSPを使うにはファイル名の拡張子をjspにする。
+
+ファイル名.jsp
+※「httpd」「htdocs」的なフォルダ内に置くこと
+
+2．文字コードを設定する（基本utf8で）
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+※jspファイルの中でさらにincludeして他のjspファイル（子ファイル）を読み込む場合、子ファイルにはcharset属性はなしにする。
+
+3．パッケージを取り込む
+<%@ page import="クラスの指定" %>
+4．メソッドや変数を宣言する
+<%! と %> の間に、メソッドの定義や変数の宣言を記述すると他の<% %>内でも使いまわせる。
+
+<%! 変数宣言やメソッド定義 %>
+例
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>テストタイトル</title>
+</head>
+<body>
+<%
+for(int i = 0; i<10 ; i++) out.println("テストテキスト");
+%>
+</body>
+</html>
+ページ間で値を受け渡しする
+aタグやGET経由で渡す
+クエリ情報には「？」「＆」「％」や空白、マルチバイト文字（日本語）はそのままだと渡せない。
+だから、渡す前にURLエンコードして渡せる様にする必要がある。
+（フォーム経由の場合は自動でエンコードされるので不要）
+※クエリ情報での受け渡しはIEの場合は2083文字まで。
+
+送る側処理
+<a href=”link2.jsp?keyword=<%=URLEncoder.encode(“クエリ情報（&&%）”,”UTF-8”)%>情報を送る</a>
+※「?キー値=値」で送る
+※import=”java.net.*”をしておく
+※受け取る側がgetParameterした時に自動的にデコードされる
+
+日本語が文字化けするなら、%CATALINA_HOME%/confフォルダ内server.xmlの72行目あたりを以下のように編集する
+```
+connectionTimeout="20000"
+redirectPort="8443" useBodyEncodingForURI="true" />
+
+###受け取る側処理
+JSPではGET、POSTを気にすることなく扱える設計になっている。
+GETで送られてきたものでも、POSTで送られてきたものでも、下記のように`getParameter("name属性名")` 受け取れる。
+
+```jsp:
+request.getParameter(“keyword”);
+※キー値で取得できる。
+
+色々なフォームからPOSTで値を受け取る
+例
+String inpt = request.getParameter("input"); //name属性がinput
+String chk = request.getParameter("check"); //チェックボックス（name属性がcheckの場合）
+String rd = request.getParameter("radio"); //ラジオボタン（name属性がradioの場合）
+
+//複数選択可能なセレクトボックス（name属性がselectの場合）
+String[] slt = request.getParameterValues("select");
+String rst = null;
+if (slt != null){
+    for(String rst : slt){
+      out.println(rst);
+    }
+}
+※値を受け取るときには必ず文字エンコードすること
+
+request.setCharacterEncoding("UTF-8"); //クライアントから送信されたリクエスト情報の文字コードを宣言
+※getParameterする前に必ず上の１行を記述すること。
+※「JISAutoDetect」という値にすると自動で文字コードを判別してくれるが、絶対正しい訳じゃないので使わない
+
+リダイレクトさせる
+<% response.sendRedirect("http://www.google.com/"); %>
+エスケープ処理
+フォームなどから受け取った値は何が入っているかわからない。

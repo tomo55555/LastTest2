@@ -1,0 +1,952 @@
+★servlet_jsp授業ルーム
+
+mjpurin  12:56
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+@WebServlet("/HelloServlet")
+public class HelloServlet extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out=response.getWriter();
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8'>");
+		out.println("<title>タイトル</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<p>こんにちは</p>");
+		out.println("</body>");
+		out.println("</html>");
+	}
+}
+
+
+
+
+
+
+mjpurin  10:25
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.util.*,java.text.*"%>
+<%
+String[] luckArray={"超スッキリ","スッキリ","最悪"};
+int index=(int)(Math.random()*3);
+String luck=luckArray[index];
+Date date=new Date();
+SimpleDateFormat sdf=new SimpleDateFormat("MM月dd日");
+String today=sdf.format(date);
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p><%=today %>の運勢は「<%=luck %>」です。</p>
+</body>
+</html>
+
+mjpurin  11:14
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="ex.Employee"%>
+<%
+Employee emp=new Employee("0001","湊 雄輔");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<%for(int i=0;i<10;i++){%>
+	<%if((i+1)%3==1){%>
+		<p style="color:red;">IDは<%=emp.getId() %>、名前は<%=emp.getName() %>です</p>
+	<%}else{ %>
+		<p>IDは<%=emp.getId() %>、名前は<%=emp.getName() %>です</p>
+	<%} %>
+<%} %>
+</body>
+</html>
+
+mjpurin  11:44
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class FormSampleServlet
+ */
+@WebServlet("/FormSampleServlet")
+public class FormSampleServlet extends HttpServlet {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String gender=request.getParameter("gender");
+		System.out.printf("送信データname:%s,gender:%s",name,gender);
+	}
+}
+
+mjpurin  12:47
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class FormSampleServlet
+ */
+@WebServlet("/FormSampleServlet")
+public class FormSampleServlet extends HttpServlet {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String gender=request.getParameter("gender");
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out=response.getWriter();
+		//System.out.printf("送信データname:%s,gender:%s",name,gender);
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8' />");
+		out.println("<title>Lesson</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<p>こんにちは"+name+"さん!</p>");
+		out.println("</body>");
+		out.println("</html>");
+	}
+}
+
+mjpurin  11:16
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Calc
+ */
+@WebServlet("/Calc")
+public class Calc extends HttpServlet {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		String strA=request.getParameter("a");
+		String strB=request.getParameter("b");
+		int result=Integer.parseInt(strA)+Integer.parseInt(strB);
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out=response.getWriter();
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8' />");
+		out.println("<title>Lesson</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.printf("<p>%s+%s=%d</p>%n",strA,strB,result);
+		out.println("</body>");
+		out.println("</html>");
+	}
+}
+
+mjpurin  11:36
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Calc
+ */
+@WebServlet("/Calc")
+public class Calc extends HttpServlet {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		String strA=request.getParameter("a");
+		String strB=request.getParameter("b");
+		int result=Integer.parseInt(strA)+Integer.parseInt(strB);
+		response.setContentType("text/html; charset=utf-8");
+		PrintWriter out=response.getWriter();
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8' />");
+		out.println("<title>Lesson</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.printf("<p>%s+%s=%d</p>%n",strA,strB,result);
+		out.println("<a href='/formLesson/index.html'>戻る</a>");
+		out.println("</body>");
+		out.println("</html>");
+	}
+}
+
+mjpurin  09:23
+package servlet;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Main
+ */
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String xStr=request.getParameter("x");
+		int x=xStr==null? 0:Integer.parseInt(xStr);
+		String yStr=request.getParameter("y");
+		int y=yStr==null? 0:Integer.parseInt(yStr);
+		int sum=x+y;
+		request.setAttribute("x", x);
+		request.setAttribute("y", y);
+		request.setAttribute("sum",sum);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
+		rd.forward(request, response);
+	}
+}
+09:23
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+int x=(Integer)request.getAttribute("x");
+int y=(Integer)request.getAttribute("y");
+int sum=(Integer)request.getAttribute("sum");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p><%=x %>+<%=y %>=<%=sum %></p>
+</body>
+</html>
+
+mjpurin  11:19
+package controller;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Main
+ */
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/main.jsp");
+		rd.forward(request, response);
+	}
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		String inchStr=request.getParameter("inch");
+		double cm=Double.parseDouble(inchStr)*2.54;
+		request.setAttribute("inch", inchStr);
+		request.setAttribute("cm", cm);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/result.jsp");
+		rd.forward(request, response);
+	}
+}
+11:20
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/inchapp/main" method="post">
+inchを入力:<input type="number" name="inch" step="0.1">
+<input type="submit" value="送信">
+</form>
+</body>
+</html>
+11:21
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+   	String inch=(String)request.getAttribute("inch");
+	double cm=(Double)request.getAttribute("cm");
+ %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p><%=inch %>inchは<%=cm %>cm</p>
+</body>
+</html>
+
+mjpurin  12:39
+package controller;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Main
+ */
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/form.jsp");
+		rd.forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		double h=Double.parseDouble(request.getParameter("h"));
+		double w=Double.parseDouble(request.getParameter("w"));
+		double area=h*w;
+		String areaStr=String.format("%.2f", area);
+		request.setAttribute("h", h);
+		request.setAttribute("w", w);
+		request.setAttribute("area", areaStr);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/result.jsp");
+		rd.forward(request, response);
+	}
+}
+12:40
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/calc3/main" method="post">
+h:<input type="number" name="h" step="0.1" value="0.0"><br>
+w:<input type="number" name="w" step="0.1" value="0.0"><br>
+<input type="submit" name="送信">
+</form>
+</body>
+</html>
+12:40
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+double h=(Double)request.getAttribute("h");
+double w=(Double)request.getAttribute("w");
+String area=(String)request.getAttribute("area");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>h:<%=h %></p>
+<p>w:<%=w %></p>
+<p>Area:<%=area %></p>
+</body>
+</html>
+
+mjpurin  12:46
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+double h=(Double)request.getAttribute("h");
+double w=(Double)request.getAttribute("w");
+String area=(String)request.getAttribute("area");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/calc3/main" method="post">
+h:<input type="number" name="h" step="0.1" value="0.0"><br>
+w:<input type="number" name="w" step="0.1" value="0.0"><br>
+<input type="submit" name="送信">
+</form>
+<% if(area !=null) {%>
+<p>h:<%=h %></p>
+<p>w:<%=w %></p>
+<p>Area:<%=area %></p>
+<%} %>
+</body>
+</html>
+
+mjpurin  13:10
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+Double h=(Double)request.getAttribute("h");
+h=h==null? 0.0:h;
+Double w=(Double)request.getAttribute("w");
+w=w==null? 0.0:w;
+String area=(String)request.getAttribute("area");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/calc3/main" method="post">
+h:<input type="number" name="h" step="0.1" value="<%=h%>"><br>
+w:<input type="number" name="w" step="0.1" value="<%=w%>"><br>
+<input type="submit" name="送信">
+</form>
+<% if(area !=null) {%>
+<p>Area:<%=area %></p>
+<%} %>
+</body>
+</html>
+
+mjpurin  13:17
+問題
+jyanken
+http://localhost:8080/jyanken/main
+手を選んでね
+〇 グー 〇 チョキ 〇パー　送信
+あなたはグー
+PCはチョキ
+あなたの勝ちです。
+hint
+<input type="radio" name="name" checked>
+checkedを付与することで選択済みとなる （編集済み） 
+
+mjpurin  13:28
+https://joytas.net/%e8%a8%93%e7%b7%b4/day46
+
+ミヤタ  08:56
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+ * Servlet implementation class Main
+ */
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("WEB-INF/jsp/qForm.jsp");
+		rd.forward(request, response);
+	}
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String handStr=request.getParameter("hand");
+		int handInt=Integer.parseInt(handStr);
+		int rand=new java.util.Random().nextInt(3)+1;
+		if(handInt==rand) {
+			request.setAttribute("judge", "引き分け");
+		}else if((handInt==1 && rand==2) || (handInt==2 && rand==3) || (handInt==3 && rand==1)) {
+			request.setAttribute("judge", "あなたの勝ちです。");
+		}else{
+			request.setAttribute("judge", "あなたの負けです。");
+		}
+		handStr=convert(handInt);
+		String pcHand=convert(rand);
+		request.setAttribute("hand", handStr);
+		request.setAttribute("pcHand", pcHand);
+		request.setAttribute("handInt", handInt);
+		doGet(request,response);
+	}
+	public static String convert(int num){
+		String str;
+		if(num==1) {
+			str="グー";
+			return str;
+		}else if(num==2) {
+			str="チョキ";
+			return str;
+		}else {
+			str="パー";
+			return str;
+		}
+	}
+08:57
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%
+    String hand=(String)request.getAttribute("hand");
+    String pcHand=(String)request.getAttribute("pcHand");
+    String judge=(String)request.getAttribute("judge");
+    Object o=request.getAttribute("handInt");
+    int handInt;
+    if(o!=null){
+    	handInt=(Integer)o;
+    }else{
+    	handInt=0;
+    }
+    String x="";
+    if(handInt==1){
+    	x="checked";
+    }
+    String y="";
+    if(handInt==2){
+    	y="checked";
+    }
+    String z="";
+    if(handInt==3){
+    	z="checked";
+    }
+    //String x=hand.equals("グー")? "checked":"";
+    //String y=hand.equals("チョキ")? "checked":"";
+    //String z=hand.equals("パー")? "checked":"";
+    %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/jyanken/main" method="post">
+<input type="radio" name="hand" value="1" <%=x %>>グー
+<input type="radio" name="hand" value="2" <%=y %>>チョキ
+<input type="radio" name="hand" value="3" <%=z %>>パー
+<input type="submit" value="送信">
+</form>
+<%if(hand!=null){%>
+<p>あなたは<%=hand %></p>
+<p>PCは<%=pcHand %></p>
+<p><%=judge %></p>
+<%} %>
+</body>
+</html>
+
+mjpurin  12:39
+数字をカンマ区切りで入力してください。
+33,12,44,6,54,10
+送信
+元の文字列:33,12,44,6,54,10
+要素数:6
+最大値:54
+最小値:6
+合計:159
+戻る
+アプリ名:numapp
+サーブレット1枚
+モデル2枚
+jsp2枚 （編集済み） 
+
+mjpurin  13:18
+問題文リンク
+https://joytas.net/programming/numapp
+
+sekizawa  08:51
+package servlet;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.calc;
+import model.numsave;
+@WebServlet("/main")
+public class main extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public main() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/format.jsp");
+		rd.forward(request,response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String num=request.getParameter("num");
+		numsave numsave=new numsave();
+		numsave.setNaturalNum(num);
+		calc calc=new calc();
+		calc.execute(numsave);
+		request.setAttribute("numsave", numsave);
+		RequestDispatcher rd=request.getRequestDispatcher("/result.jsp");
+		rd.forward(request,response);
+	}
+}
+08:51
+package model;
+public class calc {
+	public void execute(numsave numsave) {
+		String naturalNum = numsave.getNaturalNum();
+		String [] arraynum=naturalNum.split(",");
+		int element=arraynum.length;
+		int [] intnum=new int[element];
+		for(int i=0;i<arraynum.length;i++) {
+			intnum[i]=Integer.parseInt(arraynum[i]);
+		}
+		int max=intnum[0];
+		int min=intnum[0];
+		int sum=0;
+		for(int i=0;i<arraynum.length;i++) {
+			max=Math.max(max, intnum[i]);
+			min=Math.min(min, intnum[i]);
+			sum+=intnum[i];
+		}
+		numsave.setElement(element);
+		numsave.setMax(max);
+		numsave.setMin(min);
+		numsave.setSum(sum);
+	}
+}
+08:52
+package model;
+import java.io.Serializable;
+public class numsave   implements Serializable{
+private String naturalNum;
+private int element;
+private int max;
+private int min;
+private int sum;
+public numsave() {}
+public String getNaturalNum() {
+	return naturalNum;
+}
+public void setNaturalNum(String naturalNum) {
+	this.naturalNum = naturalNum;
+}
+public int getElement() {
+	return element;
+}
+public void setElement(int element) {
+	this.element = element;
+}
+public int getMax() {
+	return max;
+}
+public void setMax(int max) {
+	this.max = max;
+}
+public int getMin() {
+	return min;
+}
+public void setMin(int min) {
+	this.min = min;
+}
+public int getSum() {
+	return sum;
+}
+public void setSum(int sum) {
+	this.sum = sum;
+}
+}
+08:52
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/numapp/main" method="post">
+数字をカンマ区切りで入力してください。
+<input type="text" name="num" ><br>
+<input type="submit" value="送信">
+</form>
+</body>
+</html>
+08:52
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.numsave"%>
+    <%numsave numsave=(numsave)request.getAttribute("numsave");%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>
+元の文字列:<%=numsave.getNaturalNum() %><br>
+要素数:<%=numsave.getElement() %><br>
+最大値:<%=numsave.getMax() %><br>
+最小値:<%=numsave.getMin() %><br>
+合計:<%=numsave.getSum() %>
+</p>
+<a href="/numapp/main">戻る</a>
+</body>
+</html>
+
+mjpurin  10:37
+https://github.com/joytasnet/session
+
+joytasnet/session
+Language
+Java
+Last updated
+16 minutes ago
+<https://github.com/joytasnet/session|joytasnet/session>joytasnet/session | 3月4日 | 投稿したメンバー: GitHub
+
+mjpurin  11:47
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.User"%>
+<%
+User user=(User)session.getAttribute("registerUser");
+String id=user==null? "":user.getId();
+String pass=user==null? "":user.getPass();
+String name=user==null? "":user.getName();
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ユーザー登録</title>
+</head>
+<body>
+<form action="/session/RegisterUser" method="post">
+ログインID:<input type="text" name="id" value="<%=id%>"><br>
+パスワード:<input type="password" name="pass" value="<%=pass%>"><br>
+名前:<input type="text" name="name" value="<%=name%>"><br>
+<input type="submit" value="確認">
+</form>
+</body>
+</html>
+
+mjpurin  12:37
+https://joytas.net/programming/jsp-servlet_rsp
+
+ジョイタスネット
+JSP & Servlet(じゃんけんゲーム) | ジョイタスネット
+MVCに分割して以下のようなジャンケンゲームを作成してみよう。勝敗数はゲーム中保持される。 セッションスコープを利用すること。 ●実行すると以下のような画面が表示される。 ●手を選んで送信を押すと結果が表示される ●カウントをリセットするをクリックするとリセットされる
+2018年3月1日
+
+ミヤタ  09:01
+Jyanken.java 
+package servlet;
+​
+import java.io.IOException;
+import java.util.Random;
+クリックしてインライン表示する (81行)
+
+
+09:01
+Parameter.java 
+package model;
+​
+import java.io.Serializable;
+​
+public class Parameter implements Serializable{
+クリックしてインライン表示する (44行)
+
+
+09:01
+jyankenGame.jsp 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.Parameter"%>
+    <%
+    String action=request.getParameter("action");
+    Parameter parameter=(Parameter)session.getAttribute("userParameter");
+クリックしてインライン表示する (31行)
+
+
+
+mjpurin  09:43
+https://joytas.net/programming/jsp-servlet_rsp
+
+ジョイタスネット
+JSP & Servlet(じゃんけんゲーム) | ジョイタスネット
+MVCに分割して以下のようなジャンケンゲームを作成してみよう。勝敗数はゲーム中保持される。 セッションスコープを利用すること。 ●実行すると以下のような画面が表示される。 ●手を選んで送信を押すと結果が表示される ●カウントをリセットするをクリックするとリセットされる 1.新規動的プロジェクトでjyan2を作成する。 2.modelパッケージにRspクラスを以下のように作成する。 ●model.J
+2018年3月1日
+
+46cEQsLS  08:52
+package model;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+public class Num implements Serializable{
+	private List<Integer> userNum=new ArrayList<>();
+	private String strNum;
+	private int pcNum;
+	private String judge;
+	public List<Integer> getUserNum() {
+		return userNum;
+	}
+	public void setUserNum(List<Integer> userNum) {
+		this.userNum = userNum;
+	}
+	public String getStrNum() {
+		return strNum;
+	}
+	public void setStrNum(String strNum) {
+		this.strNum = strNum;
+	}
+	public int getPcNum() {
+		return pcNum;
+	}
+	public void setPcNum(int pcNum) {
+		this.pcNum = pcNum;
+	}
+	public String getJudge() {
+		return judge;
+	}
+	public void setJudge(String judge) {
+		this.judge = judge;
+	}
+}
+08:53
+package model;
+import java.util.List;
+import java.util.Random;
+public class Logic {
+	public void execute(Num num) {
+		int n=Integer.parseInt(num.getStrNum());
+		List<Integer> list=num.getUserNum();
+		list.add(n);
+		num.setUserNum(list);
+		int pcn=num.getPcNum();
+		if(pcn==0) {
+			pcn=new Random().nextInt(100)+1;
+			num.setPcNum(pcn);
+		}
+		if(n==pcn) {
+			num.setJudge("正解!");
+		}else if(n<pcn) {
+			num.setJudge("もっと上だよ");
+		}else {
+			num.setJudge("もっと下だよ");
+		}
+	}
+}
+08:53
+package servlet;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Logic;
+import model.Num;
+@WebServlet("/NumServlet")
+public class NumServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	public NumServlet() {
+		super();
+	}
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action=request.getParameter("action");
+		if(action!=null && action.equals("reset")) {
+			ServletContext application=this.getServletContext();
+			application.removeAttribute("num");
+		}
+		RequestDispatcher dispatcher=request.getRequestDispatcher("/WEB-INF/jsp/Index.jsp");
+		dispatcher.forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		ServletContext application=this.getServletContext();
+		String strnum=request.getParameter("num");
+		Num num=(Num)application.getAttribute("num");
+		if(num==null) {
+			num=new Num();
+		}
+		num.setStrNum(strnum);
+		Logic logic=new Logic();
+		logic.execute(num);
+		application.setAttribute("num", num);
+		doGet(request,response);
+	}
+}
+08:53
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*"%>
+    <%Num num=(Num)application.getAttribute("num"); %>
+	<%int n=num==null? 0:num.getUserNum().get(num.getUserNum().size()-1);%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>1~100の乱数を生成したよ<br>
+いくつかな？</p><br>
+<form action="/highlow/NumServlet" method="post">
+<input type="text" name="num"  value=<%=n %>><br>
+<input type="submit" value="送信">
+</form>
+<%if(num!=null){ %>
+<p><%=num.getJudge() %></p>
+<ol>
+<%for(int i=0;i<num.getUserNum().size();i++){ %>
+	<li><%=num.getUserNum().get(i) %></li>
+<%}%>
+</ol>
+<%}%>
+<%if(num!=null && num.getJudge().equals("正解!")){%>
+<a href="/highlow/NumServlet?action=reset">もう一度</a>
+<%} %>
+</body>
+</html>
+

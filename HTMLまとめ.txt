@@ -1,0 +1,532 @@
+【未経験・初心者用】HTMLのタグをまとめてみた。早見表として。
+
+ツイート
+ シェア
+はてブ
+Google+
+Pocket
+こんにちは。まるお（@nico2_hb）です！最近HTMLの勉強を初めました。
+
+一回書いてもすぐ忘れてしまうので後で見返せるようにHTMLタグの覚えを残しておきます！
+
+ 
+
+目次 [非表示]
+
+1 HTMLタグメモ一覧
+1.1 titleタグ
+1.2 divタグ
+1.3 spanタグ
+1.4 hタグ（見出し）
+1.5 pタグ（段落）
+1.6 emタグ（強調（斜体））
+1.7 strongタグ（重要性（太字））
+1.8 hrタグ（区切り線）
+1.9 blockquoteタグ（引用）
+1.10 qタグ（一部引用）
+1.11 addrタグ（略語）
+1.12 citeタグ（名前の特記）
+1.13 addressタグ（住所）
+1.14 codeタグ（コード）
+1.15 brタグ（改行）
+1.16 preタグ（プリフォーマット）
+1.17 olタグ（リスト（番号あり））
+1.18 dl、dt、ddタグ（項目と内容がセットのリスト）
+1.19 aタグ（アンカー（絶対パス））
+1.20 aタグ（アンカー（相対パス））
+1.21 aタグ（アンカー（ページ内のidに飛ばす））
+1.22 imgタグ（画像）
+1.23 iframeタグ（インラインフレーム）
+1.24 コメント
+1.25 table、thead、tbody、tfoot、tr、th、tdタグ（テーブル）
+1.26 inputタグ（一行テキスト）
+1.27 textareaタグ（複数行テキスト）
+1.28 inputタグ（ラジオボタン）
+1.29 inputタグ（チェックボックス）
+1.30 select、optionタグ（ドロップダウンメニュー）
+1.31 optgroupタグ（ドロップダウンメニューのグループ分け）
+1.32 fieldset、legend、labelタグ（グルーピング）
+1.33 input、buttonタグ（ボタン）
+1.34 formタグ（ボタン）
+HTMLタグメモ一覧
+titleタグ
+コード
+<title>マイページ</title>
+結果
+
+タグのタイトルになる。
+
+ 
+
+divタグ
+コード
+これは<div>div</div>です。
+結果
+
+divが１つのブロックとなるので「div」の前後に改行される。
+
+ 
+
+spanタグ
+コード
+これは<span>span</span>です。
+結果
+これはspanです。
+spanは文章の一部なので改行等はされない。
+
+ 
+
+hタグ（見出し）
+コード
+<h1>これはh1です</h1>
+<h2>これはh2です</h2>
+<h3>これはh3です</h3>
+<h4>これはh4です</h4>
+<h5>これはh5です</h5>
+<h6>これはh6です</h6>
+結果
+
+見出しのタグ。h1→h2→h3のように番号が飛ばないように使うこと。
+
+ 
+
+pタグ（段落）
+コード
+<p>段落１</p><p>段落２</p>
+結果
+段落１
+段落２
+
+ 
+
+emタグ（強調（斜体））
+コード
+私の名前は<em>まるお</em>です。
+結果
+私の名前はまるおです。
+ 
+
+strongタグ（重要性（太字））
+コード
+私の名前は<strong>まるお</strong>です。
+結果
+私の名前はまるおです。
+ 
+
+hrタグ（区切り線）
+コード
+<p>好きな食べ物は</p>
+<hr>
+<p>親子丼です。</p>
+結果
+
+ 
+
+blockquoteタグ（引用）
+コード
+<p>好きな歌詞は</p>
+<blockquote>君の夢が叶うのは誰かのおかげじゃないぜ（the pillows/funny bunny）</blockquote>
+<p>です！</p>
+結果
+
+他の記事などから引用する時に使う。まとめて引用する場合に使用する。
+
+『<blockquote cite=”https://naninaze.com/”>引用文章</blockquote>』のように「cite属性」を追加して引用元のURLの記載も出来る。
+
+ 
+
+qタグ（一部引用）
+コード
+<p>好きな歌詞は<q>君の夢が叶うのは誰かのおかげじゃないぜ</q>です！</p>
+結果
+
+他の記事などから引用する時に使う。まとめて引用する場合に使用する。
+
+『<q cite=”https://naninaze.com/”>引用文章</q>』のように「cite属性」を追加して引用元のURLの記載も出来る。
+
+ 
+
+addrタグ（略語）
+コード
+<addr title=”フォーリミテッドサザビーズ”>フォーリミ</addr>
+結果
+
+「titleタグ」を使って吹き出しの内容を決めることが出来る。
+
+ 
+
+citeタグ（名前の特記）
+コード
+aiueo
+<cite>aiueo</cite>
+結果
+
+文章内にある固有名詞などをわかりやすくするためのタグ。
+
+ 
+
+addressタグ（住所）
+コード
+住まいは<address>愛知県</address>です。
+結果
+
+文章内にある固有名詞などをわかりやすくするためのタグ。
+
+ 
+
+codeタグ（コード）
+コード
+this is <code>code</code>
+結果
+this is code
+ソースコードに利用する。
+
+ 
+
+brタグ（改行）
+コード
+私は<br>社畜です。
+結果
+私は
+社畜です。
+breakの略。
+
+ 
+
+preタグ（プリフォーマット）
+コード
+<pre>私は
+社畜です。</pre>
+結果
+私は
+社畜です
+入力した通りに表示させる。
+
+ 
+
+olタグ（リスト（番号あり））
+コード
+<ol>
+<li>１つめ</li>
+<li>２つめ</li>
+<li>３つめ</li>
+</ol>
+結果
+１つめ
+２つめ
+３つめ
+ 
+
+dl、dt、ddタグ（項目と内容がセットのリスト）
+コード
+<dl>
+<dt>質問</dt>
+<dd>答え</dd>
+</dl>
+dtタグ：項目
+ddタグ：内容
+ 
+
+結果
+質問
+答え
+ 
+
+aタグ（アンカー（絶対パス））
+コード
+<a href =”https://naninaze.com/”>My Link</a>
+ 
+
+結果
+My Link
+href属性にURLを設定するとそのページへのリングが作れる。
+
+ 
+
+aタグ（アンカー（相対パス））
+コード
+<a href=” watatei1-5654″>別の記事</a>
+<a href=”category/job-hunting”>カテゴリページ<a>
+
+結果
+別の記事
+カテゴリページ
+このファイルがあるフォルダを基準として書く。
+
+同じフォルダ内のファイル：ファイル名のみ
+下の階層のフォルダのファイル：フォルダ名/ファイル名
+上の階層のファイル：../ファイル名
+2階層上のファイル：../../ファイル名
+ 
+
+ 
+
+aタグ（アンカー（ページ内のidに飛ばす））
+コード
+<a href =”#tobusaki”>My Link</a>
+<br>
+
+<br>
+
+<br>
+
+<div id=”tobusaki>ここに飛ばす！</div>
+
+ 
+
+結果
+My Link
+ 
+
+ 
+
+ 
+
+ここに飛ばす！
+href属性に#idを設定するとそこまで飛ぶ。
+
+ 
+
+imgタグ（画像）
+コード
+<img src=”https://naninaze.com/wp-content/uploads/2019/01/maruo.jpeg” alt=”まるおの似顔絵” title=”まるお” width=”100″ height=”150″>
+src属性：画像を指定
+alt属性：画像の説明
+title属性：画像のタイトル
+width属性：横の長さ
+height属性：縦の長さ
+ 
+
+結果
+まるおの似顔絵
+ 
+
+iframeタグ（インラインフレーム）
+コード
+<iframe src=”https://naninaze.com/contact” width=”300″ height=”200″>
+src属性：表示させるファイル
+width属性：横の長さ
+height属性：縦の長さ
+ 
+
+結果
+
+ 
+
+コメント
+コード
+私の年齢は
+<!– 誕生日を迎えたら増やすこと！ –>
+
+29です。
+
+ 
+
+結果
+私の年齢は29です。
+ 
+
+table、thead、tbody、tfoot、tr、th、tdタグ（テーブル）
+コード
+<table border=”1″>
+<thead>
+<tr>
+<th>日本語</th>
+<th>英語</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>東京</td>
+<td>tokyo</td>
+</tr>
+<tr>
+<td>愛知</td>
+<td>aichi</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td colspan=”2″>海外</td>
+</tr>
+</tfoot>
+</table>
+tableタグ：テーブル
+theadタグ：ヘッダー部分
+tbodyタグ：データ部分
+tfootタグ：フッター部分
+trタグ：行
+thタグ：セル（ヘッダー）
+tdタグ：セル（データ）
+border属性：線の種類
+colspan属性：セルをいくつ結合するか
+ 
+
+結果
+日本語	英語
+東京	tokyo
+愛知	aichi
+海外
+ 
+
+inputタグ（一行テキスト）
+コード
+<input type=”text”><BR>
+<input type=”password”>
+
+type=”text”：一行タイプ
+type=”password”：パスワードタイプ
+ 
+
+結果
+
+ 
+
+textareaタグ（複数行テキスト）
+コード
+<textarea rows=”3″ cols=”40″></textarea>
+rows属性：縦幅（行数）
+cols属性：横幅（文字数）
+ 
+
+結果
+ 
+
+inputタグ（ラジオボタン）
+コード
+・バンド<br>
+<input type=”radio” name=”band” value=”acidman”>ACIDMAN
+<input type=”radio” name=”band” value=”andymori”>andymori
+・ゲーム<br>
+<input type=”radio” name=”game” value=”splatoon”>スプラトゥーン
+<input type=”radio” name=”game” value=”monhan”>モンハン
+name属性が同じものの中で１つしか選択できない。value属性が送信する値。
+
+ 
+
+結果
+・バンド
+ACIDMAN
+andymori
+・ゲーム
+スプラトゥーン
+モンハン
+ 
+
+inputタグ（チェックボックス）
+コード
+・バンド<br>
+<input type=”checkbox” name=”band” value=”acidman”>ACIDMAN
+<input type=”checkbox” name=”band” value=”andymori”>andymori
+・ゲーム<br>
+<input type=”checkbox” name=”game” value=”splatoon”>スプラトゥーン
+<input type=”checkbox” name=”game” value=”monhan”>モンハン
+name属性が同じものの中で複数選択ができる。value属性が送信する値。
+
+ 
+
+結果
+・バンド
+ACIDMAN
+andymori
+・ゲーム
+スプラトゥーン
+モンハン
+ 
+
+select、optionタグ（ドロップダウンメニュー）
+コード
+<select name=”04LimitedSazabys”>
+<option value=”bustercall”>buster call</option>
+<option value=”swim”>swim</option>
+<option value=”remenber”>remember</option>
+</select>
+selectタグにはname属性
+optionタグにはvalue属性
+ 
+
+結果
+
+buster call
+ 
+
+optgroupタグ（ドロップダウンメニューのグループ分け）
+コード
+<select name=”song”>
+<optgroup label=”04LimitedSazabys”>
+<option value=”bustercall”>buster call</option>
+<option value=”swim”>swim</option>
+<option value=”remenber”>remember</option>
+</optgroup>
+<optgroup label=”パスピエ”>
+<option value=”toroimerai”>トロイメライ</option>
+<option value=”lasttrain”>最終電車</option>
+<option value=”tokinowa”>トキノワ</option>
+</optgroup>
+</select>
+結果
+
+ 
+
+fieldset、legend、labelタグ（グルーピング）
+コード
+<fieldset>
+<legend>ログイン名とパスワード</legend>
+<label for=”komoku1″>ログイン名</label><input type=”text” name=”login” id=”komoku1″><BR>
+<label for=”komoku2″>パスワード</label><input type=”password” name=”pass” id=”komoku2″><BR>
+</fieldset>
+fieldsetタグ：複数の入力欄をまとめる
+legendタグ：まとめた項目の説明
+labelタグ：入力欄のラベルとして利用
+for属性：idを指定する。idは１ページに２つ以上同じ名前を設定できない。
+id属性：その部品にidをつけてあげる（一位になるためのID）
+ 
+
+結果
+ログイン名とパスワード
+ログイン名
+
+パスワード
+
+ 
+
+input、buttonタグ（ボタン）
+コード
+<button>ボタン１</button><BR>
+<input type=”submit” value=”ボタン２”>
+inputの場合はtype=”submit”とすればボタンになる。
+
+inputタグ：入力したデータを送信する時に使う
+buttonタグ：JavaScriptなどを使って処理を行う際に使う
+ 
+
+結果
+ボタン１
+ 
+
+formタグ（ボタン）
+コード
+<form method=”POST” action=”#”><br>
+<input type=”text”><br>
+<input type=”password”><br>
+<input type=”submit” value=”送信”><br>
+</form>
+formタグ：送信したい入力項目を挟む（すべて送りたい場合はbody内全てを囲む等）
+
+method属性：送り方（GETかPOST）
+
+action属性：送り先（#の場合は自分）
+
+GETとPOSTの違い
+POST
+裏でまとめて送る方式。表に出てこないためセキュリティに強い
+
+GET
+URLの一部として送る方法。表に出てくるためセキュリティに多少弱い
+
+ 
+
+結果
+
+
+※送信を押すとページ更新が走ります。ただの更新なので安心して下さい！

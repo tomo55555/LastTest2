@@ -1,0 +1,3707 @@
+★Day64
+
+ターミナルでのPython開発(Win)
+
+winはアナコンダのパスを通す。
+http://ac-stegral.hateblo.jp/entry/2018/04/17/005218
+文字化けさせない対策
+
+# ~/.bashrcに以下を追記
+export PYTHONIOENCODING=utf8
+
+# 読み込み
+$ source ~/.bashrc
+ジョイタスネットでのPython演習
+link
+https://joytas.net/programming/python/dog_year
+https://joytas.net/programming/python/python-bmi1
+https://joytas.net/programming/python/python-bmi2
+https://joytas.net/programming/python/moon
+https://joytas.net/programming/python/steps
+https://joytas.net/programming/python/hilow
+
+じゃんけんアプリ制作
+手を入力(0.グー,1.チョキ,2.パー)> 1
+あなたはチョキ
+PCはチョキ
+あいこ。
+手を入力(0.グー,1.チョキ,2.パー)> 1
+あなたはチョキ
+PCはグー
+あなたの負けです。。。
+
+import random
+hands=['グー','チョキ','パー']
+results=['あいこ','あなたの負けです!','あなたの勝ちです']
+while True:
+    user = int(input(f'手を入力(0.{hands[0]},1.{hands[1]},2.{hands[2]})>'))
+    pc=random.randint(0,len(hands)-1)
+    print(f'あなたは{hands[user]}')
+    print(f'PCは{hands[pc]}')
+    diff=(user+3-pc)%3
+    print(results);
+    if  diff !=0:
+        break
+教科書演習問題p185~p186
+フィボナッチ解答例
+nums=[1,1]
+while True :
+    num=nums[len(nums)-2]+nums[len(nums)-1]
+    if num > 1000:
+        break
+    nums.append(num)
+print(nums)
+ratios=[]
+for i in range(1,len(nums)):
+    ratios.append(int((nums[i]/nums[i-1])*1000)/1000)
+print(ratios)
+
+
+Python ミッション1_犬年齢計算機
+
+今回から簡単な演習問題を通してpythonを学習していく。python3を使って行っていくので実行環境を整えて行ってもらいたい。
+Windowsなら
+「win python3 インストール」
+Macなら
+「mac python3 インストール」
+あたりでググればいくらでも情報が出てくる。やりやすそうな記事を見つけてインストールしてもらいたい。
+pythonは2ではなく新しい3で行っていくのでそこだけは注意してほしい。
+
+なお、この講座はプログラミング超初心者を対象としているので全くプログラム経験がなくても大丈夫だ。
+OK。では早速やっていこう。
+
+ミッション１＿犬年齢計算機
+犬の年齢を人間の年齢に換算するには７をかけるという方法がある。
+これを用いて、ユーザーに犬の名前と年齢を入力してもらうと人間の年齢に換算した値を出力するプログラムを作ってみよう。
+[実行例]
+
+1
+犬の名前を入力してください>John [enter]
+2
+犬の年齢を入力してください>2 [enter]
+3
+Johnは今2才、人間の年齢に換算すると14才です。
+[作っていこう]
+ではさっそく犬年齢計算機を作っていこう。
+1.「出力」
+まずは「犬の名前を入力してください>」と出力しなければならない。
+テキストエディタで
+
+1
+print('犬の名前を入力してください>')
+と1行入力して。ファイルの名前をdog_year.pyとして保存してから実行してみよう。
+
+1
+犬の名前を入力してください>
+と無事出力されたであろうか？
+このようにpythonでは、画面への出力にprint命令を使う。
+その際丸括弧の中に出力したいものを入れる。
+今回は「犬の名前を入力してください>」という文字列を表示した。このような文字列を作る場合にはシングルコーテーションで囲うのを忘れてはならない。
+
+2.「入力」
+次はユーザーから犬の名前を入れてもらう処理だ。
+以下のように一行追加し実行してみよう。
+
+1
+print('犬の名前を入力してください>')
+2
+input()
+犬の名前を入力してください>
+と出力した後改行され、入力待ちになっているのでJohnでもポチでもなんでもいいので犬の名前をいれてエンターキーを押す。
+
+1
+犬の名前を入力してください>
+2
+John
+ここまでよろしいだろうか？
+ユーザーから入力をしてもらう命令がinput()だ。
+
+3.「変数」
+ユーザーから入力してもらった犬の名前は結果出力でも使うので保存しておきたい。
+以下のように修正しよう。
+
+1
+print('犬の名前を入力してください>')
+2
+dog_name=input()
+実行してみても先ほどと変わらないがここで用意したdog_nameという変数がその情報を保持している。
+ここでdog_nameというのは犬の名前だからという意味でつけた変数名でこれはinu_nameでもnameでもaでもbでもなんでもよい。
+ただ普通はそれが何を保持しているのかわかりやすい名前をつける。
+これでdog_nameという変数がユーザーが入力した内容を保持している。以下のように追記して出力してみよう。
+
+1
+print('犬の名前を入力してください>')
+2
+dog_name=input()
+3
+print(dog_name)
+実行結果
+
+1
+犬の名前を入力してください>
+2
+John
+3
+John
+実行してみると
+print(dog_name)
+によって入力した内容が表示される。このように変数をprint命令のカッコの中にいれるとその保持している内容を出力する。
+ここでは
+print('dog_name')
+とシングルコーテーションでくくっていはいけない。くくってしまうとdog_nameとそのまま出力されてしまう。
+
+4.「複数の出力」
+続いて以下のように変更しよう。
+
+1
+print('犬の名前を入力してください>')
+2
+dog_name=input()
+3
+print(dog_name,'と入力されました。')
+実行結果
+
+1
+犬の名前を入力してください>
+2
+John
+3
+John と入力されました。
+print命令はカッコの中にカンマ区切りで複数の値を並べることによって複数の値を一度に出力することができる。
+
+5.「input命令の便利な使い方」
+今回のように何かを出力してから入力してもらう機会は多い。pythonではこれを一度に行うことができる。
+以下のように修正しよう。
+
+1
+dog_name=input('犬の名前を入力してください>')
+2
+print(dog_name,'と入力されました')
+実行結果
+
+1
+犬の名前を入力してください>John
+2
+John と入力されました。
+input命令のカッコの中に文字列を入れるとそれを出力してから入力待ちになる。
+先ほどまで2行に分けていた処理を一つにまとめた感じだ。さきほどまであったprint命令による改行処理もなくなって同じ行に入力できるようになっている点も注目だ。
+
+6.
+犬の年齢も入力してもらおう。以下のように修正する。
+
+1
+dog_name=input('犬の名前を入力してください>')
+2
+dog_age=input('犬の年齢を入力してください>')
+3
+print('名前:',dog_name,'年齢:',dog_age)
+実行結果
+
+1
+犬の名前を入力してください>John
+2
+犬の年齢を入力してください>2
+3
+名前: John 年齢: 2
+あらたに年齢を保持するdog_nameという変数を用意してそこに値を格納している。ここまではよろしいだろうか？
+
+7.
+それでは計算をしていこう。pythonでは足し算、引き算、掛け算、割り算などを行うことができる。
+一つkeisan.pyという別ファイルを作って確認しておこう。
+
+01
+a=10
+02
+b=5
+03
+ 
+04
+answer=a+b
+05
+print(a,'+',b,'=',answer)
+06
+ 
+07
+answer=a-b
+08
+print(a,'-',b,'=',answer)
+09
+ 
+10
+answer=a*b
+11
+print(a,'*',b,'=',answer)
+12
+ 
+13
+answer=a/b
+14
+print(a,'/',b,'=',answer)
+実行結果
+
+1
+10 + 5 = 15
+2
+10 - 5 = 5
+3
+10 * 5 = 50
+4
+10 / 5 = 2.0
+変数aとbに値を入れて四則演算をしている。掛け算は*,割り算は/を使う。
+pythonは割り算の結果は常に実数になる点も注目だ。
+
+8.
+再びdog_year.pyに戻ろう。
+掛け算のやり方もわかったのでゴールは近い。さっそく以下のように修正しよう。
+
+1
+dog_name=input('犬の名前を入力してください>')
+2
+dog_age=input('犬の年齢を入力してください>')
+3
+human_age=dog_age*7
+4
+print('名前:',dog_name,'年齢:',dog_age,'人間に換算した年齢:',human_age)
+実行結果
+
+1
+犬の名前を入力してください>John
+2
+犬の年齢を入力してください>2
+3
+名前: John 年齢: 2 人間に換算した年齢: 2222222
+おや、人間に換算した年齢がいくらなんでも大きすぎる。何事であろうか？
+実はpythonは文字列を掛け算した場合、その回数分文字列を連結した文字を作る。
+以下のソースで確認しよう。
+
+1
+str='Hello'*5
+2
+print(str)
+実行結果
+
+1
+HelloHelloHelloHelloHello
+9.
+これで謎が解けた、どうやら2という入力が数値ではなく文字と解釈されてしまったようだ。
+このようにinput命令で受け取った値はそれがなんであれ文字列として解釈される。
+このままでは計算できないのでそれを整数に変換する処理が必要だ。以下のように修正する。
+
+1
+dog_name=input('犬の名前を入力してください>')
+2
+dog_age=input('犬の年齢を入力してください>')
+3
+human_age=int(dog_age)*7
+4
+print('名前:',dog_name,'年齢:',dog_age,'人間に換算した年齢:',human_age)
+実行結果
+
+1
+犬の名前を入力してください>John
+2
+犬の年齢を入力してください>2
+3
+名前: John 年齢: 2 人間に換算した年齢: 14
+int()命令を使うことによって文字列から数値に変換できる。
+今回はこのint命令のカッコの中に変換したい変数dog_ageを入れている。こうすることによって文字の２から数値の2に変換できるわけだ。
+
+10.
+最後に出力がそっけないので以下のように修正しよう。
+
+1
+dog_name=input('犬の名前を入力してください>')
+2
+dog_age=input('犬の年齢を入力してください>')
+3
+human_age=int(dog_age)*7
+4
+print(dog_name,'は今',dog_age,'才、人間の年齢に換算すると',human_age,'才です。',sep='')
+print命令の中でsep=’文字’とすることで連結部分の文字を指定できる。今回はこの部分を”というシングルコーテーション２つの空文字列にすることによって半角スペースの隙間を無くしている。
+
+完成
+以上で完成だ。まずは変数、print命令、input命令、四則演算あたりから徐々に慣れていこう。
+
+Python ミッション2_BMI測定機(1)
+
+太っているか痩せているかを数値で表せるBMIというのご存知だろうか？
+BMI=体重kg / (身長m * 身長m)
+BMIは体重を身長の２乗で割って求めることができる。体重が分子にきているので太っているほどBMIは大きくなる。
+
+今回はユーザーに身長と体重を入力してもらいBMIを測定し、その結果太っているのか痩せているのを判定するアプリを作成する。
+まずは実行例を見てみよう
+
+1
+身長(cm)を入力してください>160
+2
+体重(kg)を入力してください>52
+3
+BMI: 20.312499999999996
+4
+標準体重 です
+[作ってみよう]
+1.
+まずは前回同様、文字を表示して入力受付だ。
+
+1
+height=input('身長(cm)を入力してください>')
+2
+weight=input('体重(kg)を入力してください>')
+これでユーザーの身長をheight,体重をweightという変数に保持することができる。
+ただ気をつけなければならないのは数値を入力しても、内部では文字列として扱われるのでこのままでは計算ができない。変換をする必要がある。
+また、BMIの計算では身長の単位はmだ。この２点を踏まえて先ほどのコードに追記しよう。
+
+1
+height=input('身長(cm)を入力してください>')
+2
+weight=input('体重(kg)を入力してください>')
+3
+height=float(height)/100
+4
+weight=float(weight)
+前回はユーザーが入力したデータをint()を使って整数に変換したが今回はBMIの計算なので実数(小数点のある値)に変換する。
+文字列を実数に変換するにはfloat()命令を使えばよい。
+ここではユーザー入力したデータを実数に変換した後、100で割ってcmからmに変換している。(160cmは1.6m)
+
+「実はプログラミングはここの理解が大事!」
+実はこの変換している3行目はプログラムを学ぶ上でとても大事なエッセンスがぎゅっと詰まっている。
+別の例で少し確認しておこう。
+
+1
+x=10
+2
+x=x+100
+3
+print(x)
+なんと表示されるかわかるだろうか？
+これは110と表示されるプログラムだ。
+
+まずは1行目これはいいだろう。10という値を変数xに代入している。
+次に2行目。ここをしっかり理解することが兎にも角にも大事だ。
+プログラムはイコール記号(=)が出てきたらまず右辺が評価される。
+上の例でいうと右辺はx+100だ。評価の際には変数に入っている値は取り出されるつまりxは10と評価され
+右辺は10+100という状態になる。10+100はいうまでもなく110だ。
+結果
+x=110
+となる。これは一行目と同じ状態だ。改めてxに110が代入される。
+xが10だったのが110に変わった。
+このように変数はどんだん値を変えて行くことができる。その際古い値は消えて行く。ちょうど上書きしていくイメージだ。
+
+「イコール記号が意味すること」
+算数で出てくるイコール記号(=)は右辺と左辺が等しいことを表す記号だ。
+しかし、プログラムで出てくるイコール記号は意味が全く違う。右辺で評価された結果を左辺に代入する。
+常に右から左へ流れだ。
+
+プログラムで出てくる=は算数で出てきた=とは全く意味が違う。
+
+ここをまずしっかりと認識することが大事だ。
+
+なので算数ならば普通にできる右辺と左辺の入れ替え
+x+100=x
+こんなことはできるわけがない。即座にエラーだ。
+
+1
+x+100=x
+2
+    ^
+3
+SyntaxError: can't assign to operator
+=記号の意味することがわかってきたであろうか？
+
+ここで改めて先ほどのコードの身長部分を抜き出して見てみよう
+
+1
+height=input('身長(cm)を入力してください>')
+2
+height=float(height)/100
+1
+height='160' #右辺がユーザーが入力した内容に置き換わる
+2
+height=float(height)/100
+1
+height='160'
+2
+height=float('160')/100　#右辺にある変数は値が取り出される
+1
+height='160'
+2
+height=160.0/100　#float()命令によって文字列が実数に変換された
+1
+height='160'
+2
+height=1.6 #1.6という値がheightに代入される
+内部でおこっている挙動を順番に記した。
+height変数に1.6が入るまでの経緯が理解できたであろうか？
+
+OK。ここまで理解できればBMIはすぐ計算できる。さきほどのファイルに追記しよう。
+
+1
+height=input('身長(cm)を入力してください>')
+2
+weight=input('体重(kg)を入力してください>')
+3
+height=float(height)/100
+4
+weight=float(weight)
+5
+bmi=weight/(height*height)
+6
+print('BMI:',bmi)
+無事にユーザーのBMIを表示するところまでできた。
+次回はBMIの値によってデブなのかヤセなのかあるいは普通なのかを表示する処理をつくっていく。
+
+Python ミッション2_BMI測定機(2)
+
+さて前回の続きだ。
+まずはここまでのコードを再掲しておこう。
+
+1
+height=input('身長(cm)を入力してください>')
+2
+weight=input('体重(kg)を入力してください>')
+3
+height=float(height)/100
+4
+weight=float(weight)
+5
+bmi=weight/(height*height)
+6
+print('BMI:',bmi)
+[実行例]
+
+1
+身長(cm)を入力してください>160
+2
+体重(kg)を入力してください>52
+3
+BMI: 20.312499999999996
+今回はこの算出されたBMIに基づいて、以下の基準に基づいて太っているかどうかの判定を行う。
+
+BMI	判定
+25以上	肥満
+18.5以上25未満	標準体重
+18.5未満	痩せ型
+「作ってみよう」
+それではさっそく作っていこう。
+今回はBMIの値によって処理を分岐させなくてはならない。
+pythonではif文というのを使う。
+まずはpythonでの基本的なif文を学習していこう。
+
+if文
+1
+x=10
+2
+if x>0:
+3
+  print('正の数です。')
+これは変数xに正の数が入っている時に
+正の数です。
+と表示される処理だ。
+
+1
+if 条件:
+2
+    #ここにその条件が正しい時の処理を書く
+その際に処理を書く部分は字下げ(インデント）を行わなくてはならない。
+
+if ~ else 文
+今回は正の場合のみ表示する処理だが、そうでない場合も表示するようにしよう。
+以下のように変更する。
+
+1
+x=10
+2
+if x>0:
+3
+    print('正の数です。')
+4
+else:
+5
+    print('正の数ではありません。')
+条件式が成立しないとき（偽のとき)の処理を書きたい場合にはelse:をつける。
+(処理を書く部分はインデントしなくてはならないのは同様)
+
+試しにx=-10にして実行してみよう。
+正の数ではありません。
+と表示される。
+
+上の例ではxが０より大きいかどうかという判定を行ったが、この判定には様々なものがある。
+以下に例を示す。
+
+x == 10 (xが10と等しい時)
+x > 10 (xが10より大きい時)
+x < 10 (xが10より小さい時)
+x >= 10 (xが１0以上の時)
+x <= 10 (xが10以下の時)
+x != 10 (xが10ではない時)
+if ~ elif ~else 文
+さらに複雑な分岐を行いたい場合がある。例えば点数によって優、良、可、不可に分類させる時などだ。
+この場合、以下のようなコードとなる。
+
+1
+score = 64
+2
+if score > 80:
+3
+    print('優')
+4
+elif score > 60:
+5
+    print('良')
+6
+elif score > 40:
+7
+    print('可')
+8
+else:
+9
+    print('不可')
+結果は良と表示されるが内部での流れを説明する。
+まず一行目はよいだろう、変数scoreに64を代入している。
+そしてif文だ。if文は上から順番に判定をしていく。最初はscore > 80 という判定だ。
+64 > 80
+となるのでこれは正しくない(偽)。なのでprint(‘優’)は行わずに次のelif に進む
+64 > 60
+これは正しい(真)。正しい時にはその直後の処理を行う。ここではprint(‘良’)を実行する。
+そして、ここが大事なのだが一連のif ~elif ~elseの流れでは一つ成立したら以降の判定はおこなわれない。
+したがって64は40よりも大きいのであるがprint(‘可’)が実行されることはない、
+
+なので判定していく順番はしっかり考えなければならない。
+以下はこの点を考慮せず誤ってコーディングしてしまった例だ。
+
+1
+score = 64
+2
+if score > 40:
+3
+    print('可')
+4
+elif score > 60:
+5
+    print('良')
+6
+elif score > 80 :
+7
+    print('優')
+8
+else:
+9
+    print('不可')
+これだと思うような結果にならない。ここでは64点でもあるにもかかわらず、「可」と出力されてしまうことがわかるだろう。
+
+BMI計算機のつづき
+OK。これでif文の基本はばっちりだ。BMI計算機を仕上げていこう。
+以下のように追記する。
+
+01
+height=input('身長(cm)を入力してください>')
+02
+weight=input('体重(kg)を入力してください>')
+03
+height=float(height)/100
+04
+weight=float(weight)
+05
+bmi=weight/(height*height)
+06
+print('BMI:',bmi)
+07
+if bmi>=25:
+08
+    result='肥満'
+09
+elif bmi>=18.5:
+10
+    result='標準体重'
+11
+else:
+12
+    result='痩せ型'
+13
+print(result,'x')
+以上で完成だ。if文の出てこないプログラムというのはまず存在しない。
+しっかりと練習していこう。
+
+Python ミッション3_月に到達するには
+
+さっそくだが、クイズだ。
+Q.
+厚さ１mmの紙がある。これを２つに折り曲げると2mmになる。もう一度折り曲げると4mm….
+この作業を繰り返し行うと何回で月に届くであろうか？。なお月までの距離は384,400 kmである。
+
+さて、どのくらいであろうか。
+100回?1000回?10000回?
+
+今回はこのクイズをpythonを使って解いてみよう。
+
+今回は厚みを２倍にする処理を繰り返し行えばよさそうだ。
+こういった時、pythonではwhile文を使う。
+
+本題に取り掛かる前にwhile文の基本を学ぼう。
+
+1
+while 条件:
+2
+    #条件が正しいとき行う処理
+具体的なソースコードにしてみる。
+
+1
+n=0
+2
+while n<10:
+3
+    print(n)
+4
+    n=n+1
+5
+print('終了')
+[実行結果]
+
+01
+0
+02
+1
+03
+2
+04
+3
+05
+4
+06
+5
+07
+6
+08
+7
+09
+8
+10
+9
+11
+終了
+一行目で変数nに0を代入している。
+while文ではまず条件の判定を行う。
+nは最初0なので
+0<10
+これは真となるので、字下げされた部分の処理を行う。
+0と出力して、nに１を足している。
+字下げされた部分が終わったら再び条件に戻って判定を行う。
+nは１になっているので
+1<10
+また真なので処理を行う。
+1と出力してnを１増やす
+条件に戻って判定
+2<10
+出力、nを1増やす
+以下同様に繰り返しnが9の時、条件は
+9<10
+となって真。
+9と出力してnを１増やす
+条件に戻って判定
+10<10
+これは正しくない,偽だ。
+偽になったならwhile文を抜ける。
+-----
+条件を満たしている間、ループする感じを掴めただろうか？
+ここで大事なのが処理の中の以下の部分だ。
+n=n+1
+これがないとnはずっと0のままで条件が偽になることがなくなってしまい「無限ループ」となってしまう。
+
+問題にチャレンジ
+OK。while文の基本がわかったのでさっそく月の問題にチャレンジしよう。
+まず必要となる値を宣言しよう
+
+1
+dist=384400000000 # 月までの距離(mm)
+2
+thickness=1 # 紙の厚さ(mm)
+3
+count=0 # 折り曲げた回数
+384400キロをmmに変換している。キロはメートルの1000倍、メートルはmmの1000倍なので0を6個増やせば良い。
+紙の厚みを管理する変数thicknessを作って最初の厚み1mmを代入している
+countは何回折り曲げたかを管理する変数だ。最初は0
+ちなみにソースコードについている
+#　紙の厚さ(mm)
+はコメント文で、これはプログラムの実行に影響を与えない。今回みたいにメモ書きなどをしたい場合に使う。#記号の後ろはコメントとして扱われる。
+
+while文
+それではwhile文を作成しよう。紙の厚みが月の距離より短い間、繰り返し処理を行えばよさそうだ。
+while thickness < dist:
+あとはこの中に２倍する処理、カウントを増やす処理を入れればよい。
+追記していこう。
+
+1
+dist=384400000000 # 月までの距離(mm)
+2
+thickness=1 # 紙の厚さ(mm)
+3
+count=0 # 折り曲げた回数
+4
+ 
+5
+while thickness < dist:
+6
+    thickness=thickness*2 # 厚みを2倍にする
+7
+    count=count+1 # 回数を1増やす
+8
+    # 状況を出力
+9
+    print(count,'回折り曲げた','厚み:',thickness)
+今回は途中の厚みも毎回表示するようにしてみた。
+
+while文を抜けた時が月の距離を超えた時だ。
+最後のその回数を出力しよう。
+
+01
+dist=384400000000 # 月までの距離(mm)
+02
+thickness=1 # 紙の厚さ(mm)
+03
+count=0 # 折り曲げた回数
+04
+ 
+05
+while thickness < dist:
+06
+    thickness=thickness*2 # 厚みを2倍にする
+07
+    count=count+1 # 回数を1増やす
+08
+    # 状況を出力
+09
+    print(count,'回折り曲げた','厚み:',thickness)
+10
+ 
+11
+# while文を抜けたら結果を出力
+12
+print(count,'回で月に到達しました。')
+なんと39回で月に到達してしまった。このように倍々に増えていく事象は大爆発する。
+
+バイバインの検証
+倍々で思い出したが、ドラえもんの道具でものを５分ごとに倍にしていく「バイバイン」というのがある。
+漫画の中ではのび太が栗まんじゅうにかけて処理しきれなくなり宇宙に送るという暴挙で終わるのだが,実際にどの程度増えるのかpythonで検証してみよう。
+
+1
+n=1 # 最初の個数
+2
+minute=0 # 経過時間
+3
+days=1 # 検証日数
+4
+day_minute=days*60*24 # 分に換算
+5
+while minute < day_minute:
+6
+    n*=2 # n=n*2と同意、個数を２倍にする
+7
+    minute+=5 # n=n+5と同意、５分進める
+8
+    print(minute,'分後',n) # 途中経過出力
+9
+print(n) # 結果出力
+結果(1日)
+497323236409786642155382248146820840100456150797347717440463976893159497012533375533056
+たった1日でとんでもない数だ。
+
+興味がある人はdaysの値を3とか10にしてみよう。
+のび太のしてしまった暴挙の恐ろしさがわかる。
+
+Python ミッション4_階段を作ろう
+
+今回作るものをまずは確認しよう。
+[実行例]
+
+何段の階段を作る?>5
+*
+**
+***
+****
+*****
+階段の高さを入力すると*によって上のような階段を描画するプログラムだ。
+今回は*を繰り返し出力するわけだがこういった時にはfor文を使う。
+まずはfor文の基礎から学習しよう。
+
+1
+for i in range(5):
+2
+    print(i)
+[結果]
+
+0
+1
+2
+3
+4
+まずはrange()メソッドの理解が必要だ。これは引数に5などを指定すると
+range(5) # 0,1,2,3,4
+といった並び式を生成する。引数二つだと開始を指定できる
+range(3,5) # 3,4
+さらに引数３つでstepを指定できる
+range(1,10,3) # 1,4,7
+
+for文はこの並び式を先頭から一つずつ取り出しながら繰り返し処理をする。
+つまり、
+
+1
+for i in range(5):
+2
+    print(i)
+とすれば最初は0を取り出してそれをiに代入する。
+そしてスイート(実行される処理部)に進みそのiを出力している。
+for文はその並び式の要素がなくなるまでそれを繰り返す。
+今回で言えば0,1,2,3,4と一つずつ取り出しながら5回繰り返し処理を行うわけだ。
+
+一般にfor文は以下のように表せる。
+
+for 変数 in 並び式:
+    スイート
+OKだろうか？基本的な問題をやっておこう。
+問題
+1から10まで以下のように出力せよ。
+1 2 3 4 5 6 7 8 9 10
+[解答]
+
+1
+for i in range(1,11):
+2
+    print(i,end=' ')
+3
+print()
+注意すべき点はrange()の第２引数の値はn-1の値までしか使われない点だ。今回のように10まで使いたい時は11を指定する必要がある。
+それと今回はprint()の引数にend=’ ‘ というを付け加えている。こうすると改行することなしに、指定した文字を最後に出力する。（今回は半角スペース)
+そしてfor文を抜けた後にprint()として改行処理を行っている。
+
+2重for文
+for文は入れ子にすることができる。
+さっそくサンプルを見てみよう。
+
+1
+for i in range(1,4):
+2
+    for j in range(1,11):
+3
+        print(i*j,end=' ')
+4
+    print()
+複雑になったがあわてないでほしい、順番に見ていけば大丈夫だ。
+まずfor文はrange(1,4)で生成される並び式1,2,3から最初のひとつの目の1を取り出して処理の部分に入る
+
+そうしたらiが1の状態で中のfor文(うす緑の部分)を普通に行う。
+
+うす緑の部分のfor文はrange(1,11)で生成される1,2…10を一つずつjとして取り出し繰り返し処理を行うものだ。
+最初に取り出されるのは1。
+print(i*j,end=' ')
+iもjも1なので最初に1と半角スペースが出力される。
+
+1
+うす緑の部分のfor文のルールにしたがって次に2がjとして取り出される。
+print(i*j,end=' ')
+iが1でjが2になので2と半角スペースが出力される
+
+1 2
+うす緑の部分のfor文は同様に10までを出力する。
+
+1 2 3 4 5 6 7 8 9 10
+うす緑の部分の繰り返し処理が全て終了したので、for文を抜け
+print()
+で改行処理を行う。
+これで外側のfor文のiが1の時の処理が終わったことになる。
+次に取り出されるiは2だ。こんどはiが2の状態で緑の部分の処理を行うことになる。
+
+ここの部分はrange(1,11)で生成される1,2…10を一つずつjとして取り出すfor文だ。
+
+
+最初にjとして1を取り出して処理を行う。iは今2なので
+print(i*j,end=' ')
+の処理は2と半角スペースの出力となり
+
+1 2 3 4 5 6 7 8 9 10
+2
+次にjとして2を取り出して
+print(i*j,end=' ')
+を行う。iは２なので
+
+1 2 3 4 5 6 7 8 9 10
+2 4
+以下同様にjが10まで繰り返され
+
+1 2 3 4 5 6 7 8 9 10
+2 4 6 8 10 12 14 16 18 20
+最後に改行処理を行ってうす緑の部分が終了となる。
+iが2の時の処理が終わったので次はiが3だ。
+
+ここの部分にある処理はrange(1,11)で生成される1,2…10を一つずつjとして取り出すfor文だ。
+
+iが3,jが１なので
+print(i*j,end=' ')
+は3と半角スペースを出力する。
+
+1 2 3 4 5 6 7 8 9 10
+2 4 6 8 10 12 14 16 18 20
+3
+次にjとして2を取り出す。３＊２は6だ
+
+1 2 3 4 5 6 7 8 9 10
+2 4 6 8 10 12 14 16 18 20
+3 6
+以下同様にjが10まで繰り返される
+
+1 2 3 4 5 6 7 8 9 10
+2 4 6 8 10 12 14 16 18 20
+3 6 9 12 15 18 21 24 27 30
+最後に改行してiが3の時のうす緑の部分が終わりだ。
+外側のfor文も全部終わったのでこれでこの2重for文はすべて終了となる。
+ちなみにiとかjとかの変数名はこういった場合によく使われるものでカウンター変数と呼ばれたりする。
+
+最初の課題にチャレンジ
+ここまで理解できたら最初の問題はもうできる。
+一緒にやっていこう。
+
+何段の階段を作る?>5
+*
+**
+***
+****
+*****
+1.
+まず文言を出力して、ユーザーからの入力を受け取るので。
+
+1
+height=int(input('何段の階段を作る?>'))
+これは
+
+1
+height=input('何段の階段を作る?>')
+2
+height=int(height)
+と今まで2行に分けて書いていた処理を一度に行っている。
+結果はもちろん同じでユーザーがいれた文字列としての数字を数値に変換している。
+これで高さがわかったのでまずは高さの回数分回るfor文をつくりたい。
+もしユーザーが3と入力したら３回,５と入力したら5回まわすループを作るにはどうすればよいだろうか？
+range(height)
+を使えば良さそうだ。
+もしユーザーが3と入力するとrange(3)は0,1,2
+5と入力するとrange(5)は0,1,2,3,4
+これで入力した回数まわるループができる。
+コーディングしていこう。
+
+1
+height=int(input('何段の階段を作る?>'))
+2
+for i in range(height):
+これで段数の分まわるループができたが処理の部分はどうかけばよいだろう？
+まずは普通にiの値を出力してみよう。
+
+1
+height=int(input('何段の階段を作る?>'))
+2
+for i in range(height):
+3
+    print(i)
+[結果]
+
+何段の階段を作る?>5
+0
+1
+2
+3
+4
+0と出ているところが*
+1と出ているところが**
+2と出ているところが***
+3と出ているところが****
+4と出ているところが*****
+となってくれれば良い。
+その数字(iの値)に１を足した数のぶんだけ*を繰り返し描画すればよさそうだ。
+
+1
+height=int(input('何段の階段を作る?>'))
+2
+for i in range(height):
+3
+    for j in range(i+1):
+4
+        print('*',end='')
+非常にいい感じだが、どこにも改行処理が入っていないのでこれでは一列にすべて描画してしまう。
+*を繰り返し描画している内側のfor文が終わったところで改行処理を入れれば良い。
+
+1
+height=int(input('何段の階段を作る?>'))
+2
+for i in range(height):
+3
+    for j in range(i+1):
+4
+        print('*',end='')
+5
+    print()
+OK!これで完成だ。
+今回やった部分は初学者には難所の部分の一つだ。くり返し練習しコツを掴んでいこう。
+
+Python ミッション5_数当てゲームを作ろう
+
+数当てゲーム
+PCが生成した一つの値を上か下かのヒントを頼りに当てるゲームだ。
+生成される数値は1~100の範囲でランダム。５回以内に当てられないと失敗となる。
+
+まずは、実行例から見てみよう。
+
+成功例
+1~100の数字の中から一つ選んだよ。
+その数字を 5 回以内に当ててね。
+1 回目、いくつかな?
+32
+もっと下だよ
+2 回目、いくつかな?
+16
+もっと下だよ
+3 回目、いくつかな?
+8
+もっと上だよ
+4 回目、いくつかな?
+12
+当たり!!
+失敗例
+1~100の数字の中から一つ選んだよ。
+その数字を 5 回以内に当ててね。
+1 回目、いくつかな?
+52
+もっと上だよ
+2 回目、いくつかな?
+74
+もっと上だよ
+3 回目、いくつかな?
+86
+もっと下だよ
+4 回目、いくつかな?
+80
+もっと上だよ
+5 回目、いくつかな?
+83
+残念~正解は 84 でした。
+乱数
+ゲーム作りなどでは乱数はかかせない。
+まずはPythonでの乱数の生成方法を見てみよう。
+
+1
+import random
+2
+ 
+3
+num = random.randint(5,10)
+まずはrandomモジュールをimportする。
+このようにimportして機能を追加していくことができる。
+今回はrandomモジュールをインポートして乱数を生成できるようにした。
+
+1
+num = random.randint(5,10)
+インポートしたrandomモジュールにあるrandint()命令を使うには.(ドット)で連結する。
+引数に5,10と渡せば5以上10以下の整数を一つ生成する。
+今回は1~100の値をひとつ生成したいので
+
+1
+num = random.randint(1,100)
+としてあげれば良さそうだ。
+
+作成
+それではさっそくコーディングしていこう。
+
+1
+import random
+2
+ 
+3
+ans=random.randint(1,100)
+4
+max_count=5
+5
+print('1~100の数字の中から一つ選んだよ。')
+6
+print('その数字を',max_count,'回以内に当ててね。')
+変数ansに正解の数を格納している。
+5回という部分は直接コーディングしてしまってもよいが、今回は変数にした。
+こうしておくと、もし7回とかに変更したい時に変更箇所が1箇所ですむ。こういった工夫は大事だ。
+
+ここまではOK。さて続きをどうするか・・・
+あきらかに繰り返し処理を行っているのでforかwhileが必要そうだ。
+
+まわす最大回数がわかっているので今回はfor文でいこう。
+
+1
+import random
+2
+ 
+3
+ans=random.randint(1,100)
+4
+max_count=5
+5
+print('1~100の数字の中から一つ選んだよ。')
+6
+print('その数字を',max_count,'回以内に当ててね。')
+7
+ 
+8
+for i in range(1,max_count+1):
+1,2,3,4,5と取り出したいのでrange(1,max_count+1)となる。
+(ここがわからない人は前回を参照)
+これで５回まわるループはできた。
+スイートの部分をどうするか。
+まずは実行例に合わせて文言を出力し、ユーザーから答えを受け取ろう。
+
+01
+import random
+02
+ 
+03
+ans=random.randint(1,100)
+04
+max_count=5
+05
+print('1~100の数字の中から一つ選んだよ。')
+06
+print('その数字を',max_count,'回以内に当ててね。')
+07
+ 
+08
+for i in range(1,max_count+1):
+09
+    print(i,'回目、いくつかな?')
+10
+    num=int(input())
+これでユーザーの答えが変数numに入った。
+正解かどうかを判定していこう。
+
+01
+import random
+02
+ 
+03
+ans=random.randint(1,100)
+04
+max_count=5
+05
+print('1~100の数字の中から一つ選んだよ。')
+06
+print('その数字を',max_count,'回以内に当ててね。')
+07
+ 
+08
+for i in range(1,max_count+1):
+09
+    print(i,'回目、いくつかな?')
+10
+    num=int(input())
+11
+    if num==ans:
+12
+        print('当たり!!')
+13
+        break
+14
+    elif num > ans:
+15
+        print('もっと下だよ')
+16
+    else:
+17
+        print('もっと上だよ')
+numとansが等しい時が当たりだ。
+当たりと出力し、もうこれ以上ループ処理が必要ないのでbreakを使ってループを抜ける。
+このようにwhileやfor文の中でbreakを使うとループの途中であってもループ処理を抜けることができる。
+
+当たりでなかったということは、もっと上かもっと下のどちらかだ。elifとelseを使って場合分けする。
+
+実はこれでほとんど終了だが、５回で当てられなかった時の処理を入れていこう。
+
+01
+import random
+02
+ 
+03
+ans=random.randint(1,100)
+04
+max_count=5
+05
+print('1~100の数字の中から一つ選んだよ。')
+06
+print('その数字を',max_count,'回以内に当ててね。')
+07
+ 
+08
+for i in range(1,max_count+1):
+09
+    print(i,'回目、いくつかな?')
+10
+    num=int(input())
+11
+    if num==ans:
+12
+        print('当たり!!')
+13
+        break
+14
+    elif num > ans:
+15
+        print('もっと下だよ')
+16
+    else:
+17
+        print('もっと上だよ')
+18
+else:
+19
+    print('残念~正解は',ans,'でした。')
+for ~ else
+失敗はどういうときだろう?。5回やっても当てられなかった時。つまりこのfor文がbreakすることなしに５回まわりきった時が失敗だ。
+
+Pythonではこのbreakすることなしにループがまわりきった時の処理をelseに書くことができる。
+今回はそれを使って失敗時の出力をしている。
+
+pass
+これで完成と言ってもいいのだがほんの少しだけ気に入らない挙動がある。それは5回目が失敗した時の出力だ。
+
+5 回目、いくつかな?
+83
+もっと上だよ
+残念~正解は 84 でした。
+次の行で正解を言うのに、この
+もっと上だよ
+というヒントは必要だろうか？
+否！最後はヒントが出ないようにしよう。
+
+01
+import random
+02
+ 
+03
+ans=random.randint(1,100)
+04
+max_count=5
+05
+print('1~100の数字の中から一つ選んだよ。')
+06
+print('その数字を',max_count,'回以内に当ててね。')
+07
+ 
+08
+for i in range(1,max_count+1):
+09
+    print(i,'回目、いくつかな?')
+10
+    num=int(input())
+11
+    if num==ans:
+12
+        print('当たり!!')
+13
+        break
+14
+    elif i==max_count:
+15
+        pass
+16
+    elif num > ans:
+17
+        print('もっと下だよ')
+18
+    else:
+19
+        print('もっと上だよ')
+20
+else:
+21
+    print('残念~正解は',ans,'でした。')
+if文で当たりかどうか判定した後に
+
+1
+elif i==max_count:
+2
+  pass
+この分岐を追加した。
+こうすることで、当たりではなく、もしそれが最後の回だったらここを通らせることができる。
+けど、とくにやりたい処理はない。
+こう言う場合には
+pass
+と書くことができる。
+passは何もしない文であり、文法上なにかを書く必要があるが何も実行することがないときに使う。
+
+これで５回目に当てられなかった場合
+ヒントを表示することなく、残念〜に推移するようになった。
+
+これで完成だ。もし１回で当てた時には演出を加えるなど工夫してみるのもいいだろう。
+
+★Day66
+
+Python リスト内包表記まとめ
+Python
+Python3
+この記事は最終更新日から1年以上が経過しています。
+リスト内包表記まとめ
+1~7の要素を持つリストを作る
+x=[n for n in range(1,8)]
+[1,2,3,4,5,6,7]
+
+1~7の要素の２乗した値を持つリストを作る
+x=[n**2 for n in range(1,8)]
+[1,4,9,16,25,36,49]
+
+1~7の要素のうち偶数のリストを作る
+x=[n for n in range(1,8) if n % 2 == 0]
+[2,4,6]
+
+入れ子のforでリストを作る
+x=[i*10+j for i in range(1,3) for j in range(2,5)]
+[12, 13, 14, 22, 23, 24]
+
+2次元リストを作る
+x=[[i*10+j for j in range(7,10)] for i in range(1,3)]
+[[17,18,19],[27,28,29]]]
+
+単位行列生成
+row=col=3
+matrix=[[1 if i==j else 0 for j in range(col)] for i in range(row)]
+[[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+
+★Day67
+
+Python TurtleRace
+
+亀さんにレースをしてもらおう
+
+準備
+ゲーム用の作業フォルダ(ex.デスクトップにturtleraceファルダ)を作成しその中に以下の画像を配置する
+
+Icon
+背景画像
+ 1 file(s)    587.53 KB
+作業フォルダ直下にrace.pyを以下のように作成する
+
+import random
+import turtle
+ts=[]
+
+def setup():
+	global ts
+	startline=-620
+	screen=turtle.Screen()
+	screen.setup(1290,720)
+	screen.bgpic('pavement.gif')
+
+	t_y=[-40,-20,0,20,40]
+	t_color=['blue','red','purple','brown','green']
+
+	for i in range(len(t_y)):
+		t=turtle.Turtle()
+		t.shape('turtle')
+		t.penup()
+		t.setpos(startline,t_y[i])
+		t.color(t_color[i])
+		t.pendown()
+		ts.append(t)
+
+setup()
+turtle.mainloop()
+実行してみよう亀さんがスタートラインに並べば成功だ
+以下のように修正して完成させよう
+
+import random
+import turtle
+ts=[]
+
+def setup():
+	global ts
+	startline=-620
+	screen=turtle.Screen()
+	screen.setup(1290,720)
+	screen.bgpic('pavement.gif')
+
+	t_y=[-40,-20,0,20,40]
+	t_color=['blue','red','purple','brown','green']
+
+	for i in range(len(t_y)):
+		t=turtle.Turtle()
+		t.shape('turtle')
+		t.penup()
+		t.setpos(startline,t_y[i])
+		t.color(t_color[i])
+		t.pendown()
+		ts.append(t)
+
+def race():
+	global ts
+	finishline=590
+
+	while True:
+		for current_t in ts:
+			move=random.randint(0,10)
+			current_t.forward(move)
+
+			x=current_t.xcor()
+			if x >=finishline:
+				winner_color=current_t.color()
+				current_t.write('Win!'+winner_color[0],font=('Arial',16,'normal'))
+				break
+		else:
+			continue
+		break
+		
+setup()
+race()
+turtle.mainloop()
+
+
+★Day68
+
+オブジェクト(教科書P244~278)
+モジュール(教科書P279~318)
+
+練習7-4解答例
+1)入力された３つの整数のうち大きい値を表示する
+
+print(max([int(input('{}番目の数値を入力'.format(i+1))) for i in range(3)]
+2)円周率3.141592について小数点第１位から第５位を四捨五入した値をそれぞれ表示する
+
+from math import pi
+for i in range(5):
+    print( int(round(pi)) if i==0 else round(pi,i))
+
+★Day69
+
+保護中: Python fibonacci
+
+フィボナッチ数列を題材にして、再帰呼び出しとメモ化を体験しよう
+
+まずは以下のように再帰呼び出しでn番目のフィボナッチ数を求める処理をつくろう。今回は0番目の数として0から始まるようにしている
+
+def fibo(n):
+    if n==0:
+        return 0
+    elif n==1:
+        return 1
+    else:
+        return fibo(n-1)+fibo(n-2)
+print(fibo(10))
+再帰処理はロマンがあふれるが実行処理に問題をかかえる場合も多い。以下の処理を試そう。
+
+import time
+def fibo(n):
+    if n==0:
+        return 0
+    elif n==1:
+        return 1
+    else:
+        return fibo(n-1)+fibo(n-2)
+for i in range(20,41,5):
+    start=time.time()
+    result=fibo(i)
+    end=time.time()
+    duration=end-start
+    print(i,result,duration)
+実行結果
+1
+20 6765 0.0069997310638427734
+2
+25 75025 0.07600879669189453
+3
+30 832040 0.6578662395477295
+4
+35 9227465 6.6826395988464355
+5
+40 102334155 88.58567595481873
+40番目のフィボナッチ数を求めるのに1分以上かかっている(PC環境によってかわる)。20から25で約10倍、25から30で約10倍・・・と5個増えるたびに10倍のオーダーで処理時間が増えている。45個目は1時間を超えそうだ、50個目は10時間。。。100個目のフィボナッチ数を求めたらどのくらい時間がかかるのか見当もつかない。
+
+メモ化
+上記の方法が遅いのはfibo(10)のような同じ計算を何度も行ってしまうからだ。一度行った計算結果をキャッシュしておくメモ化という方法を使おう。
+
+import time
+cache={}
+def fibo(n):
+    global cache
+    if n in cache:
+        return cache[n]
+    if n==0:
+        result= 0
+    elif n==1:
+        result= 1
+    else:
+        result= fibo(n-1)+fibo(n-2)
+    cache[n]=result
+    return result
+
+for i in range(20,101,5):
+    start=time.time()
+    result=fibo(i)
+    end=time.time()
+    duration=end-start
+    print(i,result,duration)
+実行してみよう。一度求めた計算結果を辞書にキャッシュしておくことによって100個めフィボナッチ数も瞬時に求められたことがわかる。このように再帰処理を使った場合メモ化を行うことによって劇的に処理速度が向上することがある。
+
+Python hitblow
+
+Hit&blowゲームを作成しよう。
+
+ルール
+ＰＣが3桁の000~999の乱数を生成する。その数字を予想する。
+カンマ区切りで3つ数字を入力し、数字も位置もあっていればhit
+数字はあっているが位置が違う場合にはblowとカウントされる。
+この作業をくり返すことによって数を当てる。
+またカンマ区切りで入力する際、数を3つ入れないと終了とみなし答えを表示する。
+
+実行例
+カンマ区切りで入力> 1,2,3
+0hit 0blow
+カンマ区切りで入力> 4,5,6
+1hit 1blow
+カンマ区切りで入力> 7,8,9
+0hit 1blow
+カンマ区切りで入力> 6,6,6
+0hit 0blow
+カンマ区切りで入力> 7,7,7
+0hit 0blow
+カンマ区切りで入力> 8,8,8
+0hit 0blow
+カンマ区切りで入力> 4,9,5
+正解
+途中終了の例
+
+カンマ区切りで入力> 1,2,3
+0hit 1blow
+カンマ区切りで入力> 1
+正解は [5, 8, 2] です
+[判定例]
+ans [3,4,5]
+input [3,3,3] //1hit 2blow
+入力した最初の3は位置も等しいのでhitとカウントされる
+入力した2つ目の3は数字は使われているが位置が違うのでblowとカウントされる
+入力した3つ目の3は数字は使われているが位置が違うのでblowとカウントされる
+よって1hit2blow
+
+ans[3,3,1]
+input[3,1,5] //1hit 2blow
+入力した3はまず位置も等しいのでhitそして数字があっているが場所が違うところにも存在しているのでblow
+入力した1は数字は存在しているが位置が違うのでblow
+よって1hit2blow
+
+ans[3,3,3]
+input[3,3,1] //2hit 4blow 
+入力した1つ目の３はまず位置が等しいので1hit,そして位置が違うところに2つ存在しているので2blow
+入力した2つ目の3はまず位置が等しいので1hit,そして位置が違う場所に2つ存在しているので2blow
+よって2hit4blow
+
+解答例
+from random import randint
+nums=3
+ans=[randint(0,9) for i in range(nums)]
+while True:
+    hit=blow=0
+    usr=[int(s) for s in input('カンマ区切りで入力>').split(',')]
+    if len(usr) != nums:
+        print('正解は',ans,'です')
+        break
+    for i in range(len(usr)):
+        for j in range(len(ans)):
+            if usr[i]==ans[j]:
+                if i==j:
+                    hit+=1
+                else:
+                    blow+=1
+    if hit==nums:
+        print('正解')
+        break
+    else:
+        print('{}hit {}blow'.format(hit,blow))
+
+保護中: Python tkinter
+
+GUIを扱うtkinterモジュールを使ってみよう。
+
+0.準備
+まずはtkinterのバージョンを確認
+
+$ python -c "import tkinter;print(tkinter.TkVersion)"
+8.5以下だった場合は8.6以上を入れ直す
+
+1.window表示
+ターミナルにてtk1.pyファイルを作成し以下のように記述
+
+import tkinter as tk
+root=tk.Tk()
+root.mainloop()
+実行し小さいWindowが表示されれば成功だ。
+
+2.window設定
+tk2.pyを作成し以下を記述。途中ででてくる600×400の部分は小文字のx（エックス）を使う
+
+import tkinter as tk
+root=tk.Tk()
+root.title('My Window') # windowタイトルを設定
+root.geometry('600x400') #windowの大きさを設定
+root.mainloop()
+実行し、600*400のwindowが表示されれば成功。タイトルにMy Windowと表示されている。
+
+3.ラベル
+続いてtk3.pyを作成し以下を記述
+
+import tkinter as tk
+root=tk.Tk()
+root.title('My Window')
+root.geometry('600x400')
+# 文字出力のためのラベルを作成
+label=tk.Label(root,text='Hello World!',font=('Arial',50))
+# labelを配置
+label.place(x=100,y=100)
+root.mainloop()
+4.ボタン_1
+まずはボタンの見た目だけ作ろう。tk4.pyとして以下を作成
+
+import tkinter as tk
+root=tk.Tk()
+root.title('My Window')
+root.geometry('600x400')
+# ボタンを作成 
+btn=tk.Button(root,text='Click Me!',font=('Arial',50))
+# ボタンを配置 
+btn.place(x=100,y=100)
+root.mainloop()
+
+5.ボタン_command
+ボタンを押した時の処理を作ってみよう。tk5.pyとして以下を作成
+
+import tkinter as tk
+def bt_click():
+	btn['text']='Clicked!!'
+root=tk.Tk()
+root.title('My Window')
+root.geometry('600x400')
+# ボタンを作成 
+btn=tk.Button(root,text='Click Me!',font=('Arial',50),command=bt_click)
+# ボタンを配置 
+btn.place(x=100,y=100)
+root.mainloop()
+6.キャンバス
+画像や図形を描くCanvasを使ってみよう。tk6.pyとして以下を作成
+pack命令を使って配置するとキャンバスのサイズに合わせてwindowサイズがきまる。
+
+import tkinter as tk
+root=tk.Tk()
+root.title('My Window')
+canvas=tk.Canvas(root,width=400,height=600,bg='skyblue')
+canvas.pack()
+root.mainloop()
+7.画像配置
+まずは以下のフィイルをダウンロードして作業フォルダに置く
+
+Icon
+iroha.png
+ 1 file(s)    86.47 KB
+続いてtk7.pyを以下のように作成
+この際7行目のx,y座標は画像の中点であることに注意
+
+import tkinter as tk
+root=tk.Tk()
+root.title('My Window')
+canvas=tk.Canvas(root,width=400,height=600)
+canvas.pack()
+img=tk.PhotoImage(file="iroha.png")
+canvas.create_image(200,300,image=img)
+root.mainloop()
+8.おみくじアプリの作成
+おみくじアプリを作成してみよう。まずは以下の画像をダウンロードして作業フォルダに配置する
+
+Icon
+miko.png
+ 1 file(s)    536.51 KB
+tk8.pyを以下のように作成
+
+import tkinter as tk
+import random
+def btn_click():
+	label['text']=random.choice(['大吉','中吉','小吉','凶'])
+	label.update()
+root=tk.Tk()
+root.title('おみくじ')
+root.resizable(False,False) # 画面サイズの変更禁止
+canvas=tk.Canvas(root,width=800,height=600)
+canvas.pack()
+img=tk.PhotoImage(file="miko.png")
+canvas.create_image(400,300,image=img)
+label=tk.Label(root,text='？？',font=('Arial',120),bg='white')
+label.place(x=380,y=60)
+btn=tk.Button(root,text="おみくじを引く",font=('Arial',36),command=btn_click,bg='skyblue')
+btn.place(x=370,y=400)
+root.mainloop()
+フォント確認
+システム入っているフォントは以下のスクリプトで確認できる。
+
+import tkinter
+import tkinter.font
+root=tkinter.Tk()
+for i in tkinter.font.families():
+	print(i)
+色々なフォントを試してみよう。
+
+9.テキスト入力欄(Entry)
+tk9.pyとして以下を入力
+
+import tkinter as tk
+def btn_click():
+	txt=entry.get()
+	btn['text']=txt
+root=tk.Tk()
+root.title('My Window')
+root.geometry('400x200')
+entry=tk.Entry(width=20)
+entry.place(x=10,y=10)
+btn=tk.Button(text='文字列の取得',command=btn_click)
+btn.place(x=20,y=100)
+root.mainloop()
+入力欄を作るにはEntryオブジェクトを使う。
+ボタンなどのwidgetを配置する際,どこにを省略するとメインウインドウ(root)とみなされる
+
+10.複数行の入力欄
+tk10.pyを作成し以下のように入力
+
+import tkinter as tk
+def btn_click():
+	text.insert(tk.END,'モンスターが現れた!')
+
+root=tk.Tk()
+root.title('My Window')
+root.geometry('400x200')
+
+btn=tk.Button(text='メッセージ',command=btn_click)
+btn.pack()
+text=tk.Text()
+text.pack()
+root.mainloop()
+textはインサートで入力できる。引数は（場所、文言)
+tk.ENDで文末を意味する
+
+11.チェックボタン
+htmlなどではチェックボックスと呼ばれるウィジットを作ってみよう。
+tk11.pyとして以下を入力
+
+import tkinter as tk
+def check():
+	if cval.get()==True:
+		print('チェックされています')
+	else:
+		print('チェックされていません')
+
+root=tk.Tk()
+root.title('My Window')
+root.geometry('400x200')
+cval=tk.BooleanVar()
+cval.set(False)
+cbtn=tk.Checkbutton(text='チェックボタン',variable=cval,command=check)
+cbtn.pack()
+root.mainloop()
+実行してみよう。オンオフを切り替えるよって「ターミナル」に出力される
+
+12.メッセージボックス
+メッセージボックスを配置すると画面にメッセージを表示できる。
+tk12.pyを以下のように作成
+
+import tkinter as tk
+import tkinter.messagebox as mbox
+
+def bt_click():
+	mbox.showinfo('情報','ボタンを押しました')
+	
+root=tk.Tk()
+root.title('My Window')
+root.geometry('400x200')
+btn=tk.Button(text='テスト',command=bt_click)
+btn.pack()
+root.mainloop()
+13.猫診断アプリ作成
+まずは以下の画像をダウンロードし、作業フォルダに配置する
+
+Icon
+sumire.png
+ 1 file(s)    123.92 KB
+tk13.pyとして以下をコーディングする。上部二つの配列はコピペしてよい
+
+import tkinter as tk
+
+KEKKA = [
+"前世がネコだった可能性は極めて薄いです。",
+"いたって普通の人間です。",
+"特別、おかしなところはありません。",
+"やや、ネコっぽいところがあります。",
+"ネコに近い性格のようです。",
+"ネコにかなり近い性格です。",
+"前世はネコだったかもしれません。",
+"見た目は人間、中身はネコの可能性があります。"
+]
+ITEM = [
+"高いところが好き",
+"ボールを見ると転がしたくなる",
+"びっくりすると髪の毛が逆立つ",
+"ネズミの玩具が気になる",
+"匂いに敏感",
+"魚の骨をしゃぶりたくなる",
+"夜、元気になる"
+]
+def click_btn():
+    pts = 0
+    for i in range(7):
+        if bvar[i].get() == True:
+            pts += 1
+    nekodo = int(100*pts/7)
+    text.delete("1.0", tk.END)
+    text.insert("1.0", '＜診断結果＞\nあなたのネコ度は{}%です。\n{}'.format(nekodo,KEKKA[pts]))
+
+root = tk.Tk()
+root.title("ネコ度診断アプリ")
+root.resizable(False, False)
+canvas = tk.Canvas(root, width=800, height=600)
+canvas.pack()
+img = tk.PhotoImage(file="sumire.png")
+canvas.create_image(400, 300, image=img)
+button = tk.Button(text="診断する", font=("Times New Roman", 32), bg="lightgreen", command=click_btn)
+button.place(x=400, y=480)
+text = tk.Text(width=40, height=5, font=("Times New Roman", 16))
+text.place(x=320, y=30)
+
+bvar = [None]*7
+cbtn = [None]*7
+
+for i in range(7):
+    bvar[i] = tk.BooleanVar()
+    bvar[i].set(False)
+    cbtn[i] = tk.Checkbutton(text=ITEM[i], font=("Times New Roman", 12), variable=bvar[i], bg="#dfe")
+    cbtn[i].place(x=400, y=160+40*i)
+root.mainloop()
+やってみよう。
+以下のような割り勘アプリを作成しよう。
+割り勘は100円単位としてオーバーした分は幹事がもらえることとする。
+
+[実行例]
+実行すると入力画面が表示される
+
+
+値を入れてボタンを押すと結果が表示される
+
+
+解答例
+import tkinter as tk
+def bt_click():
+	amount=int(amount_et.get())
+	people=int(people_et.get())
+	dnum=amount/people
+	pay=int(dnum // 100 *100)
+	if dnum > pay:
+		pay+=100
+	payorg=amount-pay*(people-1)
+	resutl_label['text']='1人あたり{}円({}人)、幹事は{}円です'.format(pay,people-1,payorg)
+
+root = tk.Tk()
+root.title("割り勘くん")
+root.resizable(False, False)
+canvas = tk.Canvas(root, width=400, height=600,bg='skyblue')
+canvas.pack()
+amount_label=tk.Label(text='金額',font=("Arial", 16),bg='skyblue')
+amount_label.place(x=10,y=20)
+amount_et=tk.Entry(width=20)
+amount_et.place(x=10,y=50)
+people_label=tk.Label(text='人数',font=("Arial", 16),bg='skyblue')
+people_label.place(x=10,y=90)
+people_et=tk.Entry(width=20)
+people_et.place(x=10,y=120)
+btn=tk.Button(text='計算する',font=("Arial",20),command=bt_click)
+btn.place(x=10,y=190)
+resutl_label=tk.Label(text='',font=("Arial",18),bg='skyblue')
+resutl_label.place(x=10,y=240)
+root.mainloop()
+
+★Day70
+
+PairPro解説
+(解答例)
+
+import tkinter as tk
+def bt_click():
+	amount=int(amount_et.get())
+	people=int(people_et.get())
+	dnum=amount/people
+	pay=int(dnum // 100 *100)
+	if dnum > pay:
+		pay+=100
+	payorg=amount-pay*(people-1)
+	resutl_label['text']='1人あたり{}円({}人)、幹事は{}円です'.format(pay,people-1,payorg)
+
+root = tk.Tk()
+root.title("割り勘くん")
+root.resizable(False, False)
+canvas = tk.Canvas(root, width=400, height=600,bg='skyblue')
+canvas.pack()
+amount_label=tk.Label(text='金額',font=("Arial", 16),bg='skyblue')
+amount_label.place(x=10,y=20)
+amount_et=tk.Entry(width=20)
+amount_et.place(x=10,y=50)
+people_label=tk.Label(text='人数',font=("Arial", 16),bg='skyblue')
+people_label.place(x=10,y=90)
+people_et=tk.Entry(width=20)
+people_et.place(x=10,y=120)
+btn=tk.Button(text='計算する',font=("Arial",20),command=bt_click)
+btn.place(x=10,y=190)
+resutl_label=tk.Label(text='',font=("Arial",18),bg='skyblue')
+resutl_label.place(x=10,y=240)
+root.mainloop()
+
+保護中: Python キャラを動かす
+
+MiMi
+準備
+mimiという作業フォルダを作成し、以下の画像を配置する
+
+Icon
+mimi.png
+ 1 file(s)    21.57 KB
+mimiフォルダ内にmain.pyを以下のように作成する
+
+import tkinter as tk
+key=''
+# 引数にイベントオブジェクトが渡される
+def key_down(e):
+	global key
+	# e.keysymで押したボタンの名前を取得
+	key=e.keysym
+
+def key_up(e):
+	global key
+	key=''
+
+cx=400
+cy=300
+# 移動処理
+def main_proc():
+	global cx,cy
+	if key=='Up':
+		cy=cy-20
+	if key=='Down':
+		cy=cy+20
+	if key=='Left':
+		cx=cx-20
+	if key=='Right':
+		cx=cx+20
+	#coordsは表示中の画像を新しい位置に移動する
+	canvas.coords('MYCHR',cx,cy) 
+	# afterは指定時間後に処理を実行する(ms,処理)
+	root.after(100,main_proc)
+
+root=tk.Tk()
+root.bind('<KeyPress>',key_down) # キーを押した時のイベントをバインド
+root.bind('<KeyRelease>',key_up) # キーを離した時のイベントをバインド
+canvas=tk.Canvas(width=800,height=600,bg='lightgreen')
+canvas.pack()
+img=tk.PhotoImage(file='mimi.png')
+# 作った画像にMYCHRというタグを付与
+canvas.create_image(cx,cy,image=img,tag='MYCHR')
+main_proc()
+root.mainloop()
+Photframe
+準備
+photoframeフォルダを作成して以下のファイルを解凍して4枚の画像を配置する
+
+Icon
+cats.zip
+ 1 file(s)    3.72 MB
+photo.pyとして以下を作成する
+
+import tkinter as tk
+index = 0
+def change_img():
+    global index
+    canvas.delete("PIC")
+    canvas.create_image(400, 300, image=photos[index % len(photos)], tag="PIC")
+    index+=1 
+    root.after(5000, change_img)
+root = tk.Tk()
+root.title("デジタルフォトフレーム")
+canvas = tk.Canvas(width=800, height=600)
+canvas.pack()
+photos=[tk.PhotoImage(file=f'cat0{i}.png') for i in range(4)]
+change_img()
+root.mainloop()
+
+保護中: Python NekoPazzle
+
+
+準備
+nekopzlフォルダを作成し、以下のフィイルを解凍してできる画像を配置する
+
+Icon
+nekopzl.zip
+ 1 file(s)    131.35 KB
+1.マウス入力
+
+マウスに関するイベントを調べてみよう。n1.pyとして以下を入力
+
+import tkinter as tk
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+def mouse_release(e):
+    global mouse_c
+    mouse_c = 0
+
+def game_main():
+    fnt = ("Arial", 30)
+    txt = "mouse({},{}){}".format(mouse_x, mouse_y, mouse_c)
+    cvs.delete("TEST") # 文字を消去
+		# 文字を出力
+    cvs.create_text(456, 384, text=txt, fill="black", font=fnt, tag="TEST")
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("マウス入力")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move) # マウスが動いた時のイベント
+root.bind("<ButtonPress>", mouse_press) # マウスクリックした時のイベント
+root.bind("<ButtonRelease>", mouse_release) # マウスボタンを話した時のイベント
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+game_main()
+root.mainloop()
+2.カーソルの移動
+マウスでカーソルを操作できるようしよう。n2.pyを以下のように作成
+
+import tkinter as tk
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def game_main():
+    global cursor_x, cursor_y
+    if 24 <=  mouse_x < 24+72*8 and 24 <= mouse_y < 24+72*10:
+        cursor_x = int((mouse_x-24)/72)
+        cursor_y = int((mouse_y-24)/72)
+    cvs.delete("CURSOR")
+    cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("カーソルの表示")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+座標
+マス上のデータの管理
+n3.pyを作成し以下を記述
+
+import tkinter as tk
+
+neko = [
+[1, 0, 0, 0, 0, 0, 7, 7],
+[0, 2, 0, 0, 0, 0, 7, 7],
+[0, 0, 3, 0, 0, 0, 0, 0],
+[0, 0, 0, 4, 0, 0, 0, 0],
+[0, 0, 0, 0, 5, 0, 0, 0],
+[0, 0, 0, 0, 0, 6, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 1, 2, 3, 4, 5, 6]
+]
+
+def draw_neko():
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]])
+
+root = tk.Tk()
+root.title("二次元リストでマスを管理する")
+root.resizable(False, False)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+draw_neko()
+root.mainloop()
+
+ブロック落下の処理
+n3.pyをn4.pyと別名保存しn4.pyを以下のように修正する
+
+import tkinter as tk
+
+neko = [
+[1, 0, 0, 0, 0, 0, 1, 2],
+[0, 2, 0, 0, 0, 0, 3, 4],
+[0, 0, 3, 0, 0, 0, 0, 0],
+[0, 0, 0, 4, 0, 0, 0, 0],
+[0, 0, 0, 0, 5, 0, 0, 0],
+[0, 0, 0, 0, 0, 6, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 1, 2, 3, 4, 0, 0]
+]
+
+def draw_neko():
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def drop_neko():
+    for y in range(8, -1, -1):
+        for x in range(8):
+            if neko[y][x] != 0 and neko[y+1][x] == 0:
+                neko[y+1][x] = neko[y][x]
+                neko[y][x] = 0
+
+def game_main():
+    drop_neko()
+    cvs.delete("NEKO")
+    draw_neko()
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("ネコを落下させる")
+root.resizable(False, False)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+ネコが存在するマスの１つ下のマスが空白の時、ネコをそこに移動させれば一段落下する。この処理を全てのマスに対して行う。この処理は下の段から順に行う必要がある。
+
+クリックしてブロックを置く
+n4.pyをn5.pyと別名保存して以下のように修正
+
+import tkinter as tk
+import random
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+neko = [
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0]
+]
+
+def draw_neko():
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def drop_neko():
+    for y in range(8, -1, -1):
+        for x in range(8):
+            if neko[y][x] != 0 and neko[y+1][x] == 0:
+                neko[y+1][x] = neko[y][x]
+                neko[y][x] = 0
+
+def game_main():
+    global cursor_x, cursor_y, mouse_c
+    drop_neko()
+    if 24 <= mouse_x and mouse_x < 24+72*8 and 24 <= mouse_y and mouse_y < 24+72*10:
+        cursor_x = int((mouse_x-24)/72)
+        cursor_y = int((mouse_y-24)/72)
+        if mouse_c == 1:
+            mouse_c = 0
+            neko[cursor_y][cursor_x] = random.randint(1, 6)
+    cvs.delete("CURSOR")
+    cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+    cvs.delete("NEKO")
+    draw_neko()
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("クリックしてネコを置く")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+root.bind("<ButtonPress>", mouse_press)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+
+ブロックが揃ったかを判定するアルゴリズム
+n6.pyとして以下を記述
+
+import tkinter as tk
+import random
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+neko = []
+for i in range(10):
+    neko.append([0, 0, 0, 0, 0, 0, 0, 0])
+
+def draw_neko():
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def yoko_neko():
+    for y in range(10):
+        for x in range(1, 7):
+            if neko[y][x] > 0:
+                if neko[y][x-1] == neko[y][x] and neko[y][x+1] == neko[y][x]:
+                    neko[y][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y][x+1] = 7
+
+def game_main():
+    global cursor_x, cursor_y, mouse_c
+    if 660 <= mouse_x and mouse_x < 840 and 100 <= mouse_y and mouse_y < 160 and mouse_c == 1:
+        mouse_c = 0
+        yoko_neko()
+    if 24 <= mouse_x and mouse_x < 24+72*8 and 24 <= mouse_y and mouse_y < 24+72*10:
+        cursor_x = int((mouse_x-24)/72)
+        cursor_y = int((mouse_y-24)/72)
+        if mouse_c == 1:
+            mouse_c = 0
+            neko[cursor_y][cursor_x] = random.randint(1, 2)
+    cvs.delete("CURSOR")
+    cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+    cvs.delete("NEKO")
+    draw_neko()
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("横に３つ並んだか")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+root.bind("<ButtonPress>", mouse_press)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+cvs.create_rectangle(660, 100, 840, 160, fill="white")
+cvs.create_text(750, 130, text="テスト", fill="red", font=("Times New Roman", 30))
+game_main()
+root.mainloop()
+これで３つ横に並んだ同一柄のネコを肉球に変えることができるようになった。
+ただ、４つ以上並んだ場合や縦と同時に並んだ場合にうまくいかない。
+n7.pyを以下のように作成しよう。
+
+import tkinter as tk
+import random
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+neko = []
+check = []
+for i in range(10):
+    neko.append([0, 0, 0, 0, 0, 0, 0, 0])
+    check.append([0, 0, 0, 0, 0, 0, 0, 0])
+
+def draw_neko():
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def check_neko():
+    for y in range(10):
+        for x in range(8):
+            check[y][x] = neko[y][x]
+
+    for y in range(1, 9):
+        for x in range(8):
+            if check[y][x] > 0:
+                if check[y-1][x] == check[y][x] and check[y+1][x] == check[y][x]:
+                    neko[y-1][x] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x] = 7
+
+    for y in range(10):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y][x-1] == check[y][x] and check[y][x+1] == check[y][x]:
+                    neko[y][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y][x+1] = 7
+
+    for y in range(1, 9):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y-1][x-1] == check[y][x] and check[y+1][x+1] == check[y][x]:
+                    neko[y-1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x+1] = 7
+                if check[y+1][x-1] == check[y][x] and check[y-1][x+1] == check[y][x]:
+                    neko[y+1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y-1][x+1] = 7
+
+def game_main():
+    global cursor_x, cursor_y, mouse_c
+    if 660 <= mouse_x and mouse_x < 840 and 100 <= mouse_y and mouse_y < 160 and mouse_c == 1:
+        mouse_c = 0
+        check_neko()
+    if 24 <= mouse_x and mouse_x < 24+72*8 and 24 <= mouse_y and mouse_y < 24+72*10:
+        cursor_x = int((mouse_x-24)/72)
+        cursor_y = int((mouse_y-24)/72)
+        if mouse_c == 1:
+            mouse_c = 0
+            neko[cursor_y][cursor_x] = random.randint(1, 2)
+    cvs.delete("CURSOR")
+    cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+    cvs.delete("NEKO")
+    draw_neko()
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("縦、横、斜めに３つ以上並んだか")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+root.bind("<ButtonPress>", mouse_press)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+タイトル画面とゲームオーバー画面
+n8.pyとして以下を作成
+
+import tkinter as tk
+import random
+
+index = 0
+timer = 0
+score = 0
+tsugi = 0
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+neko = []
+check = []
+for i in range(10):
+    neko.append([0, 0, 0, 0, 0, 0, 0, 0])
+    check.append([0, 0, 0, 0, 0, 0, 0, 0])
+
+def draw_neko():
+    cvs.delete("NEKO")
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def check_neko():
+    for y in range(10):
+        for x in range(8):
+            check[y][x] = neko[y][x]
+
+    for y in range(1, 9):
+        for x in range(8):
+            if check[y][x] > 0:
+                if check[y-1][x] == check[y][x] and check[y+1][x] == check[y][x]:
+                    neko[y-1][x] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x] = 7
+
+    for y in range(10):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y][x-1] == check[y][x] and check[y][x+1] == check[y][x]:
+                    neko[y][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y][x+1] = 7
+
+    for y in range(1, 9):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y-1][x-1] == check[y][x] and check[y+1][x+1] == check[y][x]:
+                    neko[y-1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x+1] = 7
+                if check[y+1][x-1] == check[y][x] and check[y-1][x+1] == check[y][x]:
+                    neko[y+1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y-1][x+1] = 7
+
+def sweep_neko():
+    num = 0
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] == 7:
+                neko[y][x] = 0
+                num = num + 1
+    return num
+
+def drop_neko():
+    flg = False
+    for y in range(8, -1, -1):
+        for x in range(8):
+            if neko[y][x] != 0 and neko[y+1][x] == 0:
+                neko[y+1][x] = neko[y][x]
+                neko[y][x] = 0
+                flg = True
+    return flg
+
+def over_neko():
+    for x in range(8):
+        if neko[0][x] > 0:
+            return True
+    return False
+
+def set_neko():
+    for x in range(8):
+        neko[0][x] = random.randint(0, 6)
+
+def draw_txt(txt, x, y, siz, col, tg):
+    fnt = ("Times New Roman", siz, "bold")
+    cvs.create_text(x+2, y+2, text=txt, fill="black", font=fnt, tag=tg)
+    cvs.create_text(x, y, text=txt, fill=col, font=fnt, tag=tg)
+
+def game_main():
+    global index, timer, score, tsugi
+    global cursor_x, cursor_y, mouse_c
+    if index == 0: # タイトルロゴ
+        draw_txt("ねこねこ", 312, 240, 100, "violet", "TITLE")
+        draw_txt("Click to start.", 312, 560, 50, "orange", "TITLE")
+        index = 1
+        mouse_c = 0
+    elif index == 1: # タイトル画面 スタート待ち
+        if mouse_c == 1:
+            for y in range(10):
+                for x in range(8):
+                    neko[y][x] = 0
+            mouse_c = 0
+            score = 0
+            tsugi = 0
+            cursor_x = 0
+            cursor_y = 0
+            set_neko()
+            draw_neko()
+            cvs.delete("TITLE")
+            index = 2
+    elif index == 2: # 落下
+        if drop_neko() == False:
+            index = 3
+        draw_neko()
+    elif index == 3: # 揃ったか
+        check_neko()
+        draw_neko()
+        index = 4
+    elif index == 4: # 揃ったネコがあれば消す
+        sc = sweep_neko()
+        score = score + sc*10
+        if sc > 0:
+            index = 2
+        else:
+            if over_neko() == False:
+                tsugi = random.randint(1, 6)
+                index = 5
+            else:
+                index = 6
+                timer = 0
+        draw_neko()
+    elif index == 5: # マウス入力を待つ
+        if 24 <= mouse_x and mouse_x < 24+72*8 and 24 <= mouse_y and mouse_y < 24+72*10:
+            cursor_x = int((mouse_x-24)/72)
+            cursor_y = int((mouse_y-24)/72)
+            if mouse_c == 1:
+                mouse_c = 0
+                set_neko()
+                neko[cursor_y][cursor_x] = tsugi
+                tsugi = 0
+                index = 2
+        cvs.delete("CURSOR")
+        cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+        draw_neko()
+    elif index == 6: # ゲームオーバー
+        timer = timer + 1
+        if timer == 1:
+            draw_txt("GAME OVER", 312, 348, 60, "red", "OVER")
+        if timer == 50:
+            cvs.delete("OVER")
+            index = 0
+    cvs.delete("INFO")
+    draw_txt("SCORE "+str(score), 160, 60, 32, "blue", "INFO")
+    if tsugi > 0:
+        cvs.create_image(752, 128, image=img_neko[tsugi], tag="INFO")
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("落ち物パズル「ねこねこ」")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+root.bind("<ButtonPress>", mouse_press)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+完成
+難易度選択とHiScore処理を入れて完成だ。
+main.pyとして以下を作成
+
+import tkinter as tk
+import random
+
+index = 0
+timer = 0
+score = 0
+hisc = 1000
+difficulty = 0
+tsugi = 0
+
+cursor_x = 0
+cursor_y = 0
+mouse_x = 0
+mouse_y = 0
+mouse_c = 0
+
+def mouse_move(e):
+    global mouse_x, mouse_y
+    mouse_x = e.x
+    mouse_y = e.y
+
+def mouse_press(e):
+    global mouse_c
+    mouse_c = 1
+
+neko = []
+check = []
+for i in range(10):
+    neko.append([0, 0, 0, 0, 0, 0, 0, 0])
+    check.append([0, 0, 0, 0, 0, 0, 0, 0])
+
+def draw_neko():
+    cvs.delete("NEKO")
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] > 0:
+                cvs.create_image(x*72+60, y*72+60, image=img_neko[neko[y][x]], tag="NEKO")
+
+def check_neko():
+    for y in range(10):
+        for x in range(8):
+            check[y][x] = neko[y][x]
+
+    for y in range(1, 9):
+        for x in range(8):
+            if check[y][x] > 0:
+                if check[y-1][x] == check[y][x] and check[y+1][x] == check[y][x]:
+                    neko[y-1][x] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x] = 7
+
+    for y in range(10):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y][x-1] == check[y][x] and check[y][x+1] == check[y][x]:
+                    neko[y][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y][x+1] = 7
+
+    for y in range(1, 9):
+        for x in range(1, 7):
+            if check[y][x] > 0:
+                if check[y-1][x-1] == check[y][x] and check[y+1][x+1] == check[y][x]:
+                    neko[y-1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y+1][x+1] = 7
+                if check[y+1][x-1] == check[y][x] and check[y-1][x+1] == check[y][x]:
+                    neko[y+1][x-1] = 7
+                    neko[y][x] = 7
+                    neko[y-1][x+1] = 7
+
+def sweep_neko():
+    num = 0
+    for y in range(10):
+        for x in range(8):
+            if neko[y][x] == 7:
+                neko[y][x] = 0
+                num = num + 1
+    return num
+
+def drop_neko():
+    flg = False
+    for y in range(8, -1, -1):
+        for x in range(8):
+            if neko[y][x] != 0 and neko[y+1][x] == 0:
+                neko[y+1][x] = neko[y][x]
+                neko[y][x] = 0
+                flg = True
+    return flg
+
+def over_neko():
+    for x in range(8):
+        if neko[0][x] > 0:
+            return True
+    return False
+
+def set_neko():
+    for x in range(8):
+        neko[0][x] = random.randint(0, difficulty)
+
+def draw_txt(txt, x, y, siz, col, tg):
+    fnt = ("Times New Roman", siz, "bold")
+    cvs.create_text(x+2, y+2, text=txt, fill="black", font=fnt, tag=tg)
+    cvs.create_text(x, y, text=txt, fill=col, font=fnt, tag=tg)
+
+def game_main():
+    global index, timer, score, hisc, difficulty, tsugi
+    global cursor_x, cursor_y, mouse_c
+    if index == 0: # タイトルロゴ
+        draw_txt("ねこねこ", 312, 240, 100, "violet", "TITLE")
+        cvs.create_rectangle(168, 384, 456, 456, fill="skyblue", width=0, tag="TITLE")
+        draw_txt("Easy", 312, 420, 40, "white", "TITLE")
+        cvs.create_rectangle(168, 528, 456, 600, fill="lightgreen", width=0, tag="TITLE")
+        draw_txt("Normal", 312, 564, 40, "white", "TITLE")
+        cvs.create_rectangle(168, 672, 456, 744, fill="orange", width=0, tag="TITLE")
+        draw_txt("Hard", 312, 708, 40, "white", "TITLE")
+        index = 1
+        mouse_c = 0
+    elif index == 1: # タイトル画面 スタート待ち
+        difficulty = 0
+        if mouse_c == 1:
+            if 168 < mouse_x and mouse_x < 456 and 384 < mouse_y and mouse_y < 456:
+                difficulty = 4
+            if 168 < mouse_x and mouse_x < 456 and 528 < mouse_y and mouse_y < 600:
+                difficulty = 5
+            if 168 < mouse_x and mouse_x < 456 and 672 < mouse_y and mouse_y < 744:
+                difficulty = 6
+        if difficulty > 0:
+            for y in range(10):
+                for x in range(8):
+                    neko[y][x] = 0
+            mouse_c = 0
+            score = 0
+            tsugi = 0
+            cursor_x = 0
+            cursor_y = 0
+            set_neko()
+            draw_neko()
+            cvs.delete("TITLE")
+            index = 2
+    elif index == 2: # 落下
+        if drop_neko() == False:
+            index = 3
+        draw_neko()
+    elif index == 3: # 揃ったか
+        check_neko()
+        draw_neko()
+        index = 4
+    elif index == 4: # 揃ったネコがあれば消す
+        sc = sweep_neko()
+        score = score + sc*difficulty*2
+        if score > hisc:
+            hisc = score
+        if sc > 0:
+            index = 2
+        else:
+            if over_neko() == False:
+                tsugi = random.randint(1, difficulty)
+                index = 5
+            else:
+                index = 6
+                timer = 0
+        draw_neko()
+    elif index == 5: # マウス入力を待つ
+        if 24 <= mouse_x and mouse_x < 24+72*8 and 24 <= mouse_y and mouse_y < 24+72*10:
+            cursor_x = int((mouse_x-24)/72)
+            cursor_y = int((mouse_y-24)/72)
+            if mouse_c == 1:
+                mouse_c = 0
+                set_neko()
+                neko[cursor_y][cursor_x] = tsugi
+                tsugi = 0
+                index = 2
+        cvs.delete("CURSOR")
+        cvs.create_image(cursor_x*72+60, cursor_y*72+60, image=cursor, tag="CURSOR")
+        draw_neko()
+    elif index == 6: # ゲームオーバー
+        timer = timer + 1
+        if timer == 1:
+            draw_txt("GAME OVER", 312, 348, 60, "red", "OVER")
+        if timer == 50:
+            cvs.delete("OVER")
+            index = 0
+    cvs.delete("INFO")
+    draw_txt("SCORE "+str(score), 160, 60, 32, "blue", "INFO")
+    draw_txt("HISC "+str(hisc), 450, 60, 32, "yellow", "INFO")
+    if tsugi > 0:
+        cvs.create_image(752, 128, image=img_neko[tsugi], tag="INFO")
+    root.after(100, game_main)
+
+root = tk.Tk()
+root.title("落ち物パズル「ねこねこ」")
+root.resizable(False, False)
+root.bind("<Motion>", mouse_move)
+root.bind("<ButtonPress>", mouse_press)
+cvs = tk.Canvas(root, width=912, height=768)
+cvs.pack()
+
+bg = tk.PhotoImage(file="neko_bg.png")
+cursor = tk.PhotoImage(file="neko_cursor.png")
+img_neko = [
+    None,
+    tk.PhotoImage(file="neko1.png"),
+    tk.PhotoImage(file="neko2.png"),
+    tk.PhotoImage(file="neko3.png"),
+    tk.PhotoImage(file="neko4.png"),
+    tk.PhotoImage(file="neko5.png"),
+    tk.PhotoImage(file="neko6.png"),
+    tk.PhotoImage(file="neko_niku.png")
+]
+
+cvs.create_image(456, 384, image=bg)
+game_main()
+root.mainloop()
+
+★Day71
+
+とりあえず無事再開することができました。
+しっかりと学習をしていきましょう！
+
+JS復習
+テストがあるのでJSの復習をしましょう。テストは今日やった内容をメインに出題されます。
+
+Site1
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>site1</title>
+		<link rel="stylesheet" href="main.css">
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<input type="text" id="name" placeholder="名前"><br>
+		<input type="number" id="age" placeholder="年齢"><br>
+		<button id="bt">計算</button>
+		<p id="result"></p>
+	</body>
+</html>
+'use strict';
+window.onload=function(){
+	const name=document.getElementById('name');
+	const age=document.getElementById('age');
+	const bt=document.getElementById('bt');
+	const result=document.getElementById('result');
+	bt.addEventListener('click',()=>{
+		let dogName=name.value;
+		let dogAge=age.value;
+		console.log(typeof dogAge);
+		dogAge=Number(dogAge);
+		console.log(typeof dogAge);
+		result.textContent=`${dogName}(${dogAge}才)は人間の年齢だと${dogAge*7}才です`;
+	});
+};
+Site2
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>site2</title>
+		<link rel="stylesheet" href="main.css">
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<h1>数当てゲーム!!</h1>
+		<p>1から100の間の数値を当ててね!</p>
+		<input type="number" id="userInput">
+		<button id="bt">check</button>
+		<ol id="list"></ol>
+	</body>
+</html>
+h1{
+	font-size:30px;
+	color:blue;
+}
+ol{
+	list-style-type:none;
+}
+'use strict';
+window.onload=function(){
+	const ans=Math.floor(Math.random()*100)+1;
+	const userInput=document.getElementById('userInput');
+	const bt=document.getElementById('bt');
+	const list=document.getElementById('list');
+	let count=1;
+	bt.addEventListener('click',function(){
+		let li=document.createElement('li');
+		let userAns=userInput.value;
+		userAns=Number(userAns);
+		if(userAns===ans){
+			li.textContent=`${count++}回目:${userAns} 正解!!`;
+		}else if(userAns > ans){
+			li.textContent=`${count++}回目:${userAns} もっと下だよ`;
+		}else{
+			li.textContent=`${count++}回目:${userAns} もっと上だよ`;
+		}
+		list.appendChild(li);
+	});
+};
+Site3
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>site3</title>
+		<link rel="stylesheet" href="main.css">
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<table id="table"></table>
+	</body>
+</html>
+table{
+	border-collapse:collapse;
+}
+th,td{
+	border:1px solid #333;
+	width:50px;
+	height:50px;
+	text-align:center;
+}
+th{
+	background:#1cb8ec;
+	color:white;
+}
+'use strict';
+window.onload=function(){
+	const table=document.getElementById('table');
+	const MAX=9;
+	for(let i=0;i<=MAX;i++){
+		let tr=document.createElement('tr');
+		for(let j=0;j<=MAX;j++){
+			let td;
+			if(i===0){
+				td=document.createElement('th');
+				if(j===0){
+					td.textContent='X';
+				}else{
+					td.textContent=j;
+				}
+			}else{
+				if(j===0){
+					td=document.createElement('th');
+					td.textContent=i;
+				}else{
+					td=document.createElement('td');
+					td.textContent=i*j;
+				}
+			}
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
+	}
+};
+Site4
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>site4</title>
+		<link rel="stylesheet" href="main.css">
+		<script src="main.js"></script>
+	</head>
+	<body>
+		<h1>赤札メニュー</h1>
+		<input type="text" id="name" placeholder="メニュー名"><br>
+		<input type="number" id="price" placeholder="値段"><br>
+		<input type="number" id="cal" placeholder="カロリー"><br>
+		<button id="bt">追加</button>
+		<p id="total">全0件</p>
+		<table id="table">
+			<tr><th>メニュー名</th><th>値段</th><th>カロリー</th></tr>
+		</table>
+	</body>
+</html>
+
+table{
+	border-collapse:collapse;
+}
+th,td{
+	border:1px solid #333;
+	text-align:center;
+	padding:0 10px;
+}
+th{
+	background:#1cb8ec;
+	color:white;
+}
+'use strict';
+window.onload=function(){
+	class Menu{
+		constructor(name,price,cal){
+			this.name=name;
+			this.price=price;
+			this.cal=cal;
+		}
+	}
+	const name=document.getElementById('name');
+	const price=document.getElementById('price');
+	const cal=document.getElementById('cal');
+	const bt=document.getElementById('bt');
+	const table=document.getElementById('table');
+	const total=document.getElementById('total');
+	let ls=[];
+	bt.addEventListener('click',()=>{
+		let menu=new Menu(name.value,price.value,cal.value);
+		ls.push(menu);
+		let tr=document.createElement('tr');
+		let td=document.createElement('td');
+		td.textContent=menu.name;
+		tr.appendChild(td);
+		td=document.createElement('td');
+		td.textContent=menu.price;
+		tr.appendChild(td);
+		td=document.createElement('td');
+		td.textContent=menu.cal;
+		tr.appendChild(td);
+		table.appendChild(tr);
+		total.textContent=`全${ls.length}件`;
+
+	});
+};
+別解
+
+'use strict';
+window.onload=function(){
+	class Menu{
+		constructor(name,price,cal){
+			this.name=name;
+			this.price=price;
+			this.cal=cal;
+		}
+		showInfo(){
+			return `<td>${this.name}</td><td>${this.price}</td><td>${this.cal}</td>`;
+		}
+	}
+	const name=document.getElementById('name');
+	const price=document.getElementById('price');
+	const cal=document.getElementById('cal');
+	const bt=document.getElementById('bt');
+	const table=document.getElementById('table');
+	const total=document.getElementById('total');
+	let ls=[];
+	bt.addEventListener('click',()=>{
+		let menu=new Menu(name.value,price.value,cal.value);
+		ls.push(menu);
+		let tr=document.createElement('tr');
+		tr.innerHTML=menu.showInfo();
+		table.appendChild(tr);
+		total.textContent=`全${ls.length}件`;
+		//for文を使ったリストの走査(Javaとほぼ同一)
+		for (let i=0;i<ls.length;i++){
+			console.log(ls[i].name);
+		}
+		//for of を使った走査(Javaでいう拡張for)
+		for (let m of ls){
+			console.log(m.showInfo());
+		}
+
+	});
+};
+
+★Day72
+
+テストに備えてPythonを学習していきます。
+
+演算子
+
+print(3**3) # 3の3乗
+print(10 / 3) # int割るintもちゃんと計算(jsも同じ)
+print(10 // 3) # 商を求める->3
+print(10 % 3) #余り->1
+print('Hello'*3) # HelloHelloHello
+print(123**300)
+入力と型変換
+
+m=input('何メートル?')
+cm=float(m)*100
+print(type(cm))
+print('答えは'+str(cm)+'です')
+if文
+
+print("これから無人島でしばらく一人で生活しなくてはなりません。")
+print("好きなものを一つだけ持って行くとしたら何を持って行く？")
+print("1: ナイフ")
+print("2: 携帯電話")
+print("3: 漫画")
+i=int(input())
+
+if i<1 or i>3 :
+    print('範囲外')
+    quit()
+
+print("\n----\n")
+print("無人島生活から、将来の恋人について分かります。")
+
+if i==1:
+    print("現実的な道具を選んだあなたは..")
+    print("現実的な身の丈にあった相手を選ぶでしょう。")
+elif i==2:
+    print("誰かとつながる道具を選んだあなたは..")
+    print("話し好きな賑やかな相手が相応しいでしょう。")
+else:
+    print("実用よりも娯楽アイテムを選んだあなたは..")
+    print("夢見がちなので、理想がとても高いでしょう。")
+for文
+
+n=int(input('正の整数>'))
+# print(sum(range(1,n+1)))
+total=0
+for i in range(1,n+1):
+    total+=i
+print(total)
+random
+
+import random
+print(random.randint(1,6))
+import time
+time.sleep(3)
+print('Hello')
+競争アプリの作成
+
+import random
+import time
+
+# 変数の初期化
+a=b=0
+goal=20
+
+# ユーザーからの入力を得る
+user=input('aとbのどちらのカメが勝つか?')
+
+# 競争開始
+print('競争開始!')
+
+# aとbのどちらもゴールしていない間繰り返す
+while a < goal and b<goal:
+    print('---')
+    a+=random.randint(1,6)
+    b+=random.randint(1,6)
+    print('a:'+'>'*a +'@')
+    print('b:'+'>'*b +'@')
+    time.sleep(1)
+
+# 判定
+winner='同時' if a == b else 'a' if a > b else 'b'
+"""
+if a == b:
+    winner='同時'
+elif a > b:
+    winner='a'
+else:
+    winner='b'
+"""
+
+# 予想は当たった?
+print('当たり' if winner==user else 'はずれ')
+"""
+if winner == user:
+    print('当たり')
+else:
+    print('はずれ')
+"""
+じゃんけんアプリ
+
+import random
+n=3
+win=lose=draw=0
+for i in range(1,n+1):
+    print(f'じゃんけん{i}回目')
+    print('あなたの手は?')
+    user=int(input('0:グー、1:チョキ、2:パー>'))
+    pc=random.randint(0,2)
+    print(f'pcの手は{pc}')
+    diff=(user-pc + 3)%3
+    if diff == 0:
+        print('あいこ')
+        draw+=1
+    elif diff == 2:
+        print('勝ち')
+        win+=1
+    else:
+        print('負け')
+        lose+=1
+print(f'結果({n}戦) win:{win} lose:{lose} draw:{draw}')
+
+リスト
+
+a_list=[20,35,82,50,33]
+print(a_list[0]) # ->20
+print(a_list[-1]) # 33
+
+# for文
+for i in a_list:
+    print(i)
+
+# 要素数
+print(len(a_list)) # ->5
+
+listの操作
+
+points = [62, 58, 72, 60, 47, 81, 74, 65, 59, 38]
+print(f'平均点{sum(points)/len(points)}')
+print(max(points)) # 81
+print(min(points)) # 38
+
+ls=sorted(points) # 昇順に並べたものを返す
+ls=sorted(points,reverse=True) # 降順
+
+print(ls)
+
+ls2=points[0:3]
+print(ls2) # [62,58,72]
+ls3=points[3:5]
+print(ls3) # [60,47]
+ls4=points[-2:] 
+print(ls4) #[59,38]
+
+2次元リスト
+
+a=[
+    ['田中',30,50,80],
+    ['井上',80,20,40],
+    ['鈴木',80,30,40],
+]
+print(a[0]) #['田中',30,50,80]
+print(a[2][1]) # 80
+a[2][-1]=60
+print(a[2]) #['鈴木',80,30,60]
+
+print(len(a)) # 3
+クイズアプリ
+
+# 三択クイズ
+# クイズデータを二次元のリストで表現 --- (*1)
+quiz_list = [
+    # [問題, 選択肢1, 選択肢2, 選択肢3, 答え]
+    ["夏目漱石の本名は？", "石男", "浩介", "金之助", 3],
+    ["野口英世が亡くなった場所は？", "福島", "ガーナ", "パリ", 2],
+    ["福澤諭吉が広めたものは？", "カレー", "電灯", "天ぷら", 1],
+    ["樋口一葉が書いた小説は？", "双葉", "十三夜", "歌世界", 2]
+]
+
+import random
+# シャッフル
+random.shuffle(quiz_list)
+
+# 繰り返し出題する
+for quiz in quiz_list:
+    print('[問題]')
+    print(quiz[0])
+    # 選択肢を表示
+    for i in range(1,4):
+        print(str(i)+':'+quiz[i])
+    user=int(input('答えは?'))
+    if user==quiz[4]:
+        print('正解!')
+    else:
+        print('ハズレ...答えは',quiz[quiz[4]],'です')
+    print('---')
+dictionary
+
+a_dict={'田中':48,'佐藤':78,'井上':49}
+print(a_dict['佐藤']) # 78
+a_dict['佐藤']=79
+
+# for
+for key in a_dict:
+    print(f'{key}は{a_dict[key}才')
+dictionaryを使ったアプリ
+
+import math
+# レストランのメニュー
+menu_dict = {
+    "洋風カレー": 900,
+    "オムライス": 870,
+    "ラザニア": 790,
+    "ハンバーグ定食": 920,
+    "トマトパスタ": 720
+}
+"""
+for key in menu_dict:
+    price=math.ceil(menu_dict[key]*1.3)
+    print(f'{key}:{menu_dict[key]}->{price}円')
+"""
+# items()を使ってタプルに変換
+# [('洋風かれー',900),('オムライス',800)....]
+# a,b=10,20
+for name,price in menu_dict.items():
+    new_price=math.ceil(price*1.3)
+    print(f'{name}:{price}->{new_price}円')
+
+dictionaryを使ったアプリ2
+
+# 今回集計するデータ --- (*1)
+s = """
+サンマ,カツオ,サンマ,サンマ,マグロ,フグ,マグロ,マグロ,マグロ,サンマ,ニシン,イワシ,サンマ,サンマ,カツオ,サンマ,カツオ,サンマ,カツオ,サンマ,マグロ,マグロ,マグロ,ニシン
+"""
+# データの前後にある空白を除去 --- (*2)
+s = s.strip()
+# カンマでデータを区切る --- (*3)
+s_list = s.split(",")
+
+# 空のdictを作成
+dic=dict()
+
+# forでリストを回しながらdictを更新していく
+
+for fish in s_list:
+    if fish in dic:
+        dic[fish]+=1
+    else:
+        dic[fish]=1
+
+# 結果を出力
+
+for name,count in dic.items():
+    print(f'{name}={count}')
+番外編(文字列のスライス)
+import math
+# abcd.....zの文字列生成
+data=''.join([chr(i) for i in range(97,97+26)])
+w=int(input('幅>'))
+for i in range(math.ceil(len(data)/w)):
+    print(data[i*w:(i+1)*w])
+
+★Day73
+
+listのソート
+
+a_list=[33,98,74,74,88,85]
+a.list.sort() # 自分自身を並べ替え
+print(a_list)
+
+b_list=sorted(a_list,reverse=True)
+print(b_list)
+
+f_dict={'Orange':300,'Banana':200,'Apple':500}
+sorted_list=sorted(f_dict)
+print(sorted_list)
+for key in sorted_list:
+    print(f'{key}:{f_dict[key]}')
+
+sorted_list2=sorted(f_dict.items()
+        ,key=lambda x:x[1]
+        )
+print(sorted_list2)
+for name,price in sorted_list2:
+    print(f'{name}:{price}')
+listとdictと並べ替え
+
+# あるクラスのテスト結果
+test_list = [
+  { "名前": "田中", "国語": 80, "算数": 45, "社会": 90 },
+  { "名前": "鈴川", "国語": 62, "算数": 70, "社会": 58 },
+  { "名前": "早川", "国語": 77, "算数": 69, "社会": 74 }
+]
+person=test_list[0]
+print(person['名前'])
+
+print(test_list[0]['名前'])
+
+total=0
+for p in test_list:
+    total+=p['国語']
+print(total/len(test_list))
+
+# 合計の項目を作る
+for p in test_list:
+    p['合計']=p['国語']+p['算数']+p['社会']
+    
+# 合計でlistを並べ替え
+sorted_list3=sorted(test_list,
+        key=lambda p:p['合計'],
+        reverse=True
+        )
+
+# 出力
+for p in sorted_list3:
+    print(f'{p["名前"]}:{p["合計"]}')
+タプル
+
+a=(1,2,3)
+print(a[0]) # 1
+
+b=a+(4,)
+print(b) # (1,2,3,4)
+
+# a[0]=10 
+
+n1,n2,n3=a # アンパック代入
+print(n1) # 1
+
+a1,*ls=a
+print(a1) # 1
+print(ls) #[2,3]
+関数
+
+# 関数の定義
+def tasu(a:int,b:int)->int:
+    return a+b
+
+# 関数を使う
+print(tasu(2,3))
+print(tasu(10,20))
+水族館app
+
+def calc_fee(age:int,is_mon:bool)->int:
+    fee=2000
+    if age < 3:
+        fee=0
+    elif age < 6:
+        fee=500
+    elif age >=60:
+        fee=1500
+    if is_mon :
+        fee=int(fee*0.8)
+    return fee
+
+print(calc_fee(18,False))
+print(calc_fee(20,True))
+print(calc_fee(2,False))
+print(calc_fee(70,True))
+次のオリンピックまで何年？
+
+def show_next_olympic(year:int)->None:
+    diff=4-year%4
+    print(f'{year}年の次のオリンピックは{year+diff}年')
+show_next_olympic(2016)
+show_next_olympic(2018)
+show_next_olympic(2020)
+次のオリンピックまで何日？
+
+import datetime
+
+# 特定の日付からオリンピックまでの調べる関数
+def calc_days(y,m,d):
+    olympic=datetime.datetime(2021,7,23).timestamp()
+    target=datetime.datetime(y,m,d).timestamp()
+
+    # 1日当たりの秒
+    perday=24*60*60
+    days=int((olympic-target)//perday)
+
+    s=f'{y}/{m}/{d}から{days}日後'
+    print(s)
+
+calc_days(2018,12,1)
+
+t=datetime.date.today()
+calc_days(t.year,t.month,t.day)
+関数を定義する場所
+
+def main():
+    print(tasu(3,5))
+    sub1()
+    sub2()
+
+def tasu(a,b):
+    return a+b
+
+def sub1():
+    print('sub1')
+
+def sub2():
+    print('sub2')
+
+main()
+ラムダ式
+
+tasu=lambda x,y:x+y
+print(tasu(2,3))
+add=tasu
+print(add(3,5))
+
+"""
+jsだったら
+tasu=(x,y)=>{x+y}
+console.log(tasu(2,3))
+"""
+モジュール
+モジュールの作成(今回はkeisan.pyを以下のように作成した）
+
+def tasu(a,b):
+    return a+b
+
+def hiku(a,b):
+    return a-b
+
+def kakeru(a,b):
+    return a*b
+モジュールの呼び出し
+
+import keisan
+
+print(keisan.tasu(3,5))
+print(keisan.kakeru(2,3))
+
+import random as r
+print(r.randint(1,6))
+
+
+モジュールないの特定の関数の呼び出し
+
+from keisan import tasu
+
+print(tasu(2,3))
+モジュール内のすべての関数を関数名だけで呼び出せるようにする
+
+from keisan import *
+print(tasu(3,3))
+print(hiku(100,11))
+print(kakeru(3,4))
+関数に別名をつける
+
+from keisan import tasu as add
+from keisan import kakeru as mul
+print(add(3,8))
+print(mul(2,4))
+
+from random import randint as rnd
+print(rnd(1,6))
+お天気アプリ(Jsonパース)
+
+# 天気予報を取得するモジュール
+# URLからJSONデータをダウンロードする関数
+def get_json(url):
+    import urllib.request as req
+    import json
+    # データをダウンロード
+    res=req.urlopen(url)
+    json_data=res.read()
+    # JSONデータをPythonで使えるように読み込む
+    return json.loads(json_data)
+
+# 都市IDを取得することで天気情報を取得する関数
+def get_weather(city_id):
+    url = "http://weather.livedoor.com/forecast/webservice/json/v1"
+    url += "?city=" + str(city_id)
+    data=get_json(url)
+
+    s=''
+    s+=data['title']+"\n"
+    for row in data['forecasts']:
+        label=row['dateLabel']
+        telop=row['telop']
+        s+=label+":"+telop+"\n"
+    return s
+
+# モジュールとして利用されるかどうかの判定
+if __name__ == '__main__':
+    res=get_weather(130010) # 東京の天気を取得
+    print(res)
+モジュールとして読み込み実行
+
+import l29
+print(l29.get_weather(260010))
+
+変数のスコープの確認
+
+value=30
+
+def hoge1():
+    print(value)
+
+def hoge2():
+    global value
+    value=999
+    print(value)
+
+hoge1()
+hoge2()
+print(value)
+# print(fuga)
+郵便番号アプリ(Jsonパース)
+
+
+def get_json(url):
+    import urllib.request as req
+    import json
+    res=req.urlopen(url)
+    json_data=res.read()
+    return json.loads(json_data)
+
+def get_addr(zip_code):
+    url=f'https://api.aoikujira.com/zip/zip.php?zn={zip_code}&fmt=json'
+    data=get_json(url)
+    return data['result']
+
+if __name__ =='__main__':
+    print(get_addr('110-0006'))
+zip_addrをモジュールとして呼び出し実行する。
+
+import zip_addr
+print(zip_addr.get_addr('144-0054'))
+
+
+
+
+
+
+

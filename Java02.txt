@@ -1,0 +1,1628 @@
+★33
+Day28
+
+回文を調査しよう(配列,メソッド演習)
+
+“しんぶんし”のように上から読んでも下から読んでも同じになる文字列を回文という。今回はこの回文で遊んでみよう。
+
+[問１]
+文字列を引数で受け取り、それが回文かどうかをbooleanで返すメソッドを作成し、以下の処理を作成せよ。
+
+[実行例1]
+
+文をいれてください>しんぶんし
+「しんぶんし」は回文です！
+[実行例2]
+
+文をいれてください>たけうま
+「たけうま」は回文ではありません。
+[問2]
+12321などの上から読んでも下から読んでも同じになる数字を回文数という。
+10進数で表しても2進数で表しても共に回文数となる数字を、10進数の10以上の数字から小さい順に5個表示せよ。
+(例)11は10進数だと回文数だが2進数だと1011となるので回文数ではない。よって今回の問題では11は除外される
+
+[ヒント]
+IntegerクラスにあるtoBinaryStringメソッドにintの数を渡すと、２進数の文字列表現を取得することができる。
+String binStr = Integer.toBinaryString(num);
+
+/*
+ * 10進数、2進数いずれで表現しても回分数となる
+ * 10進数で10以上の数字を小さい方から順に5個求めよ
+
+ */
+
+public class Q1 {
+
+	public static void main(String[] args) {
+		String word="しんぶんし";
+		if(isKaibun(word)){
+			System.out.println(word+"は回分です");
+		}else{
+			System.out.println(word+"は回分ではありません");
+		}
+
+		for (int i = 11, count = 0; count < 5; i += 2) {
+			String intStr = String.valueOf(i);
+			String binStr = Integer.toBinaryString(i);
+
+			if (isKaibun(intStr) && isKaibun(binStr)) {
+				System.out.println(intStr);
+				System.out.println(binStr);
+				count++;
+			}
+		}
+	}
+
+	public static boolean isKaibun(String str) {
+		boolean isKai = true;
+		char[] data = str.toCharArray();
+		for (int i = 0; i < data.length / 2; i++) {
+			if (data[i] != data[data.length - 1 - i]) {
+				isKai = false;
+				break;
+			}
+		}
+		return isKai;
+	}
+}
+
+
+メソッド再帰処理
+ロマンがある再帰処理の基本を学びましょう！
+
+オブジェクト指向(クレリッククラス)
+クレリッククラスの作成を通してクラス作成の基本を学びましょう。
+
+★34
+Day29
+
+Java(オブジェクト指向基本復習)
+
+1.ゲームを作ることになりスライムを登場させることになった。そこで名前とHP(初期値20)をパラメータとして持つpublicなSlimeクラスを作成せよ。コンストラクタやメソッドの実装は不要でクラス内のアクセス修飾子は無印(パッケージプライベート)とする。
+
+●Slimeクラス
+
+public class Slime {
+	String name;
+	int hp=20;
+}
+
+2.SlimeAppクラスを作成し、2匹のスライムをnewせよ。その際変数名はsurarinとsurakitiとし、名前は「スラリン」と「スラキチ」とすること。
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.name="スラリン";
+		Slime surakiti=new Slime();
+		surakiti.name="スラキチ";
+	}
+}
+
+3.スライムクラスに現れた時のメッセージを表示するインスタンスメソッドを作成せよ。
+処理内容は実行例を参考にすること。
+
+void appear(){処理}
+
+またSlimeAppクラスで生成した2匹のインスタンスにこのメソッドを実行させること。
+
+[実行例]
+スラリンが現れた！！
+スラキチが現れた！！
+
+●Slimeクラス
+
+public class Slime {
+	String name;
+	int hp=20;
+	
+	void appear(){
+		System.out.println(this.name+"が現れた！！");
+	}
+}
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.name="スラリン";
+		Slime surakiti=new Slime();
+		surakiti.name="スラキチ";
+		
+		surarin.appear();
+		surakiti.appear();
+	}
+}
+
+4.Slimeクラスにコンストラクタ追記し、newの際に名前を渡すこともできるようにせよ。
+またSlimeAppクラスでこのコンストラクタを用いスラッチをnewせよ。
+
+実行例は以下
+[実行例]
+スラリンが現れた！！
+スラキチが現れた！！
+スラッチが現れた！！
+
+●Slimeクラス
+
+public class Slime {
+	String name;
+	int hp=20;
+	Slime(){
+		
+	}
+	Slime(String name){
+		this.name=name;
+	}
+	
+	void appear(){
+		System.out.println(this.name+"が現れた！！");
+	}
+}
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.name="スラリン";
+		Slime surakiti=new Slime();
+		surakiti.name="スラキチ";
+		
+		surarin.appear();
+		surakiti.appear();
+		
+		Slime surachi=new Slime("スラッチ");
+		surachi.appear();
+	}
+}
+
+5.Slimeクラスにおいてすべてのフィールドはprivate,コンストラクタとメソッドはpublicでアクセス修飾し、
+すべてのフィールドに対してgetterとsetterを実装せよ。処理内容は値を得る、値をセットするという標準的な機能だけでよく、値が適正がどうかの検証はなしでよいものとする。
+また、SlimeAppクラスもエラーが出ないように修正せよ。
+
+[実行例]
+スラリンが現れた！！
+スラキチが現れた！！
+スラッチが現れた！！
+
+●Slimeクラス
+
+public class Slime {
+	private String name;
+	private int hp=20;
+	public Slime(){
+		
+	}
+	public Slime(String name){
+		this.name=name;
+	}
+	
+	public void appear(){
+		System.out.println(this.name+"が現れた！！");
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getHp() {
+		return hp;
+	}
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+	
+}
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.setName("スラリン");
+		Slime surakiti=new Slime();
+		surakiti.setName("スラキチ");
+		
+		surarin.appear();
+		surakiti.appear();
+		
+		Slime surachi=new Slime("スラッチ");
+		surachi.appear();
+	}
+}
+
+6.Slimeクラスにトータル何匹のスライムを生成したかをカウントするスタティックフィールドを実装する。
+
+private static int totalCount;
+
+totalCountを取得するメソッドを以下のように追加する
+
+public static int getTotalCount(){処理};
+
+Slimeクラスでインスタンスが生成される毎にトータルカウントが増えるように処理を追記し、SlimeAppクラスに以下の実行結果となるように処理を追記せよ。
+
+[実行例]
+スラリンが現れた！！
+スラキチが現れた！！
+スラッチが現れた！！
+3匹のスライム軍団が襲いかかってきた！
+
+●Slimeクラス
+
+public class Slime {
+	private String name;
+	private int hp=20;
+	private  static int totalCount;
+	public Slime(){
+		totalCount++;
+	}
+	public Slime(String name){
+		//this();
+		totalCount++;
+		this.name=name;		
+	}
+	
+	public void appear(){
+		System.out.println(this.name+"が現れた！！");
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getHp() {
+		return hp;
+	}
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+	public static int getTotalCount(){
+		return totalCount;
+	}
+	
+}
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.setName("スラリン");
+		Slime surakiti=new Slime();
+		surakiti.setName("スラキチ");
+		
+		surarin.appear();
+		surakiti.appear();
+		
+		Slime surachi=new Slime("スラッチ");
+		surachi.appear();
+		System.out.println(Slime.getTotalCount()+"匹のスライム軍団が襲いかかってきた！");
+		
+	}
+}
+
+7.
+Slimeクラスに攻撃をするインスタンスメソッドを以下のように実装する。
+
+public void attack(){
+		System.out.println(this.name+"の攻撃:5ポイントのダメージを与えた!");
+	}
+
+SlimeAppクラスで生成済みの3匹のスライムを配列に格納し、以下の処理を実現せよ。
+
+[実行例]
+スラリンが現れた！！
+スラキチが現れた！！
+スラッチが現れた！！
+3匹のスライム軍団が襲いかかってきた！
+スラリンの攻撃:5ポイントのダメージを与えた!
+スラキチの攻撃:5ポイントのダメージを与えた!
+スラッチの攻撃:5ポイントのダメージを与えた!
+
+●Slimeクラス
+
+public class Slime {
+	private String name;
+	private int hp=20;
+	private  static int totalCount;
+	public Slime(){
+		totalCount++;
+	}
+	public Slime(String name){
+		//this();
+		totalCount++;
+		this.name=name;	
+	}
+	
+	public void appear(){
+		System.out.println(this.name+"が現れた！！");
+	}
+	public void attack(){
+		System.out.println(this.name+"の攻撃:5ポイントのダメージを与えた!");
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getHp() {
+		return hp;
+	}
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+	public static int getTotalCount(){
+		return totalCount;
+	}
+	
+}
+
+●SlimeAppクラス
+
+public class SlimeApp {
+	public static void main(String[] args) {
+		Slime surarin=new Slime();
+		surarin.setName("スラリン");
+		Slime surakiti=new Slime();
+		surakiti.setName("スラキチ");
+		
+		surarin.appear();
+		surakiti.appear();
+		
+		Slime surachi=new Slime("スラッチ");
+		surachi.appear();
+		System.out.println(Slime.getTotalCount()+"匹のスライム軍団が襲いかかってきた！");
+		
+		Slime[] slimes=new Slime[Slime.getTotalCount()];
+		slimes[0]=surarin;
+		slimes[1]=surakiti;
+		slimes[2]=surachi;
+		
+		for(int i=0;i<slimes.length;i++){
+			slimes[i].attack();
+		}
+	}
+}
+
+
+Java(オブジェクト指向1)
+
+Q.Monkeyクラスを作成し、MonkeyAppクラスから以下の処理を実現せよ。(アクセス性はすべてpublicでよい）
+[実行例]
+おさるの名前を決めてください:>トシ
+おさるの歳を決めてください:>3
+おさるに何をさせますか？1…挨拶、2…竹馬、3…逆立ち、4…終了>1
+こんにちはトシ(3才)です。よろしく！
+おさるに何をさせますか？1…挨拶、2…竹馬、3…逆立ち、4…終了>2
+トシは上手に竹馬にのった！
+おさるに何をさせますか？1…挨拶、2…竹馬、3…逆立ち、4…終了>3
+トシはひょいと逆立ちをした！
+おさるに何をさせますか？1…挨拶、2…竹馬、3…逆立ち、4…終了>4
+アプリケーションを終了します。
+
+[解答例]
+●Monkey.java
+
+package javalessons;
+public class Monkey {
+	/****フィールド変数****/
+	public String name;
+	public int age;
+	/****コンストラクタ****/
+	public Monkey(String name,int age){
+		this.name=name;
+		this.age=age;
+	}
+	/****メソッド****/
+	//挨拶をするメソッド
+	public void greet(){
+		System.out.printf("こんにちは%s(%d才)です。よろしく！\n",this.name,this.age);
+	}
+	//竹馬をするメソッド
+	public void takeuma(){
+		System.out.printf("%sは上手に竹馬にのった！\n",this.name);
+	}
+	//逆立ちをするメソッド
+	public void sakadachi(){
+		System.out.printf("%sはひょいと逆立ちをした！\n",this.name);
+	}
+}
+
+●MonkeyApp.java
+
+import java.util.Scanner;
+public class MonkeyApp {
+	public static void main(String[] args) {
+		//スキャナーインスタンスを生成
+		Scanner scan =new Scanner(System.in);
+		//名前をきく
+		System.out.print("おさるの名前を決めてください:>");
+		String name=scan.next();
+		//歳をきく
+		System.out.print("おさるの歳を決めてください:>");
+		int age=scan.nextInt();
+		//Monkeyインスタンス生成
+		Monkey monkey=new Monkey(name,age);
+		//繰り返し処理
+		while(true){
+			System.out.print("おさるに何をさせますか？1...挨拶、2...竹馬、3...逆立ち、4...終了>");
+			int select =scan.nextInt();
+			switch(select){
+			case 1:
+				monkey.greet();
+				break;
+			case 2:
+				monkey.takeuma();
+				break;
+			case 3:
+				monkey.sakadachi();
+				break;
+			default:
+				System.out.println("アプリケーションを終了します。");
+				scan.close();
+				//リターンでメソッドを抜ける（mainメソッドを抜けて終了)
+				return;		
+			}
+		}	
+	}
+}
+
+★35
+Day30
+
+Java時間計測
+Javaで時間を計測するには以下の方法を用いればよい
+//開始のタイミング
+long start=System.currentTimeMillis();
+//何かしらの処理
+
+//終了のタイミング
+long end=System.currentTimeMillis();
+
+long diff=end-start;//かかった時間(ms)
+
+タイピングソフトを作成しよう
+
+タイピングの速度を計測する。以下のようなタイピングソフトを作成せよ。
+
+[仕様]
+10文字のアルファベットをランダムに表示しその通りに入力する。
+これを繰り返し、3回成功するまでの時間を計測する。
+もし間違えた場合はミスと表示しカウントには含めない。
+
+[実行例1]
+
+dyzgjkxlca
+dyzgjkxlca [enter]
+kzhxaqtbzj
+kzhxaqtbzj [enter]
+slbwmkadhm
+slbwmkabbh [enter]
+ミス
+qnnoekgdxw
+qnnoekgdxw [enter]
+22840(ms)
+
+import java.util.*;
+public class Main {
+
+	public static void main(String[] args) {
+		final int Q_LENGTH=10,CLEAR_COUNT=3;
+		//char[] chars={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+		char[] chars=new char[26];
+		for(int i=0;i<26;i++){
+			chars[i]=(char)('a'+i);
+		}
+		
+		char[] qs=new char[Q_LENGTH];
+		int correct=0;
+		Scanner sc=new Scanner(System.in);
+		long start=System.currentTimeMillis();
+		while(correct<CLEAR_COUNT){
+			makeQs(chars,qs);
+			String qStr=String.valueOf(qs);
+			System.out.println(qStr);
+			String input=sc.nextLine();
+			if(input.equals("q")){
+				return;
+			}
+			if(qStr.equalsIgnoreCase(input)){
+				correct++;
+			}else{
+				System.out.println("ミス");
+			}
+		}
+		long end=System.currentTimeMillis();
+		System.out.printf("%d(ms)%n", end-start);
+	}
+	public static void makeQs(char[] chars,char[] qs){
+		Random rand=new Random();
+		for(int i=0;i<qs.length;i++){
+			qs[i]=chars[rand.nextInt(chars.length)];
+		}
+	}
+
+}
+
+Javaの学習を始めて28日くらいの人のための問題集
+
+オブジェクト指向、継承の基本問題。
+
+Q1
+本を表すスーパークラスBook、
+ノートを表すサブクラスNotebookを作成し、
+各操作ができるプログラムを作成する。
+
+■クラス：Book
+
+＜フィールド＞
+・ページ数
+・価格
+
+＜コンストラクタ＞
+・ページ数と価格を設定する
+
+＜メソッド＞
+・ページ数と価格を表示する
+
+■クラス：NoteBook(スーパークラス：Book)
+
+＜フィールド＞
+・ノートに書かれた内容
+
+＜コンストラクタ＞
+・スーパークラスのコンストラクタでページ数と価格を設定する
+
+＜メソッド＞
+・ノートに内容を追加書き込みする
+・ページ数、価格、内容を表示する
+
+■アプリケーションクラス
+
+まず、本とノートのページ数と価格を入力させて、
+それぞれのインスタンスを１個ずつ生成する。
+その後、機能を番号で選択させる。
+
+[実行例]
+
+ソースを表示印刷SyntaxHighlighterについて
+本のページ数を入力して下さい >250
+本の価格を入力して下さい >1000
+ノートのページ数を入力して下さい >60
+ノートの価格を入力して下さい >200
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>1
+ページ数：250
+価格：1000
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>2
+ページ数：60
+価格：200
+内容：
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>3
+書き込む内容を入力して下さい >aaa
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>2
+ページ数：60
+価格：200
+内容：aaa
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>3
+書き込む内容を入力して下さい >bbb
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>2
+ページ数：60
+価格：200
+内容：aaabbb
+1. 本の情報表示 / 2. ノートの情報表示 / 3. ノートに追加書込 / 4.   終了>4
+アプリケーションを終了します。
+
+★36
+Day31
+
+オブジェクト並び替え
+
+クラス->インスタンスの流れを練習しながらオブジェクトをソートしてみよう。
+
+[Step1]
+Studentクラスを以下のように作成する。
+フィールド
+int id(登録順につけられるid)
+String name(名前)
+int score(テストの点数)
+
+コンストラクタ
+３つのフィールドにセットできるコンストラクタを作成する。
+
+メソッド
+以下のように名前…テストの点数といったフォーマットでインスタンスの情報を出力するvoid showInfo()メソッドを作成する。
+Suzuki … 66点
+
+[Step2]
+アプリケーションクラスStudentAppを作成し以下のようにStudent配列を作成して表示する処理を作成する。
+
+[実行例]
+
+生徒は何人>3
+1人目の名前>Suzuki
+1人目の点数>53
+2人目の名前>Tanaka
+2人目の点数>79
+3人目の名前>Yamada
+3人目の点数>48
+Suzuki    ... 53点
+Tanaka    ... 79点
+Yamada    ... 48点
+[Step3]
+上で作成したオブジェクト配列を並び替えるメソッドをStudentAppクラスに作成せよ。
+public static void sortStudents(Student[] data,String key)
+
+第二引数には”id”または”score”という文字列が渡されることを想定し、idが渡された場合には
+id昇順に,scoreが渡された場合は点数降順にStudent配列を並び替えるものとする。
+
+[Step4]
+Step3で作ったメソッド使って以下の処理を実現する。
+
+　
+生徒は何人>3
+1人目の名前>Suzuki
+1人目の点数>58
+2人目の名前>Tanaka
+2人目の点数>78
+3人目の名前>Yamada
+3人目の点数>44
+操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>1
+Suzuki    ... 58点
+Tanaka    ... 78点
+Yamada    ... 44点
+操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>2
+Tanaka    ... 78点
+Suzuki    ... 58点
+Yamada    ... 44点
+操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>1
+Suzuki    ... 58点
+Tanaka    ... 78点
+Yamada    ... 44点
+操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>3
+アプリケーションを終了します
+package typinggame;
+import java.util.*;
+public class StudentApp {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		System.out.print("生徒は何人>");
+		int num=sc.nextInt();
+		Student[] students=new Student[num];
+		for(int i=0;i<num;i++){
+			System.out.printf("%d人目の名前>", i+1);
+			String name=sc.next();	
+			System.out.printf("%d人目の点数>",i+1);
+			int score=sc.nextInt();
+			students[i]=new Student(i+1,name,score);		
+		}
+		
+		while(true){
+			System.out.printf("操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>");
+			int select=sc.nextInt();
+			if(select==3){
+				System.out.println("アプリケーションを終了します");
+				return;
+			}
+			sortStudents(students,select==1? "id":"score");
+			for(Student s:students){
+				s.showInfo();
+			}
+		}
+	}
+	public static void sortStudents(Student[] data,String key){
+		for(int i=0;i<data.length-1;i++){
+			for(int j=i+1;j<data.length;j++){
+				if(key.equals("id") && data[i].id>data[j].id
+					||key.equals("score") && data[i].score<data[j].score
+				){
+					Student temp=data[i];
+					data[i]=data[j];
+					data[j]=temp;
+				}
+			}
+		}
+	}
+}
+class Student{
+ int id;
+ String name;
+ int score;
+ Student(int id,String name,int score){
+	 this.id=id;
+	 this.name=name;
+	 this.score=score;
+ }
+ void showInfo(){
+	 System.out.printf("%-10s...%3d点%n",this.name,this.score);
+ }
+}
+
+ZombieApp作成
+
+import java.util.*;
+public class ZombieApp{
+	public static void main(String[] args){
+		Random rand=new Random();
+		Person[] persons=new Person[100];
+		for(int i=0;i<100;i++){
+			int hp=rand.nextInt(99)+1;
+			persons[i]=new Person(hp);
+		}
+		Zombie[] teamA=new Zombie[3];
+		Zombie[] teamB=new Zombie[3];
+		char s='A';
+		teamA[0]=new Zombie(50,s++);
+		char sb='a';
+		teamB[0]=new Zombie(50,sb++);
+		for(int i=0;i<4;i++){
+			if(i<2){
+				teamA[i+1]=teamA[0].bitePerson(persons[i],s++);
+			}else{
+				teamB[i-1]=teamB[0].bitePerson(persons[i],sb++);
+			}
+		}
+		for(Zombie z:teamA){
+			z.created();
+		}
+		for(Zombie z:teamB){
+			z.created();
+		}
+	}
+}
+class Zombie{
+	int hp;
+	int mp=10;
+	char suffix;
+	Zombie(int hp){
+		this.hp=hp;
+	}
+	Zombie(int hp,char suffix){
+		this(hp);
+		this.suffix=suffix;
+	}
+	Zombie bitePerson(Person p,char suffix){
+		p.bite();
+		Zombie z=new Zombie(p.hp,suffix);
+		return z;
+	}
+	void created(){
+		System.out.printf("うぉ～(%s:%d)%n",this.suffix,this.hp);
+	}
+}
+class Person{
+	int hp;
+	boolean isAlive=true;
+	Person(int hp){
+		this.hp=hp;
+	}
+	void bite(){
+		System.out.println("ぎゃー");
+		this.isAlive=false;
+	}
+}
+
+
+★37
+Day32
+
+ZombieApp(ver.1)
+
+import java.util.*;
+public class ZombieApp{
+	public static void main(String[] args){
+		Random rand=new Random();
+		Person[] persons=new Person[100];
+		for(int i=0;i<100;i++){
+			int hp=rand.nextInt(99)+1;
+			persons[i]=new Person(hp);
+		}
+		Zombie[] teamA=new Zombie[3];
+		Zombie[] teamB=new Zombie[3];
+		char s='A';
+		teamA[0]=new Zombie(50,s++);
+		char sb='a';
+		teamB[0]=new Zombie(50,sb++);
+		for(int i=0;i<4;i++){
+			if(i<2){
+				teamA[i+1]=teamA[0].bitePerson(persons[i],s++);
+			}else{
+				teamB[i-1]=teamB[0].bitePerson(persons[i],sb++);
+			}
+		}
+		showTeam("TeamA",teamA);
+		showTeam("TeamB",teamB);
+		battleTeam(teamA,teamB);
+	}
+	static void battleTeam(Zombie[] teamA,Zombie[] teamB){
+		while(true){
+			Zombie a=pickZombie(teamA);
+			Zombie b=pickZombie(teamB);
+			if(a==null){
+				System.out.println("Team B Win!!");
+				break;
+			}else if(b==null){
+				System.out.println("Team A Win!!");
+				break;
+			}else{
+				System.out.println("zombie-"+a.suffix+
+						" VS "+"zombie-"+b.suffix);
+				battleZombie(a,b);
+			}
+		}
+	}
+	static void battleZombie(Zombie a,Zombie b){
+		while(a.hp > 0 && b.hp>0){
+			int n=new Random().nextInt(2);
+			int power;
+			if(n==0){
+				power=a.attack();
+				b.attacked(power);
+			}else{
+				power=b.attack();
+				a.attacked(power);
+			}
+		}
+	}
+	static Zombie pickZombie(Zombie[] team){
+		for(int i=0;i<team.length;i++){
+			if(team[i].hp >0){
+				return team[i];
+			}
+		}
+		return null;
+	}
+	static void showTeam(String teamName,Zombie[] team){
+		sortTeam(team);
+		System.out.println("***"+teamName+"***");
+		for(Zombie z:team){
+			z.showInfo();
+		}
+	}
+	static void sortTeam(Zombie[] team){
+		for(int i=0;i<team.length-1;i++){
+			for(int j=i+1;j<team.length;j++){
+				if(team[i].hp>team[j].hp){
+					Zombie temp=team[i];
+					team[i]=team[j];
+					team[j]=temp;
+				}
+			}
+		}
+	}
+}
+class Zombie{
+	int hp;
+	int mp=10;
+	char suffix;
+	Zombie(int hp){
+		this.hp=hp;
+	}
+	Zombie(int hp,char suffix){
+		this(hp);
+		this.suffix=suffix;
+	}
+	Zombie bitePerson(Person p,char suffix){
+		System.out.println("zombie-"+this.suffix+"が咬みついた!");
+		p.bite();
+		Zombie z=new Zombie(p.hp,suffix);
+		z.created();
+		return z;
+	}		
+	void created(){
+		System.out.println("うぉ～");
+		this.showInfo();
+		System.out.println("が誕生した!");
+	}
+	void showInfo(){
+		System.out.printf("zombie-%s HP:%d MP:%d%n",
+				this.suffix,
+				this.hp,
+				this.mp
+				);
+	}
+	int attack(){
+		int power=new Random().nextInt(30);
+		if(power < 4){
+			System.out.println("zombie-"+this.suffix+"は腕をちぎって投げた!");
+			if(this.mp<5){
+				System.out.println("しかし、腕がなかった！！！");
+			}else{
+				power=50;
+				this.mp-=5;
+			}
+		}else{
+			System.out.println("zombie-"+this.suffix+"は咬みついた!");
+		}
+		return power;
+	}
+	void attacked(int power){
+		System.out.println("ｷｬ━━━━(ﾟ∀ﾟ)━━━━!!");
+		System.out.println("zombie-"+this.suffix+"は"+power+"のダメージを受けた");
+		this.hp-=power;
+		if(this.hp<=0){
+			System.out.println("zombie-"+this.suffix+"は力尽きた");
+		}else{
+			this.showInfo();
+		}
+		System.out.println();
+	}
+}
+class Person{
+	int hp;
+	boolean isAlive=true;
+	Person(int hp){
+		this.hp=hp;
+	}
+	void bite(){
+		System.out.println("ぎゃー");
+		this.isAlive=false;
+	}
+}
+
+
+★38
+Day34
+
+Interface
+public class ShopApp{
+public static void main(String[] args){
+TanakaShop ts=new TanakaShop();
+ts.sellFood();
+ts.sellTabacco();
+SuzukiShop ss=new SuzukiShop();
+ss.sellBook();
+ss.sellTabacco();
+ss.sellAlcohol();
+}
+}
+interface Tabacco{
+void sellTabacco();
+}
+interface Alcohol{
+void sellAlcohol();
+}
+class TanakaShop implements Tabacco{
+String tel;
+void sellFood(){
+System.out.println(“食品を売ります”);
+}
+@Override
+public void sellTabacco(){
+System.out.println(“煙草を売ります”);
+}
+}
+class SuzukiShop implements Tabacco,Alcohol{
+String tel;
+void sellBook(){
+System.out.println(“本を売ります”);
+}
+@Override
+public void sellTabacco(){
+System.out.println(“タバコを扱ってます”);
+}
+@Override
+public void sellAlcohol(){
+System.out.println(“お酒扱ってます”);
+}
+}
+
+Javaの学習を始めて31日くらいの人のための問題集
+
+オブジェクト指向、インターフェイスの問題。
+
+Q1
+立体図形を表すインタフェースSolidFigure、
+立方体を表すクラスCube、球を表すクラスSphereを作成し、
+図形の体積と表面積を表示するプログラムを作成する。
+
+■インタフェース：SolidFigure
+
+＜抽象メソッド＞
+displayAreaInfo()
+
+■一般クラス：Cube(実装：SolidFigure)
+
+＜フィールド変数＞
+・立方体の１辺の長さ
+
+＜コンストラクタ＞
+・１辺の長さを設定する
+
+＜実装メソッド＞
+・立方体の１辺の長さ、体積と表面積を表示する
+
+■一般クラス：Sphere(実装：SolidFigure)
+
+＜フィールド変数＞
+・球の半径
+
+＜コンストラクタ＞
+・半径を設定する
+
+＜実装メソッド＞
+・球の半径、体積と表面積を表示する
+
+　[ヒント]
+※立方体の体積は１辺の長さの3乗、表面積は 6×立方体の１辺の長さの2乗
+※球の体積は(4 / 3)×π×球の半径の3乗、表面積は 4×π×半径の2乗
+※累乗はMath.pow(値,累乗数)を使うと良いMath.pow(2.5,3)->2.5の3乗
+※πはMath.PIを使うとよい
+
+[実行例]
+1. 立方体 / 2. 球 / 3.終了 >1
+１辺の長さを入力して下さい >30
+立方体 １辺の長さ= 30.00  体積 = 27000.00  表面積= 5400.00
+1. 立方体 / 2. 球 / 3.終了 >1
+１辺の長さを入力して下さい >5
+立方体 １辺の長さ= 5.00  体積 = 125.00  表面積= 150.00
+1. 立方体 / 2. 球 / 3.終了 >2
+半径を入力して下さい >10
+球 半径= 10.00  体積 = 4188.79  表面積= 1256.64
+1. 立方体 / 2. 球 / 3.終了 >3
+アプリケーションを終了します。
+
+一般クラス
+
+public interface SolidFigure {
+	void displayAreaInfo();
+}
+class Cube implements SolidFigure{
+	private double width;
+	public Cube(double width){
+		this.width=width;
+	}
+	@Override
+	public void displayAreaInfo() {
+		System.out.printf("立方体 １辺の長さ= %.2f  体積 = %.2f  表面積= %.2f%n",
+				this.width,
+				Math.pow(this.width, 3),
+				Math.pow(this.width, 2)*6
+				);
+	}
+}
+class Sphere implements SolidFigure{
+	private double r;
+	public Sphere(double r){
+		this.r=r;
+	}
+
+	@Override
+	public void displayAreaInfo() {
+		System.out.printf("球 半径= %.2f  体積 = %.2f  表面積= %.2f%n",
+				this.r,
+				4*Math.PI*Math.pow(this.r, 3)/3,
+				4*Math.PI*Math.pow(this.r, 2)
+				);		
+	}
+}
+
+アプリケーションクラス
+
+import java.util.Scanner;
+public class SolidFigureApp {
+	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
+		while(true){
+			System.out.print("1. 立方体 / 2. 球 / 3.終了 >");
+			int select=s.nextInt();
+			switch(select){
+			case 1:
+				System.out.print("１辺の長さを入力して下さい >");
+				double width=s.nextDouble();
+				new Cube(width).displayAreaInfo();
+				break;
+			case 2:
+				System.out.print("半径を入力して下さい >");
+				double r=s.nextDouble();
+				new Sphere(r).displayAreaInfo();
+				break;
+			case 3:
+				System.out.println("アプリケーションを終了します。");
+				return;
+			}
+		}
+	}
+}
+
+★36
+Day35
+
+カプセル化
+ArrayList
+
+Java(AnimalLand)
+
+Q
+抽象クラスAnimal,具象クラスDog,Cat,Pigを以下のように作成しアプリケーションを作成せよ。
+見つける動物の種類はランダムとし、匹数に制限はない。
+(カプセル化を行い適切なアクセス修飾子を付与すること)
+[クラス]
+◯抽象クラス
+Animal
+
+フィールド
+name
+
+一般メソッド
+introduce()
+
+抽象メソッド
+makeNoise()
+
+◯具象クラス
+Dog extends Animal
+makeNoise(){
+System.out.println(this.name+”はワンと吠えた”);
+}
+
+Cat extends Animal
+makeNoise(){
+System.out.println(this.name+”はニャーとないた”);
+
+}
+sleep(){
+System.out.println(this.name+”はすやすや眠った。”);
+
+Pig extends Animal
+makeNoise(){
+System.out.println(this.name+”はブーとないた”);
+}
+
+****AnimalLand****
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>2
+まだ動物はいません。
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>1
+犬を見つけた!名前をつけてください>ジョン
+こんにちはジョンです。よろしく！
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>1
+豚を見つけた!名前をつけてください>トン
+こんにちはトンです。よろしく！
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>2
+ジョンはワンと吠えた
+トンはブーとないた
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>1
+猫を見つけた!名前をつけてください>ミケ
+こんにちはミケです。よろしく！
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>2
+ジョンはワンと吠えた
+トンはブーとないた
+ミケはニャーとないた
+ミケはすやすや眠った。
+行動を選択してください。1…見つける 2…様子を見る 3…終わり>3
+アプリケーションを終了します。
+
+[解答例]
+クラス
+
+public abstract class Animal {
+	private String name;
+
+	public Animal(String name) {
+		super();
+		this.name = name;
+	}
+	public void introduce() {
+		System.out.printf("こんにちは%sです。よろしく！%n",this.name);
+	}
+	public abstract void makeNoise() ;
+
+	public String getName() {
+		return name;
+	}
+
+}
+
+class Dog extends Animal{
+
+	public Dog(String name) {
+		super(name);
+	}
+
+	@Override
+	public void makeNoise() {
+		System.out.printf("%sはワンと吠えた!%n",this.getName());
+	}
+
+}
+class Cat extends Animal{
+
+	public Cat(String name) {
+		super(name);
+	}
+
+	@Override
+	public void makeNoise() {
+		System.out.printf("%sはニャーとないた!%n",this.getName());
+	}
+	public void sleep() {
+		System.out.printf("%sはすやすや眠った。%n",this.getName());
+	}
+
+}
+class Pig extends Animal{
+
+	public Pig(String name) {
+		super(name);
+	}
+
+	@Override
+	public void makeNoise() {
+		System.out.printf("%sはブーとないた!%n",this.getName());
+	}
+
+}
+
+アプリケーションクラス
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		Random rand=new Random();
+		List<Animal> list=new ArrayList<>();
+		String[] types= {"犬","猫","豚"};
+		System.out.println("****AnimalLand****");
+		while(true) {
+			System.out.print("行動を選択してください。1…見つける 2…様子を見る 3…終わり>");
+			int select=scan.nextInt();scan.nextLine();
+			switch(select) {
+			case 1:
+				int index=rand.nextInt(types.length);
+				System.out.printf("%sを見つけた!名前をつけてください>",types[index]);
+				String name=scan.nextLine();
+				Animal animal;
+				if(index==0) {
+					animal=new Dog(name);
+				}else if(index==1) {
+					animal=new Cat(name);
+				}else {
+					animal=new Pig(name);
+				}
+				animal.introduce();
+				list.add(animal);
+				break;
+			case 2:
+				if(list.isEmpty()) {
+					System.out.println("まだ動物はいません。");
+					break;
+				}
+				for(Animal a:list) {
+					a.makeNoise();
+					if(a instanceof Cat) {
+						((Cat) a).sleep();
+					}
+				}
+				break;
+			case 3:
+				scan.close();
+				System.out.println("アプリケーションを終了します。");
+				return;
+			}
+		}
+	}
+
+}
+
+★Day38
+
+Java-オリジナルゲーム作成(数字バトル)
+
+今回は受講生が作ったJava問題の中から良問をピックアップします。
+
+*******数字バトルゲーム(K氏作)*******
+シンプルなゲームですが、プログラミング練習にピッタリな良問です。
+
+[問題]
+comと1~5の数字を出し合い数字が高いほうの勝ち。一度使った数字は使えない。
+全部で5回戦い、勝利数の多いほうが勝ち。comは1~5の数字をランダムな順に出す。
+
+[実行例1]
+1回戦目。1~5の数字を入力>1
+PCの数字:2
+あなたの負け
+2回戦目。1~5の数字を入力>2
+PCの数字:5
+あなたの負け
+3回戦目。1~5の数字を入力>3
+PCの数字:1
+あなたの勝ち
+4回戦目。1~5の数字を入力>4
+PCの数字:3
+あなたの勝ち
+5回戦目。1~5の数字を入力>5
+PCの数字:4
+あなたの勝ち
+3対2であなたの勝ち
+
+[実行例2 ]
+
+1回戦目。1~5の数字を入力>6
+1~5の数字を入力してください
+1回戦目。1~5の数字を入力>2
+PCの数字:5
+あなたの負け
+2回戦目。1~5の数字を入力>5
+PCの数字:2
+あなたの勝ち
+3回戦目。1~5の数字を入力>2
+一度使った数字は使えません
+3回戦目。1~5の数字を入力>1
+PCの数字:3
+あなたの負け
+4回戦目。1~5の数字を入力>4
+PCの数字:4
+引き分け
+5回戦目。1~5の数字を入力>3
+PCの数字:1
+あなたの勝ち
+2対2で引き分け
+
+[解答例]
+
+import java.util.*;
+public class Main {
+	static final int MIN_NUM=1,MAX_NUM=5;
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		//comの番号配列を宣言{0,0,0,0,0}
+		int[] comNums=new int[MAX_NUM-MIN_NUM+1];
+		//comの番号配列に中身を入れる{3,2,5,1,4}
+		init(comNums);
+		//プレイヤーの出した数字を格納していくリスト
+		List<Integer> playerNums=new ArrayList<>();
+		int win=0,lose=0;
+		/***メインルーチン***/
+		for(int i=0;i<comNums.length;i++){
+			//正常な値が入るまで回るループ
+			while(true){
+				System.out.printf("%d回戦目。%d~%dの数字を入力>",i+1,MIN_NUM,MAX_NUM);
+				int num=scan.nextInt();
+				if(checkNum(playerNums,num)){
+					//正常な値だった場合にリストに加える
+					playerNums.add(num);
+					break;
+				}
+			}
+			System.out.println("PCの数字:"+comNums[i]);
+			if(playerNums.get(i)>comNums[i]){
+				System.out.println("あなたの勝ち");
+				win++;
+			}else if(playerNums.get(i)<comNums[i]){
+				System.out.println("あなたの負け");
+				lose++;
+			}else{
+				System.out.println("引き分け");
+			}
+		}
+		String result;
+		if(win>lose){
+			result="あなたの勝ち";
+		}else if(win<lose){
+			result="あなたの負け";
+		}else{
+			result="引き分け";
+		}
+		System.out.printf("%d対%dで%s%n",win,lose,result);
+	}
+	//配列をシャッフルするメソッド
+	static void shuffleArr(int[] arr){
+		for(int i=0;i<arr.length-1;i++){
+			int index=new Random().nextInt(arr.length-i);
+			int temp=arr[index];
+			arr[index]=arr[arr.length-1-i];
+			arr[arr.length-1-i]=temp;
+		}
+	}
+	//comの番号配列を生成
+	static void init(int[] comsNum){
+		for(int i=0;i<MAX_NUM-MIN_NUM+1;i++){
+			comsNum[i]=MIN_NUM+i;
+		}
+		shuffleArr(comsNum);
+		//System.out.println(Arrays.toString(comsNum));
+	}
+	//プレイヤーの入力した数字が不正でないかをチェックするメソッド
+	static boolean checkNum(List<Integer> list,int num){
+		//最小値より小さいまたは最大値より大きい場合はfalse
+		if(num<MIN_NUM || num>MAX_NUM){
+			System.out.printf("%d~%dの数字を入力してください%n",MIN_NUM,MAX_NUM);
+			return false;
+		}
+		//一度使った数字をもう一度使おうとしたらfalse
+		if(list.contains(num)){
+			System.out.println("一度使った数字は使えません");
+			return false;
+		}
+		return true;
+	}
+}
+
+★Day39
+
+Java-オリジナルゲーム作成(Diceゲーム連続引きあり)
+
+今回は受講生が作ったJava問題の中から良問をピックアップします。
+
+*******Diceゲーム(S氏作)*******
+連続引きができるタイプのゲーム、1を出すとそのターンで得たポイントが0になってしまうというのが面白いですね。
+
+[ルール]
+○二人で遊ぶサイコロゲーム
+○サイコロを振って出た目がポイントになる
+○先に目標ポイントに到達したほうが勝利
+○プレイヤーは自分のターンに何度でもサイコロを振ることができるが、サイコロの目が１だった場合、そのターンに得たポイントは没収され、ターンが相手に移る。
+
+[実行例1]
+
+目標ポイントを設定してください>20
+
+Aのターン
+サイコロを振ります
+最初の目は6
+現在のポイント(6)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は4
+現在のポイント(10)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は5
+現在のポイント(15)
+さらにサイコロを振る？　1:振る2:やめとく>2
+ターン終了
+
+Bのターン
+サイコロを振ります
+最初の目は6
+現在のポイント(6)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は1
+残念!ポイントは(0)に戻った
+
+Aのターン
+サイコロを振ります
+サイコロの目は3
+現在のポイント(18)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は6
+A　Win!
+
+[実行例2]
+
+目標ポイントを設定してください>20
+
+Aのターン
+サイコロを振ります
+最初の目は2
+現在のポイント(2)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は3
+現在のポイント(5)
+さらにサイコロを振る？　1:振る2:やめとく>2
+ターン終了
+
+Bのターン
+サイコロを振ります
+最初の目は4
+現在のポイント(4)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は6
+現在のポイント(10)
+さらにサイコロを振る？　1:振る2:やめとく>2
+ターン終了
+
+Aのターン
+サイコロを振ります
+サイコロの目は4
+現在のポイント(9)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は1
+残念!ポイントは(5)に戻った
+
+Bのターン
+サイコロを振ります
+サイコロの目は4
+現在のポイント(14)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は3
+現在のポイント(17)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は1
+残念!ポイントは(10)に戻った
+
+Aのターン
+サイコロを振ります
+サイコロの目は4
+現在のポイント(9)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は1
+残念!ポイントは(5)に戻った
+
+Bのターン
+サイコロを振ります
+サイコロの目は2
+現在のポイント(12)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は5
+現在のポイント(17)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は1
+残念!ポイントは(10)に戻った
+
+Aのターン
+サイコロを振ります
+サイコロの目は5
+現在のポイント(10)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は5
+現在のポイント(15)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は4
+現在のポイント(19)
+さらにサイコロを振る？　1:振る2:やめとく>1
+サイコロの目は3
+A　Win!
+
+[解答例]
+import java.util.*;
+public class Main {
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		Random rand=new Random();
+		final int PLAYER_NUM=2;//何人で遊ぶか?
+		char suffix='A';//名前の最初の文字
+		int[] playerPoints=new int[PLAYER_NUM];//プレイヤーごとの現在地を保存
+		char[] playerSuffix=new char[PLAYER_NUM];//プレイヤーごとの名前配列
+		for(int i=0;i<PLAYER_NUM;i++){
+			playerSuffix[i]=suffix++;//A,B,C,....
+		}
+		System.out.print("目標ポイントを設定してください>");
+		int goal=scan.nextInt();
+		//プレイヤー配列indexの循環無限ループ(0,1,2,0,1,2....)
+		for(int i=0;;i=++i%PLAYER_NUM){
+			int startPoint=playerPoints[i];//初期位置を保存しておく
+			System.out.printf("%n%sのターン%nサイコロを振ります%n",playerSuffix[i]);
+			//ターン処理（何回継続させるかわからないのでwhile)
+			while(true){
+				int num = rand.nextInt(6) + 1;
+				String str="サイコロの目は";
+				if (playerPoints[i]==0) {
+					str="最初の目は";
+				} 
+				System.out.println(str + num);
+				if(num==1){
+					System.out.printf("残念!ポイントは(%d)に戻った%n", startPoint);
+					playerPoints[i]=startPoint;
+					break;
+				}
+				playerPoints[i] += num;//1以外なら現在地をnumの数だけ増やす
+				if(playerPoints[i]>=goal){
+					//ゴール地点にくればそのindexの人の勝ち
+					System.out.printf("%s　Win!%n",playerSuffix[i]);
+					return;
+				}
+				System.out.printf("現在のポイント(%d)%n",playerPoints[i]);
+				System.out.print("さらにサイコロを振る？　1:振る2:やめとく>");
+				int select=scan.nextInt();
+				if(select != 1){
+					System.out.println("ターン終了");	
+					break;
+				}
+			}
+		}
+	}
+}
+
+★Day40
+

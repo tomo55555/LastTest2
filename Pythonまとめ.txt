@@ -1,0 +1,293 @@
+Python 基礎 まとめ
+Python
+この記事は最終更新日から5年以上が経過しています。
+Pythonとは
+シンプルで習得がしやすいオブジェクト指向型言語。
+Google App Engineで採用されていたり、Djangoというフレームワークがある。
+
+pythonの実行
+インタラクティブモード
+ファイルに書き込み実行 の2点の実行方法がある。
+インタラクティブモード
+$python
+と打つとインタラクティブモードになる。
+
+python
+>>>
+ここに書き込めば、即時実行される。
+以下のような感じ。
+
+python
+>>>print "hello world"
+exit()
+で抜けられる。
+
+ファイルに書き込み実行
+hello.py
+print "hello world"
+のようにファイルを作成して実行
+
+$python hello.py
+実行に際しての注意事項
+文を終わらせるときは改行。
+#でコメントアウトになる。
+日本語を使うときは、ファイル先頭に#coding:UTF-8をファイルの最初に入れる。
+変数
+msg = "hello world"
+print msg
+でhello worldの出力。
+大文字・小文字は別物として処理される。
+
+データ型
+数値型
+整数、小数、複素数
+演算子+ - * / // % **等
+
+print 10 * 5 #50
+print 10 // 3 #3
+print 10% 3 #1
+print 2**3 #8
+整数と小数の演算は小数になる
+整数同士の割り算は切り捨ての整数になる。（ただし、どちらか小数なら切り捨てはない）
+形式的に1.0をかけると切り捨てずに計算される。
+文字列
+“hello” ‘hello'のようにすれば文字列。
+ただし、日本語の場合、u"こんにちは"のようにuを入れる。
+
+"""でくくると改行が反映される
+
+print """<html lnag="ja">
+<body>
+</body>
+</html>"""
+エスケープ
+\t \n のようなエスケープが使用可能。
+
+文字数 len, 検索 find, 切り出し []
+s = "abcdefgh"
+#文字列の長さ
+print len(s)
+#文字の位置
+print s.find("c") #2 数えは0から
+#文字の切り出し[番目:文字数]
+print s[2] #c
+print s[2:5] #cde
+print s[:5] #abcde
+print s[2:-1] #cdefgh
+数値と文字列の相互変換
+数値<>文字列
+・文字列から数値へ変換 int float
+
+print 5 + int("5") %10
+print 5 + float("5") %10.0
+・数値から文字列へ変換 str
+
+age=20
+print "i am" + str(age) + "years old!"
+リスト
+長さlen, 結合 +, 繰り返し *, 要素の取得 [], 要素の存在 in
+sales = [255, 100, 353, 400]
+
+print len(sales) #4 配列の長さを取り出す
+print sales[1] #100　要素の取得
+print sales + sales #配列の結合 [255, 100, 353, 400, 255, 100, 353, 400]
+print sales *3 #配列の繰り返し [255, 100, 353, 400, 255, 100, 353, 400, 255, 100, 353, 400]
+print 100 in sales #true in 要素の存在判定
+range
+配列作成
+
+range(10) #[1,2,3,4,5,…8,9] 9まで
+range(3, 10) #[3,4,5,…8,9]　3から9まで
+range(3, 10, 2) #[3,5,7,9] 3から9まで2個とばし
+リスト操作 sort, reverse, split, join
+#小さい順に並び替える
+sales.sort()
+#リストを逆順にする
+sales.reverse()
+#文字列→リスト split
+d = "2013/12/15"
+print d.split("/") #['2013', '12', '15']
+#リスト→文字列 join
+a = ['a', 'b', 'c']
+print '-'.join(a) #a-b-c
+タプル
+a=(2, 5, 8)のような感じ。
+要素の中身が変更出来ないだけで、連結、繰り返しは出来る。
+→変な間違いを防ぐ、計算速度を速くする。
+
+タプルとリストの相互変換
+#タプル→リスト
+b = list(a)
+#リスト→タプル
+c = tuple(b)
+セット
+a = set([1, 2, 3, 4, 3, 2])
+b = set([3, 4, 5])
+要素の重複を許さない
+print aは3, 2が重複し無視される。
+
+集合型
+#差集合
+print a - b
+#和集合
+print a | b
+#共通項だけ
+print a & b
+#片方にだけある項
+print a ^ b
+辞書型データ key value
+[2505, 523, 500]
+{"apple":200, "orange":300, "banana":500}
+print sales; #順番は変わって表示される可能性がある
+print sales["apple"] #200
+sales["orange"] = 800 #値の変更
+print sales #{'orange': 800, 'apple': 200, 'banana': 500}
+print "orange" in sales #true　存在判定
+
+print sales.keys() #key一覧
+print sales.values() #value一覧
+print sales.items() #key-value一覧
+文字列にデータを埋め込む
+a = 10
+b = 1.232323
+c = "apple"
+d = {"orange":200, "banana":500}
+print "age: %d" % a
+print "age: %10d" % a #10桁
+print "age: %010d" % a #10桁0で埋める
+print "price: %f" % b
+print "price: %.2f" % b
+print "name: %s" % c
+
+print "sales: %(orange)d" %d
+print "%d and %f" % (a, b)
+if文
+scoe = 70
+if score > 60:
+     print "ok!"
+     print "OK!"
+
+#比較演算子 > < >= <= == !=
+#論理演算子　and or not
+
+if score > 60 and score < 80:
+     print "ok!"
+     print "OK!"
+
+if 60 < score <80
+     print "ok!"
+     print "OK!"
+
+score = 70
+if score > 60:
+     print "ok!"
+elif score > 40:
+     print "soso…"
+else:
+     print "ng!"
+
+print "OK!" if score > 60 else "NG!"
+for文
+sales = [13, 43, 4233, 2343]
+for sale in sales:
+     sum += sale
+else:
+     print sum
+
+#＊for文のelseでfor文を抜けた時に一回だけ実行する処理を書ける。
+
+for i in range(10)
+     if i == 3:
+          continue #ループをスキップ
+      if i == 3:
+          break #ループを終了
+     print i
+#0から9からまで。
+
+for i in range(1, 101)
+     #処理
+#iが1から100までループする
+辞書型forループ
+users = {"apple":200, "orange":300, "banana":500}
+for key, value in users.iteritems()
+     print "key: %s value: %d" % (key, value)
+for key, value in users.iterkeys()
+     print key
+for value in users.itervalues()
+     print value
+while文
+n = 0
+while n < 10
+     print n
+     n = n + 1
+     n += 1
+else:
+     print "end"
+#continue, break, elseはfor文と使い方は一緒。
+#breakを使うとelse句も実行されない。
+関数
+def hello():
+     print "hello"
+hello()
+
+#引数
+def hello(name, num = 3):
+     print "hello %s" %name * num
+hello(name = "tom", num =2) #名前をつければ引数の順番は変えてもオーケー。
+hello("steve")
+
+def hello(name, num = 3):
+     return "hello %s" %name * num
+s = hello("steve")
+print s
+変数とスコープ、pass
+name = "apple"
+def hello():
+     name = "orange"
+print name
+
+#pass
+def hello2():
+     pass
+#hello2という関数をとりあえず作っておいて、中身は空のときpassと書いておけばオーケー。
+#他の言語だと、{}でくくれるために関数の終わりを示せるが、pythonでは終わりを示せないためにかわりにpassを書く。
+map、lamdaーlistに対するアクション
+#map　ーリストの各要素に対して関数を実行させる
+def double(x):
+    return x*x
+print map(double, [2, 5, 8])
+
+#lamda 無名関数　ーmap利用時に直接関数を使いたいときに使う
+print map(lambda x:x*x, [2, 5, 8])
+オブジェクトの作成
+オブジェクト（変数と関数をまとめたもの）
+クラス:オブジェクトの設計図
+インスタンス:クラスを実体化したもの
+
+class User(object):
+     def __init__(self, name):
+          self.name = name
+     def greet(self):
+          print "my name is %s" % self.name
+
+bob = User("Bob")
+tom = User("Tom")
+print bob.name
+bob.greet()
+tom.greet()
+クラスの継承
+class SuperUser (User):
+def shout(self):
+     print :"%s is SuPER!" % self.name
+
+tom = SuperUser("Tom")
+tom.shout()
+モジュールの利用
+import math, random
+from datetime import date
+print math.ceil(5.2) #6.0
+for i in range(5)
+     print random.random()
+print date.today()
+参考
+ドットインストールPython入門

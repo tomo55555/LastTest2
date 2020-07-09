@@ -1,0 +1,4659 @@
+★1
+
+好きな言葉を以下のように出力するアプリを作成せよ。ファイル名はFavoriteWord.javaとすること
+
+public class FavoriteWord{
+  public static void main(String[] args){
+    System.out.println("私の好きな言葉");
+    System.out.println("経験にマイナスなし");
+  }
+}
+
+★2
+変数の練習
+public class VarLesson{
+	public static void main(String[] args){
+		int bananaPrice=80;
+		int bananaNum=5;
+		int applePrice=150;
+		int appleNum=3;
+		int total=bananaPrice*bananaNum+applePrice*appleNum;
+		System.out.println("合計は"+total+"円です");
+		double pi=3.14;
+		double r=10.0;
+		double ensyu=r*2*pi;
+		System.out.println("半径"+r+"の円周は"+ensyu+"です");
+	}
+}
+
+★3
+お題1
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>q1</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <ul id="box">
+      <li><img src="images/baby.jpg"></li> 
+      <li><img src="images/man1.jpg"></li> 
+      <li><img src="images/man2.jpg"></li> 
+      <li><img src="images/man3.jpg"></li> 
+    </ul>
+  </body>
+</html>
+
+ul{
+  width:960px;
+  height:500px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  background:#eee;
+}
+li{
+  width:200px;
+  height:200px;
+  overflow:hidden;
+  border-radius:50%;
+}
+img{
+  width:100%;  
+}
+
+★4
+お題2
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>q2</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <div id="container">
+      <div id="inner">
+        <div id="point">Point!</div>
+        <p>Outputが大事!</p>
+      </div>
+    </div>
+  </body>
+</html>
+
+#container{
+  background:#eee;
+  width:960px;
+  height:500px;
+  display:flex;
+  margin:0 auto;
+  text-align:center;
+}
+#inner{
+  margin:auto;
+  background:yellow;
+  width:600px;
+  height:300px;
+  position:relative;
+  font-size:60px;
+  line-height:300px;
+}
+#point{
+  position:absolute;
+  top:-50px;
+  left:-50px;
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:red;
+  color:white;
+  line-height:100px;
+  font-size:16px;
+}
+
+★5
+Javaのプログラムで自分の名前のPowerを求めよう。
+public class Main{
+  public static void main(String[] args){
+    int power='山'+'田'+'太'+'郎';
+    System.out.println(power);
+  }
+}
+
+★6
+if文レッスン
+以下のように年齢を入れる大人か子供を出力する処理を作成せよ。(if~else文)
+import java.util.*;
+public class IfLesson1{
+	public static void main(String[] args) {
+		System.out.print("年齢>");
+		int age=new Scanner(System.in).nextInt();
+		if(age>=20){
+			System.out.println("あなたは大人です。");
+		}else{
+			System.out.println("あなたは子供です。");
+		}
+	}
+}
+
+★7
+乱数でサイコロの目を出し、その目を表示する処理を作成せよ。
+1が出た場合はLucky!という文字も出力すること。
+ただし、elseは使わない。(if文)
+import java.util.*;
+public class  IfLesson2 {
+	public static void main(String[] args) {
+		System.out.println("ダイスふるよ");
+		int dice=new Random().nextInt(6)+1;
+		if(dice==1){
+			System.out.println("Lucky!");
+		}
+		System.out.println(dice);
+	}
+}
+
+★8
+点数を入力しその結果を出力する処理をif~else if~else構文で作成せよ。
+80点以上が優,60点以上が良,40点以上が可,40点未満が不可とする。
+import java.util.*;
+public class IfLesson3 {
+
+	public static void main(String[] args) {
+		System.out.print("点数は>");
+		int score=new Scanner(System.in).nextInt();
+		if(score>=80){
+			System.out.println("優");
+		}else if(score>=60){
+			System.out.println("良");
+		}else if(score>=40){
+			System.out.println("可");
+		}else{
+			System.out.println("不可");
+		}
+	}
+}
+
+★9
+複雑な条件式と文字列の比較
+日本の法律では男は18歳以上女は16歳以上で結婚できる。
+性別と年齢を入力してもらい結婚できるか出来ないかを出力する処理を作成せよ
+import java.util.*;
+public class IfLesson4{
+
+	public static void main(String[] args) {
+		System.out.print("性別は>");
+		String gendar=new Scanner(System.in).next();
+		System.out.print("年齢は>");
+		int age=new Scanner(System.in).nextInt();
+		if((gendar.equals("男") && age>=18) || (gendar.equals("女") && age>=16)){
+			System.out.println("結婚はOK");
+		}else{
+			System.out.println("結婚はNG");
+		}
+	}
+}
+
+★10
+switch文
+月を入力すると季節を表示するアプリを作成せよ。
+(3,4,5月を春とする。)
+import java.util.*;
+public class Lesson2{
+	public static void main(String[] args){
+		System.out.print("何月>");
+		int num=new Scanner(System.in).nextInt();
+		switch(num){
+			case 3:
+			case 4:
+			case 5:
+				System.out.println("春");
+				break;
+			case 6:
+			case 7:
+			case 8:
+				System.out.println("夏");
+				break;
+			case 9:
+			case 10:
+			case 11:
+				System.out.println("秋");
+				break;
+			case 12:
+			case 1:
+			case 2:
+				System.out.println("冬");
+				break;
+			default:
+				System.out.println("そんな月はありません");
+		}
+	}
+}
+
+★11
+while文
+正の数を入力するとカウントダウンする処理を作成せよ
+import java.util.*;
+public class Lesson4{
+	public static void main(String[] args){
+		System.out.print("正の数>");
+		int num=new Scanner(System.in).nextInt();
+		while(num>0){
+			System.out.println(num);
+			num--;
+		}
+		System.out.println("2020!!");
+	}
+}
+
+★12
+サイコロを指定回数ふってその目の合計値を求める処理を作成せよ。
+
+while文を使用
+import java.util.*;
+public class Main {
+	
+	public static void main(String[] args) {
+		System.out.print("サイコロを何回振る？>");
+		int count=new Scanner(System.in).nextInt();
+		int sum=0;
+		while(count>0){
+			int num=new Random().nextInt(6)+1;
+			System.out.println(num);
+			sum+=num;
+			count--;
+		}
+		System.out.println("合計は"+sum+"でした");
+	}
+
+}
+
+for文を使用
+import java.util.*;
+public class Main {
+	
+	public static void main(String[] args) {
+		System.out.print("サイコロを何回振る？>");
+		int count=new Scanner(System.in).nextInt();
+		int sum=0;
+		for(int i=0;i<count;i++){
+			int num=new Random().nextInt(6)+1;
+			System.out.println(num);
+			sum+=num;
+		}
+		System.out.println("合計は"+sum+"でした");
+	}
+
+}
+
+★13
+2重for練習(図形描画)
+#
+##
+###
+ ##
+  #
+public class Hoge {
+	
+	public static void main(String[] args) {
+		for(int i=0;i<5;i++){
+			for(int j=0;j<3;j++){
+				if(i<=2 && j<i+1 || i>2 && j>i-3){
+					System.out.print("#");
+				}else{
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+
+}
+
+  #
+ ###
+#####
+public class Hoge {
+	
+	public static void main(String[] args) {		
+		for(int i=0;i<3;i++){
+		 for(int j=0;j<3+i;j++){
+			 if(j<2-i){
+				 System.out.print(" ");
+			 }else{
+				 System.out.print("#");
+			 }
+		 }
+		 System.out.println();
+		}
+		
+	}
+
+}
+
+#########
+####
+#
+
+#
+####
+#########
+public class ForLesson {
+	public static void main(String[] args) {
+		for(int i=-3;i<=3;i++){
+			for(int j=0;j<i*i;j++){
+				System.out.print("#");
+			}
+			System.out.println();
+		}
+		/*
+		for(int i=0;i<7;i++){
+			for(int j=0;j<(3-i)*(3-i);j++){
+				System.out.print("#");
+			}
+			System.out.println();
+		}
+		*/	
+	}
+}
+
+#     #
+#     #
+#     #
+#     #
+#     #
+##   ##
+##   ##
+##   ##
+### ###
+
+public class ForLesson {
+	public static void main(String[] args) {
+		for(int i=3*3;i>0;i--){
+			for(int j=-3;j<=3;j++){
+				if(j*j>=i){
+					System.out.print("#");
+				}else{
+					System.out.print(" ");
+				}
+			}
+			System.out.println();
+		}
+	}
+}
+
+★14
+Javaの学習を始めて３日目くらいの人のための問題集
+
+Q1
+xに23,yに6を代入して以下の結果を求め出力せよ。
+x+y
+x-y
+x*y
+x/y
+x%y
+public class Q1 {
+	public static void main(String[] args) {
+		int x=23;
+		int y=6;	
+		System.out.println("x+y="+(x+y));
+		System.out.println("x-y="+(x-y));
+		System.out.println("x*y="+(x*y));
+		System.out.println("x/y="+(x/y));
+		System.out.println("x%y="+(x%y));
+	}
+}
+
+Q2
+xに10を代入し、それに５を３回足し結果を出力せよ。(whileと+=を使うこと)
+public class Q2 {
+	public static void main(String[] args) {
+		int x=10;
+		int count=3;
+		while(count > 0){
+			x += 5;
+			count--;
+		}
+		System.out.println("Ans:"+ x);
+	}
+}
+
+Q3
+1~10の乱数を生成して、それが偶数か奇数かを判定
+public class Q3 {
+	public static void main(String[] args) {
+		int num=new java.util.Random().nextInt(10)+1;
+		if(num % 2 == 0){
+			System.out.println(num+"は偶数(even)");
+		}else{
+			System.out.println(num+"は奇数(odd)");
+		}
+	}
+}
+
+Q4
+bottomに4.3を代入、heightに5.4を代入して、三角形の面積を求めよ。
+
+public class Q4 {
+	public static void main(String[] args) {
+		double bottom=4.3;
+		double height=5.4;
+		System.out.println("底辺:"+bottom+",高さ:"+height+"の三角形の面積は:"+(bottom*height/2));
+	}
+}
+
+Q5
+名前を入力させ、それを出力する。
+public static void main(String[] args) {
+		System.out.print("あなたのなまえを入力してください>");
+		String name=new java.util.Scanner(System.in).nextLine();
+		System.out.println("こんにちは" + name + "さん！");
+	}
+
+Q6
+スカイツリーの高さを入力させ、それがあっていれば「OK!」間違っていれば「NG」と表示する。
+public class Q6 {
+	public static void main(String[] args) {
+		System.out.print("スカイツリーの高さは？(m)>");
+		int answer=new java.util.Scanner(System.in).nextInt();
+		if(answer == 634){
+			System.out.println("OK!");
+		}else{
+			System.out.println("NG");
+		}
+	}
+}
+
+Q7
+結婚しているかどうかを管理する変数isMarriedにtrueを代入する。
+public static void main(String[] args) {
+		boolean isMarried=true;
+		if(isMarried){
+			System.out.println("結婚しています。");
+		}else{
+			System.out.println("結婚していません。");
+		}
+	}
+
+★15
+Javaの学習を始めて4日くらいの人のための問題集
+
+Q1
+英語の１０月を入力させ、正しければ「OK!」間違っていれば「NG」と出力する。
+（if~else文を使用すること）
+public class Q1 {
+	public static void main(String[] args) {
+		System.out.print("10月は英語で何?>");
+		String ans=new java.util.Scanner(System.in).nextLine();
+		if(ans.equals("October")){
+			System.out.println("OK!");
+		}else{
+			System.out.println("NG");
+		}
+	}
+}
+
+Q２
+スペイン語で日曜は何と言うかという３択問題を出題し、答えを番号で入力させる。
+正解だったら。「OK!」不正解だったら「NG」と出力する。
+（switch文を使用すること）
+public class Q2  {
+	public static void main(String[] args) {
+		System.out.print("スペイン語で日曜は何?1:Lunes,2:Jueves,3:Domingo　>");
+		int num=new java.util.Scanner(System.in).nextInt();
+		switch(num){
+			case 3:
+				System.out.println("OK!");
+				break;
+			default:
+				System.out.println("NG");
+		}
+	}
+}
+
+Q3
+日本の信号で渡っていい色を出題し、漢字一文字で入力させる。
+入力された文字が「青」または「緑」なら、「OK!」、それ以外なら「NG」と出力する。
+（switch文を使用すること）
+public class Q3 {
+	public static void main(String[] args) {
+		System.out.print("日本の信号で渡っていい色は(漢字一文字)>");
+		String ans=new java.util.Scanner(System.in).nextLine();
+		switch(ans){
+		case "緑":
+		case "青":
+			System.out.println("OK!");
+			break;
+		default:
+			System.out.println("NG");
+		}
+	}
+}
+
+Q4
+サイコロを２個ふって、２個の合計を点数とする。ただし、ゾロ目の場合は点数は２倍となる。サイコロの目と点数を表示せよ。
+public class Q4 {
+	public static void main(String[] args) {
+		int dice1=new java.util.Random().nextInt(6)+1;
+		int dice2=new java.util.Random().nextInt(6)+1;
+		int score=dice1+dice2;
+		if(dice1 == dice2){
+			score *=2;
+		}
+		System.out.println("dice1:"+dice1+" dice2:"+dice2+" score:"+score);
+	}
+}
+
+Q5
+1~100までの和を求めよ。
+public class Q5 {
+	public static void main(String[] args) {
+		int sum=0;
+		for(int i=1;i<=100;i++){
+			sum+=i;
+		}
+		System.out.println("1から100まで足すと" + sum + "です");
+	}
+}
+
+Q6
+0~100の乱数を繰り返し発生させ、100が出るまでの回数を数える。
+(do~whileを使うこと)
+public class Q6 {
+	public static void main(String[] args) {
+		int count=0;
+		int num;
+		do{
+			num=new java.util.Random().nextInt(101);
+			count++;
+		}while(num != 100);
+		System.out.println(count+"回目に100が出ました！");
+	}
+}
+
+Q7
+10からカウントダウンし、０になったらStart!!と表示する。
+public class Q7 {
+	public static void main(String[] args) {
+		for(int i=10;i>=0;i--){
+			if(i==0){
+				System.out.println("Start!!");
+			}else{
+				System.out.println(i);
+			}
+		}
+	}
+}
+
+Q8
+forループを用いて実行例のような出力を得よ。
+public class Q8 {
+	public static void main(String[] args) {
+		for(int i=1;i<=9;i++){
+			System.out.println(i*i);
+		}
+	}
+}
+
+Q9
+★をいくつ出力するかを聞き、その個数分★を出力する。
+public class Q9 {
+	public static void main(String[] args) {
+		System.out.print("いくつ★を出力しますか？>");
+		int num=new java.util.Scanner(System.in).nextInt();
+		for(int i=0;i<num;i++){
+			System.out.print('★');
+		}
+	}
+}
+
+Q10
+1から20までカウントアップしていく、ただし、３の倍数の時は「Fizz」,5の倍数の時は「Bazz」,3と5の公倍数のときは「FizzBazz」と表示する。
+public class Q10 {
+	public static void main(String[] args) {
+		for(int i=1;i<=20;i++){
+			if(i % 3 == 0 && i % 5 == 0){
+				System.out.println("FizzBazz");
+			}else if(i % 3 == 0){
+				System.out.println("Fizz");
+			}else if(i % 5 == 0){
+				System.out.println("Bazz");
+			}else{
+				System.out.println(i);
+			}
+		}
+	}
+}
+
+★16
+Javaの学習を始めて5日くらいの人のための問題集
+
+Q1
+0~20の乱数を２個生成し、大きい方の数値から小さい方の数値を引いた差を求める。
+import java.util.*;
+public class Q1 {
+	public static void main(String[] args) {
+    Random rand=new Random();
+		int num1 = rand.nextInt(21);
+		int num2 = rand.nextInt(21);
+		if(num1>num2){
+			System.out.println("num1:"+num1+"とnum2:"+num2+"の差は"+(num1-num2)+"です");
+		}else{
+			System.out.println("num2:"+num2+"とnum1:"+num1+"の差は"+(num2-num1)+"です");
+		}
+}
+
+Q２
+0~999の乱数を繰り返し生成し、777が出るまでの回数を求める。(while(true)を使うこと　）
+import java.util.*;
+public class Q2  {
+	public static void main(String[] args) {
+    final int LUCKY_NO=777;
+		int count=0;
+    Random rand=new Random();
+		while(true){
+			count++;
+			int num=rand.nextInt(1000);
+			if(num == LUCKY_NO){
+				break;
+			}
+		}
+		System.out.println(LUCKY_NO+"は" + count + "回目に出ました。");
+	}
+}
+
+Q3
+九九の出力をせよ。ただし、５０より大きい値は出力しない。(breakを用いる)
+public class Q3 {
+	public static void main(String[] args) {	
+  		for(int i=2;i<=9;i++){
+  			for(int j=1;j<=9;j++){
+  				if(i*j >50){
+  					break ;
+  				}
+  				System.out.print(i*j+" ");
+  			}
+  			System.out.println();
+  		}
+  	}
+}
+
+Q4
+1~20を順番に出力する。ただし、３の倍数は出力しない。
+(continueを用いる)
+public class Q4 {
+	public static void main(String[] args) {	
+  		for(int i=1;i<=20;i++){
+  			if(i % 3 == 0){
+  				continue;
+  			}
+  			System.out.println(i);
+  		}
+  	}
+}
+
+Q5
+二つの数値を入力させ、その2値の入れ替えを行え。
+import java.util.*;
+public class Q5 {
+	public static void main(String[] args) {
+         Scanner scan=new Scanner(System.in);
+      		System.out.print("xに代入する数値をいれてください。>");
+      		int x=scan.nextInt();
+      		System.out.print("yに代入する数値をいれてください。>");
+      		int y=scan.nextInt();
+      		/*２つの値の入れ替え*/
+      		int temp=x;
+      		x=y;
+      		y=temp;
+      		System.out.println("２つの数値を入れ替えました。x:"+x+",y:"+y);
+      	}
+}
+
+Q6
+0~20の乱数を３個生成し、それを小さい順に出力する。
+import java.util.*:
+public class Q6 {
+	public static void main(String[] args) {
+  Random rand=new Random();
+    		int num1 = rand.nextInt(21);
+    		int num2 = rand.nextInt(21);
+    		int num3 = rand.nextInt(21);
+    		if(num1 > num2){
+    			int temp=num1;
+    			num1=num2;
+    			num2=temp;
+    		}
+    		if(num1 > num3){
+    			int temp=num1;
+    			num1=num3;
+    			num3=temp;
+    		}
+    		if(num2>num3){
+    			int temp=num2;
+    			num2=num3;
+    			num3=temp;
+    		}
+    		System.out.println("３つの乱数を小さい順に並べました。"+num1+","+num2+","+num3);
+    	}
+}
+
+Q7
+実行例のような３行３列の描画をせよ。
+[実行例]
+★★★
+★★★
+★★★
+public class Q7 {
+	public static void main(String[] args) {
+		for(int i=0;i<3;i++){
+			for(int j=0;j<3;j++){
+				System.out.print("★");
+			}
+			System.out.println();
+		}
+	}
+}
+
+Q8
+実行例のような描画をせよ。
+[実行例]
+★
+★★
+★★★
+public class Q8 {
+	public static void main(String[] args) {
+		for(int i=0;i<3;i++){
+			for(int j=0;j<=i;j++){
+				System.out.print("★");
+			}
+			System.out.println();
+		}
+	}
+}
+
+
+★17
+
+PCが生成した1~100のランダムな数字をヒントをもとに当てる数当てゲームを作成してみよう。
+import java.util.*;
+public class Main {
+	
+	public static void main(String[] args) {
+		int min=1;
+		int max=100;
+		int count=0;
+		int ans=new Random().nextInt(100)+1;
+		System.out.println("数あてゲーム!!");
+		while(true){
+			count++;
+			System.out.print("いくつかな?("+min+"~"+max+")>");
+			int userAns=new Scanner(System.in).nextInt();
+			if(userAns==ans){
+				System.out.println("正解!"+count+"回で正解しました。");
+				break;
+			}
+			if(userAns>ans){
+				System.out.println("もっと下だよ");
+				max=userAns-1;
+			}else{
+				System.out.println("もっと上だよ");
+				min=userAns+1;
+			}
+		}
+	}
+}
+
+Javaアルゴリズム
+〇2値の入れ替え
+import java.util.*;
+public class Lesson1{
+	public static void main(String[] args){
+		System.out.print("aを入力>");
+		int a=new Scanner(System.in).nextInt();
+		System.out.print("bを入力>");
+		int b=new Scanner(System.in).nextInt();
+		/*
+		//2値の入れ替え
+		int temp=a;
+		a=b;
+		b=temp;
+		System.out.println("2値を入れ替えました");
+		System.out.println("a:"+a+" b:"+b);
+		*/
+
+		//小さい順に出力
+		//Math.minを利用
+		System.out.println(Math.min(a,b)+","+Math.max(a,b));
+		//if文を利用
+		if(a>b){
+			System.out.println(b+","+a);
+		}else{
+			System.out.println(a+","+b);
+		}
+		//2値の入れ替えを利用
+		if(a>b){
+			int temp=a;
+			a=b;
+			b=temp;
+		}
+		System.out.println(a+","+b);
+	}
+}
+
+〇最大値
+import java.util.*;
+public class Lesson2{
+	public static void main(String[] args){
+		int max=0;
+		while(true){
+			System.out.print("正の値を入力>");
+			int num=new Scanner(System.in).nextInt();
+			if(num==0){
+				break;
+			}
+			if(num>max){
+				max=num;
+			}
+		}
+		System.out.println("最大値は"+max);
+	}
+}
+
+〇ソート
+import java.util.*;
+public class Lesson3{
+	public static void main(String[] args){
+		System.out.print("aの値>");
+		int a=new Scanner(System.in).nextInt();
+		System.out.print("bの値>");
+		int b=new Scanner(System.in).nextInt();
+		System.out.print("cの値>");
+		int c=new Scanner(System.in).nextInt();
+		if(a>b){
+			int temp=a;
+			a=b;
+			b=temp;
+		}
+		if(a>c){
+			int temp=a;
+			a=c;
+			c=temp;
+		}
+		if(b>c){
+			int temp=b;
+			b=c;
+			c=temp;
+		}
+	}
+}
+〇条件演算子
+import java.util.*;
+public class Lesson4{
+	public static void main(String[] args){
+		int num=new Random().nextInt(10);
+		System.out.println(num+"は"+
+				(num%2==0? "偶数":"奇数")+"です");
+	}
+}
+
+〇System.out.printf
+import java.util.*;
+public class Lesson5{
+	public static void main(String[] args){
+		System.out.print("名前を入力>");
+		String name=new Scanner(System.in).nextLine();
+		System.out.print("年齢を入力>");
+		int age=new Scanner(System.in).nextInt();
+		System.out.printf("%s(%d)さん、こんにちは!",name,age);
+	}
+}
+
+確認問題
+ここまでの知識を確認しておこう。以下の問題をスムーズに解ける必要がある。
+
+正の値(0で終了)>4
+正の値(0で終了)>3
+正の値(0で終了)>17
+正の値(0で終了)>2
+正の値(0で終了)>0
+合計は26です。
+
+[解答例]
+import java.util.*;
+ public class Lesson5{
+     public static void main(String[] args){
+         int sum=0;
+         while(true){
+             System.out.print("正の値(0で終了)>");
+             int num=new Scanner(System.in).nextInt();
+             if(num==0){
+                 break;
+             }
+             sum+=num;
+         }
+         System.out.printf("合計は%d",sum);
+     }
+ }
+
+★18
+Java(Scanner補足)
+
+今まで出て来たScannerは
+nextLine()・・・1行読み込み
+nextInt()・・・整数の読み込み
+だが以下のようなものもある。
+next()・・・１単語
+nextDouble()・・・少数の読み込み
+
+ex)
+double weight=new Scanner(System.in).nextDoube();
+
+Java(printf補足)
+System.out.printで改行なし、System.out.printlnで改行ありは覚えただろうか？
+昨日学習したprintfでもし改行したい場合には%nを埋め込む
+ex)
+String name="山田";
+int age=20;
+double eyesight=0.8d;
+System.out.printf("%s(%d)さんの視力は%.1fです%n",name,age,eyesight);
+
+
+PCが生成した1~100のランダムな数字をヒントをもとに当てる数当てゲームを作成してみよう。
+
+[実行例]
+実行例1
+
+数あてゲーム!!
+いくつかな?(1~100)>50
+もっと下だよ
+いくつかな?(1~49)>30
+もっと下だよ
+いくつかな?(1~29)>15
+もっと上だよ
+いくつかな?(16~29)>24
+もっと上だよ
+いくつかな?(25~29)>27
+もっと下だよ
+いくつかな?(25~26)>26
+もっと下だよ
+いくつかな?(25~25)>25
+正解!7回で正解しました。
+実行例2
+
+数あてゲーム!!
+いくつかな?(1~100)>83
+もっと下だよ
+いくつかな?(1~82)>24
+もっと下だよ
+いくつかな?(1~23)>10
+正解!3回で正解しました。
+
+解答例
+import java.util.*;
+public class Main {	
+	public static void main(String[] args) {
+		int min=1;
+		int max=100;
+		int count=0;
+		int ans=new Random().nextInt(100)+1;
+		System.out.println("数あてゲーム!!");
+		while(true){
+			count++;
+			System.out.print("いくつかな?("+min+"~"+max+")>");
+			int userAns=new Scanner(System.in).nextInt();
+			if(userAns==ans){
+				System.out.println("正解!"+count+"回で正解しました。");
+				break;
+			}
+			if(userAns>ans){
+				System.out.println("もっと下だよ");
+				max=userAns-1;
+			}else{
+				System.out.println("もっと上だよ");
+				min=userAns+1;
+			}
+		}
+	}
+}
+
+
+★19
+
+線形探索のアルゴリズム
+public class Code4_11{
+	public static void main(String[] args){
+		int[] scores={20,30,40,50,80};
+		//線形探索のアルゴリズム
+		int i;
+		for(i=0;i<scores.length;i++){
+			if(scores[i]==40){
+				System.out.println("最初にみつかった40のindexは"+i+"です");
+				break;
+			}
+		}
+		if(i==scores.length){
+			System.out.println("配列の中に40はありませんでした");
+		}
+	}
+}
+
+ジャンケンの手
+PCのジャンケンの手をランダムに生成して
+それを出力する処理を作成せよ
+[実行例]
+PCはグー
+
+public class Jyan {
+	public static void main(String[] args) {
+		String[] hands={"グー","チョキ","パー"};
+		int n=new java.util.Random().nextInt(hands.length);
+		System.out.println("PCは"+hands[n]);
+	}
+}
+
+ジャンケンゲームを作成しよう
+[実行例]
+手を入力(0:グー,1:チョキ,2:パー)> 1
+あなたはチョキ
+PCはパー
+あなたの勝ちです。
+
+[解答例1]
+import java.util.*;
+public class Jyan{
+	public static void main(String[] args){
+		String[] hands={"グー","チョキ","パー"};
+		System.out.printf("手を入力(0:%s,1:%s,2:%s)>",
+				hands[0],hands[1],hands[2]);
+		int yourHand=new Scanner(System.in).nextInt();
+		System.out.println("あなたは"+hands[yourHand]);
+		int pcHand=new Random().nextInt(hands.length);
+		System.out.println("PCは"+hands[pcHand]);
+		if(yourHand==pcHand){
+			System.out.println("あいこです。");
+		}else if(
+				yourHand==0 && pcHand==1 ||
+				yourHand==1 && pcHand==2 ||
+				yourHand==2 && pcHand==0 
+				){
+			System.out.println("あなたの勝ちです。");
+		}else{
+			System.out.println("あなたの負けです。");
+		}
+		
+	}
+}
+
+[解答例2]
+ジャンケンの勝敗ロジックを使っての解答
+import java.util.*;
+public class Jyan{
+	public static void main(String[] args){
+		String[] hands={"グー","チョキ","パー"};
+		System.out.printf("手を入力(0:%s,1:%s,2:%s)>",
+				hands[0],hands[1],hands[2]);
+		int yourHand=new Scanner(System.in).nextInt();
+		System.out.println("あなたは"+hands[yourHand]);
+		int pcHand=new Random().nextInt(hands.length);
+		System.out.println("PCは"+hands[pcHand]);
+		if(yourHand==pcHand){
+			System.out.println("あいこです。");
+		}else if((yourHand+3-pcHand)%3==2){
+			System.out.println("あなたの勝ちです。");
+		}else{
+			System.out.println("あなたの負けです。");
+		}
+		
+	}
+}
+
+★20
+午後のhtml_3
+
+だいたいその通りになればOKですが、以下の寸法は遵守してください。
+色味はpdfをchormeで表示してスポイトツールで測定してください。
+(最初にCSSresetしてください)
+width:960px…ブラウザに対してセンター
+header/height:300px..header部分(海の画像がある部分の高さ)
+
+作成例
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+    <link rel="stylesheet" href="css/main.css"/>
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        <h1>Sample Company</h1>
+      </header>
+      <main>
+        <h2>About</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h2>Sales</h2>
+        <table border="1">
+          <tr><th>2018</th><th>2019</th><th>2020</th></tr>
+          <tr><td>$120,312.00</td><td>$146,570.00</td><td>$180,906.00</td></tr>
+        </table>
+        <h2>Gallery</h2>
+        <div class="box">
+          <img src="images/float1.jpg">
+          <img src="images/float2.jpg">
+          <img src="images/float3.jpg">
+          <img src="images/float4.jpg">
+        </div>
+      </main>
+      <footer>
+        ©sample company
+      </footer>
+    </div>
+  </body>
+</html>
+
+#container{
+    width:960px;
+    margin:0 auto;
+    background:#eee;
+    
+}
+header{
+    height:300px;
+    background-image:url(../images/headerImg.png);
+    background-size: cover;
+    display: flex;
+}
+header h1{
+    margin:auto;
+    font-size:50px;
+}
+main{
+    padding:50px;
+}
+h2{
+    text-align: center;
+    background:#157eee;
+    font-size:20px;
+    color:white;
+    margin-bottom:30px;
+}
+main p{
+    
+    border-radius: 20px;
+    background-color:white;
+    padding:30px;
+    margin-bottom:40px;
+}
+table{
+    
+    width:600px;
+    margin:40px auto;
+}
+td,th{
+    text-align: center;
+}
+th{
+    background:#333;
+    color:white;
+}
+
+.box{
+    display:flex;
+    justify-content: space-between;
+ 
+}
+
+.box img{
+    width:24%;
+}
+footer{
+    height:30px;
+    line-height: 30px;
+    background:#157eee;
+    font-size:16px;
+    text-align: center;
+    color:white;
+}
+
+★21
+これでダメならあきらめよう。Java配列最終入門
+
+最初の一歩(ArrLesson1.java)
+public class ArrLesson1 {
+
+	public static void main(String[] args) {
+		//配列の宣言と初期化。要素数が３の配列が作られそれぞれが0で初期化される
+		int[] nums=new int[3];
+		System.out.println(nums.length); //3(要素数は3)
+		//indexは0から始まることに注意
+		System.out.println(nums[0]); //0
+		System.out.println(nums[1]); //0
+		System.out.println(nums[2]); //0
+		
+		//値を入れる
+		nums[0]=10;
+		nums[1]=20;
+		nums[2]=30;
+		//nums[3]=40;(エラーindexは0~2までしかない)
+		
+		//値を見る
+		System.out.println(nums[0]); //10
+		
+		//配列の値の取り出しと代入(20+30の結果がnums[0]に代入される)
+		nums[0]=nums[1]+nums[2];
+		System.out.println(nums[0]); //50
+				
+	}
+}
+
+ArrLesson2.javaを作成し以下の指示通りにプログラムを作成しよう。
+1.要素数が5のint型配列(変数名:data)を宣言せよ。
+2.先頭の要素を出力せよ。
+3.要素数を出力せよ。
+4.先頭の要素に100を代入せよ。
+5.最後の要素に150を代入せよ。
+6.index2の要素に120を代入せよ。
+7.index2の要素の値からindex0の要素の値を引いたものをindex1の要素に代入せよ。
+8.index1の要素を出力せよ。
+
+[解答例]
+public class ArrLesson2 {
+	public static void main(String[] args) {
+		//1
+		int[] data=new int[5];
+		//2
+		System.out.println(data[0]);
+		//3
+		System.out.println(data.length);
+		//4
+		data[0]=100;
+		//5
+		data[data.length-1]=150; //data[4]=150でもよいがこういった表現も覚えること
+		//6
+		data[2]=120;
+		//7
+		data[1]=data[2]-data[0];
+		//8
+		System.out.println(data[1]);
+	}
+}
+
+ArrLesson3.javaを写経する。
+import java.util.Arrays;
+public class ArrLesson3 {
+	public static void main(String[] args) {
+		// 宣言と同時なら{}での代入OK
+		int[] dataA = { 3, 5, 10 };
+		// こういった書き方もある
+		int[] dataB = new int[] { 4, 6, 10 };
+		// 配列の要素を全部回すパターン1
+		for (int i = 0; i < dataA.length; i++) {
+			System.out.println(dataA[i]);
+		}
+		// 配列の要素を全部回すパターン2(拡張for文)
+		for (int n : dataB) {
+			System.out.println(n);
+		}
+		// 配列の内容を出力([3,5,10]と出力される)
+		System.out.println(Arrays.toString(dataA));
+	}
+}
+
+刺し身といったら醤油。配列といったらfor文だ。この部分は大事なので10回写経してもよい。
+
+ArrLesson4.javaを作成し以下の指示通りにプログラムを作成しよう。
+1.int型の配列を宣言と同時に{4,8,10}で初期化せよ。(配列変数名:arrA)
+2.int型の配列を宣言と同時にnew int[]{7,1,3}で初期化せよ。(配列変数名:arrB)
+3.for文でarrAの値をすべて出力せよ。
+4.拡張for文を使ってarrBの値をすべて出力せよ。
+5.要素数が３のint型配列を宣言せよ。(配列変数名:arrC)
+6.for文を使ってarrCの要素それぞれにarrAの要素を２倍した値を代入せよ。(結果arrCは[8,16,20]となる)
+7.arrCの内容が[8,16,20]になってることをArrays.toStringを使って使って確認せよ。
+8.for文を使ってarrCの要素それぞれにarrBの要素を加えよ。(結果arrCは[15,17,23]となる)
+9.arrCの内容が[15,17,23]になってることをArrays.toStringを使って使って確認せよ。
+10.合計を管理するint型の整数sumを宣言し、０で初期化する。
+11.拡張for文を用いてarrCの値の合計を求める。
+12.arrCの合計を「合計は55です。」という形式で出力する。
+
+[解答例]
+import java.util.Arrays;
+public class ArrLesson2 {
+	public static void main(String[] args) {
+		//1
+		int[] arrA = { 4, 8, 10 };
+		//2
+		int[] arrB = new int[] { 7, 1, 3 };
+		//3
+		for (int i = 0; i < arrA.length; i++) {
+			System.out.println(arrA[i]);
+		}
+		//4
+		for (int n : arrB) {
+			System.out.println(n);
+		}
+		//5
+		int[] arrC = new int[3];
+		//6
+		for (int i = 0; i < arrC.length; i++) {
+			arrC[i] = arrA[i] * 2;
+		}
+		//7
+		System.out.println(Arrays.toString(arrC));
+		//8
+		for(int i=0;i<arrC.length;i++){
+			arrC[i]=arrC[i]+arrB[i];
+		}
+		//9
+		System.out.println(Arrays.toString(arrC));
+		//10
+		int sum=0;
+		//11
+		for(int n:arrC){
+			sum+=n;
+		}
+		//12
+		System.out.println("合計は"+sum+"です。");
+	}
+}
+
+確認テスト
+では配列の基本を理解したか確認してみよう。
+
+問)
+1~6の目がランダムに出るサイコロを１０回振り、その目を配列に格納してく。
+そして、その結果を出力する。ただし出力フォーマットは実行例のようにすること
+[実行例]
+[1, 6, 1, 5, 4, 2, 1, 1, 4, 1]
+解)
+import java.util.Arrays;
+import java.util.Random;
+
+public class ArrTest {
+	public static void main(String[] args) {
+		Random rand=new Random();
+		int[] nums=new int[10];
+		for(int i=0;i<nums.length;i++){
+			nums[i]=rand.nextInt(6)+1;
+		}
+		System.out.println(Arrays.toString(nums));
+	}
+}
+
+★北ソフト工房
+
+1. 表示、変数、演算
+
+練習問題 1 - 1
+“Hello World”と表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        System.out.println("Hello World");
+    }
+}
+
+練習問題 1 - 2
+int 型の変数 x に数値 11 を代入し、x の値を“x=11”のように表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x;
+
+        x = 11;
+
+        System.out.println( "x=" + x );
+    }
+}
+
+練習問題 1 - 3
+int 型の変数 x、y に数値 13、17 を代入し、x、y の値を“x=13,y=17”のように表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x;
+        int y;
+
+        x = 13;
+        y = 17;
+
+        System.out.println( "x=" + x + ",y=" + y );
+    }
+}
+
+練習問題 1 - 4
+int 型の変数 x に数値 13 と 17 の和を代入し、x の値を表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x;
+
+        x = 13 + 17;
+
+        System.out.println( "x=" + x );
+    }
+}
+
+練習問題 1 - 5
+数値 13 と 17 の積を表示するプログラムを作成しなさい。ただし、変数を使用しないこと。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        System.out.println( 13 * 17 );
+    }
+}
+
+練習問題 1 - 6
+次のプログラムを作成しなさい。
+
+int 型の変数 x に数値 7 を代入する。
+変数 x の値を 3 倍にする。
+変数 x の値を表示する。
+変数 x の値を半分（1/2）にする。
+変数 x の値を表示する。
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x;
+
+        x = 7;
+        x *= 3;
+        System.out.println( "x=" + x );
+        x /= 2;
+        System.out.println( "x=" + x );
+    }
+}
+
+練習問題 1 - 7
+int 型の変数 x、y に任意の数値を代入し、x の値を y に、y の値を x に入れ替えて x と y の値を表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x, y, t;
+
+        x = 3;
+        y = 7;
+
+        t = x;
+        x = y;
+        y = t;
+
+        System.out.println( "x=" + x + ",y=" + y );
+    }
+}
+
+練習問題 1 - 8
+int 型の変数 x、y に数値 19、23 を代入し、その積を変数 z に代入して z の値を表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x, y, z;
+
+        x = 19;
+        y = 23;
+        z = x * y;
+
+        System.out.println( "z=" + z );
+    }
+}
+
+練習問題 1 - 9
+int 型の変数 x に任意の数値を代入し、x を 2 倍、3 倍、4 倍した結果を表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x = 12;
+
+        System.out.println( x * 2 );
+        System.out.println( x * 3 );
+        System.out.println( x * 4 );
+    }
+}
+
+練習問題 1 - 10
+int 型の変数 x に任意の数値を代入し、x を 1 乗、2 乗、3 乗した結果を表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x = 3;
+
+        System.out.println( x );
+        System.out.println( x * x );
+        System.out.println( x * x * x );
+    }
+}
+以下のように、Math.pow()を使用してもよいが、結果はdoubleとなる。
+
+System.out.println( Math.pow( x, 1 ) );
+System.out.println( Math.pow( x, 2 ) );
+System.out.println( Math.pow( x, 3 ) );
+
+練習問題 1 - 11
+int 型の変数 x に任意の数値を代入し、x を x より小さい任意の数値で割った商と余りを表示するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x = 13;
+
+        System.out.println( "商=" + ( x / 5 ) + ", 余り=" + ( x % 5 ) );
+    }
+}
+
+練習問題 1 - 12
+int 型の変数 x に任意の数値を代入し、インクリメント演算子、デクリメント演算子を適用して結果を表示することにより演算子の効果を確認するプログラムを作成しなさい。
+
+public class Exercise
+{
+    public static void main( String[] args )
+    {
+        int x = 10;
+
+        x++;
+        System.out.println( x );
+        x--;
+        x--;
+        System.out.println( x );
+    }
+}
+
+★22
+Javaの学習を始めて8日くらいの人のための問題集(配列とアルゴリズム)
+Java学習の難所、配列とアルゴリズムの問題集です。
+
+Q1
+{3,8,10,5,4}という配列に入っている奇数をすべて表示する
+
+[実行例]
+3
+5
+
+public class Q1 {
+	public  static void main(String[] args){
+		int[] nums={3,8,10,5,4};
+		for(int n : nums){
+			if(n % 2 != 0){
+				System.out.println(n);
+			}
+		}
+	}
+}
+
+Q2
+{3,8,10,5,4}という配列の要素をすべて２倍にする。
+変更された配列を出力する。
+[実行例]
+6
+16
+20
+10
+8
+
+public class Q2 {
+	public  static void main(String[] args){
+		int[] nums={3,8,10,5,4};
+		for(int i=0;i<nums.length;i++){
+			nums[i] *=2;
+		}
+		for(int n : nums){
+			System.out.println(n);
+		}
+	}
+}
+
+Q.1〜100の乱数が５つ入った配列nums1を作成し表示する。
+次にnums1の要素をそれぞれ３倍した値を持つ配列nums2を作成し表示せよ。
+[実行例]
+***nums1***
+29
+9
+58
+42
+91
+***nums2***
+87
+27
+174
+126
+273
+
+public class Q3{
+  public static void main(String[] args){
+    int[] nums1=new int[5];
+    for(int i=0;i<nums1.length;i++){
+      nums1[i]=new java.util.Random().nextInt(100)+1;
+    }
+    System.out.println("***nums1***");
+    for(int n:nums1){
+      System.out.println(n);
+    }
+    int[] nums2=new int[5];
+    for(int i=0;i<nums2.length;i++){
+      nums2[i]=nums1[i]*3;
+    }
+    System.out.println("***nums2***");
+    for(int n:nums2){
+      System.out.println(n);
+    }
+  }
+}
+
+Q4
+{3,8,10,5,4}という配列を逆順に並び替える(reverse)。
+変更された配列を出力する。
+[実行例]
+4
+5
+10
+8
+3
+
+public class Q4 {
+	public  static void main(String[] args){
+		int[] nums={3,8,10,5,4};
+		for(int i=0;i<nums.length/2;i++){
+			int temp=nums[i];
+			nums[i]=nums[nums.length-1-i];
+			nums[nums.length-1-i]=temp;
+		}
+		for(int n : nums){
+			System.out.println(n);
+		}
+	}
+}
+
+Q5
+{3,8,10,5,4}という配列を昇順に並び替える(sort)。
+変更された配列を出力する。
+[実行例]
+3
+4
+5
+8
+10
+
+public class Q5 {
+	public  static void main(String[] args){
+		int[] nums={3,8,10,5,4};
+		for(int i=0;i<nums.length-1;i++){
+			for(int j=i+1;j<nums.length;j++){
+				if(nums[i] > nums[j]){
+					int temp=nums[i];
+					nums[i]=nums[j];
+					nums[j]=temp;
+				}
+			}
+		}
+		for(int n : nums){
+			System.out.println(n);
+		}
+	}
+}
+
+Q6
+１〜１００の乱数を100個作りその中に77があるかを探索する。
+あれば、その最初のインデックスを表示し、なければ「含まれていない」と表示する。
+[実行例]
+インデックス52が77です
+
+public class Q6 {
+	public  static void main(String[] args){
+		int[] nums=new int[100];
+		for(int i=0;i<nums.length;i++){
+			nums[i]=new java.util.Random().nextInt(100)+1;
+		}
+		int i=0;
+		for(;i<nums.length;i++){
+			if(nums[i] == 77){
+　　　　System.out.println("インデックス"+ i + "が77です");
+				break;
+			}
+		}
+		if(i == nums.length){
+			System.out.println("配列に77は含まれていません");
+		}
+	}
+}
+
+
+商とあまりを使った演算
+
+秒を入力>3865
+01:04:25
+
+import java.util.*;
+public class Clock {
+	public static void main(String[] args){
+		System.out.print("秒を入力>");
+		int input=new Scanner(System.in).nextInt();
+		int h=input/3600;
+		int m=input%3600/60;
+		int s=input%60;
+		System.out.printf("%02d:%02d:%02d%n", h,m,s);
+	}
+}
+
+Javaのお題を通してVimの練習をしましょう。
+
+お題(Hit & Blow)
+1~9の数字を使ってできる4桁の数字が何かを当てるゲームだ。(この４桁の数字に重複はない)
+この数字はランダムで決定されるが例えば1357としよう。
+
+プレイヤーはその数字が何かを予測し、入力する。
+
+1234
+
+この場合1は数字も位置も同じだ。この場合をHitとする。
+
+3は数字は一致しているが位置が違うこれはBlowだ。
+この結果
+
+Hit:1,blow:1
+
+と表示される。
+
+これを繰り返し正解までの試行回数を競う。
+
+[実行例]
+数字を4桁で入力してください>1234
+Hit:0,blow:1
+数字を4桁で入力してください>5678
+Hit:1,blow:2
+数字を4桁で入力してください>9998
+Hit:0,blow:0
+数字を4桁で入力してください>1567
+Hit:1,blow:2
+数字を4桁で入力してください>2567
+Hit:1,blow:3
+数字を4桁で入力してください>6572
+Hit:4,blow:0
+6回でClear
+
+import java.util.*;
+public class Main {
+	public static void main(String[] args) {
+		final int NUM_COUNT=4;
+		int[] nums={1,2,3,4,5,6,7,8,9};
+		int[] ans=new int[NUM_COUNT];
+		for(int i=0;i<NUM_COUNT;i++){
+			int index=new Random().nextInt(nums.length-i);
+			ans[i]=nums[index];
+			nums[index]=nums[nums.length-1-i];
+		}
+		int count=0,hit,blow;
+		do{
+			count++;
+			hit=0;
+			blow=0;
+			System.out.printf("数字を%d桁で入力してください>",NUM_COUNT);
+			int input=new Scanner(System.in).nextInt();
+			int[] userAns=new int[NUM_COUNT];
+			for(int i=ans.length-1;i>=0;i--){
+				userAns[i]=input %10;
+				input /=10;
+			}
+			for(int i=0;i<NUM_COUNT;i++){
+				if(userAns[i]==ans[i]){
+					hit++;
+				}else{
+					for(int j=0;j<NUM_COUNT;j++){
+						if(userAns[i]==ans[j]){
+							blow++;
+						}
+					}
+				}
+			}
+			System.out.printf("Hit:%d,Blow:%d%n", hit,blow);
+		}while(hit!=NUM_COUNT);
+		System.out.printf("%d回でClear%n", count);
+	}
+}
+
+配列の理解を深める(教科書~p171)
+文字列操作
+public class LengthLesson{
+	public static void main(String[] args){
+		String[] names={"山田","田中","鈴木"};
+		System.out.println(names.length);
+
+		String str="Javaで開発";
+		int len=str.length();
+		System.out.println("文字数は"+len);
+		//その文字列が~から始まるか？
+		if(str.startsWith("a")){
+
+		}
+		//その文字列の終わりが～か？
+		if(str.endsWith("発")){
+
+		}
+		//その文字列を含むか？
+		if(str.contains("で")){
+		}
+		//その文字列は~と等しいか？
+		if(str.equals("こんにちは")){
+		}
+		//部分文字列
+		String s=str.substring(0,4);
+		System.out.println(s);//Java
+		//最後の一文字削除
+		String s1=str.substring(0,str.length()-1);
+		System.out.println(s1);
+	}
+}
+
+★23
+多次元配列
+Javaの学習を始めて11日くらいの人のための問題集(多次元配列)
+
+多次元配列を練習しよう。
+
+Q1
+2次元配列を作成し、九九の表を出力せよ。
+System.out.printf()と書式文字列%3dを使ってフォーマットすること。
+
+[実行結果]
+1  2  3  4  5  6  7  8  9
+2  4  6  8 10 12 14 16 18
+3  6  9 12 15 18 21 24 27
+4  8 12 16 20 24 28 32 36
+5 10 15 20 25 30 35 40 45
+6 12 18 24 30 36 42 48 54
+7 14 21 28 35 42 49 56 63
+8 16 24 32 40 48 56 64 72
+9 18 27 36 45 54 63 72 81
+
+public class Jn27 {
+	    public static void main(String[] args){
+        int[][] nums=new int[9][9];
+	    	for(int i=0;i<9;i++){
+	    		for(int j=0;j<9;j++){
+	    			nums[i][j]=(i+1)*(j+1);
+	    		}
+	    	}
+        /*出力*/
+        for(int i=0;i<nums.length;i++){
+          for(int j=0;j<nums[i].length;j++){
+            System.out.printf("%3d",nums[i][j]);
+          }
+          System.out.println();
+        }
+	    }
+}
+
+Q2
+行数と列数を入力させ、その表を０〜９９の乱数で埋め尽くす二次元配列を作成せよ。
+出力の際はSystem.out.printf()を使ってフォーマットすること。
+
+[実行結果]
+何行?>3
+何列?>5
+ 85 17 40 20  4
+ 95 90 37 41 70
+ 44 84 99 25 49
+
+public class Q2 {
+	    public static void main(String[] args){
+	    	System.out.print("何行?>");
+	    	int rows=new java.util.Scanner(System.in).nextInt();
+	    	System.out.print("何列?>");
+	    	int cols=new java.util.Scanner(System.in).nextInt();
+	    	int[][] matrix=new int[rows][cols];
+	    	for(int i=0;i<rows;i++){
+	    		for(int j=0;j<cols;j++){
+	    			matrix[i][j]=new java.util.Random().nextInt(100);
+	    		}
+	    	}
+        /*出力*/  	
+	    	for(int i=0;i<rows;i++){
+	    		for(int j=0;j<cols;j++){
+	    			System.out.printf("%3d",matrix[i][j]);
+	    		}
+	    		System.out.println();
+	    	}
+	    }
+}
+
+Q3
+クラス数、クラスの人数、それぞれの点数を入力させ、表を出力する。
+[実行結果]
+クラスの数>２
+1組のクラスの人数>3
+1組1人目の点数>20
+1組2人目の点数>60
+1組3人目の点数>30
+2組のクラスの人数>4
+2組1人目の点数>90
+2組2人目の点数>70
+2組3人目の点数>30
+2組4人目の点数>45
+--表出力--
+1組 20 60 30
+2組 90 70 30 45
+
+public class Q3 {
+	    public static void main(String[] args){
+	    	System.out.print("クラスの数>");
+	    	int cNum=new java.util.Scanner(System.in).nextInt();
+	    	int[][] data=new int[cNum][];
+	    	for(int i=0;i<data.length;i++){
+	    		System.out.printf("%d組のクラスの人数>",i+1);
+	    		int sNum=new java.util.Scanner(System.in).nextInt();
+	    		data[i]=new int[sNum];
+	    		for(int j=0;j<sNum;j++){
+	    			System.out.printf("%d組%d人目の点数>",i+1,j+1);
+	    			data[i][j]=new java.util.Scanner(System.in).nextInt();
+	    		}
+	    	}
+	    	System.out.println("--表出力--");
+	    	for(int i=0;i<data.length;i++){
+	    		System.out.printf("%d組",i+1);
+	    		for(int j=0;j<data[i].length;j++){
+	    			System.out.printf("%3d",data[i][j]);
+	    		}
+	    		System.out.println();
+	    	}
+	    }
+}
+
+Java(九九表作成)
+
+Q1.
+for文を用いて以下のように九九の表を表示せよ。
+[実行結果]
+1*1= 1 2*1= 2 3*1= 3 4*1= 4 5*1= 5 6*1= 6 7*1= 7 8*1= 8 9*1= 9 
+1*2= 2 2*2= 4 3*2= 6 4*2= 8 5*2=10 6*2=12 7*2=14 8*2=16 9*2=18 
+1*3= 3 2*3= 6 3*3= 9 4*3=12 5*3=15 6*3=18 7*3=21 8*3=24 9*3=27 
+1*4= 4 2*4= 8 3*4=12 4*4=16 5*4=20 6*4=24 7*4=28 8*4=32 9*4=36 
+1*5= 5 2*5=10 3*5=15 4*5=20 5*5=25 6*5=30 7*5=35 8*5=40 9*5=45 
+1*6= 6 2*6=12 3*6=18 4*6=24 5*6=30 6*6=36 7*6=42 8*6=48 9*6=54 
+1*7= 7 2*7=14 3*7=21 4*7=28 5*7=35 6*7=42 7*7=49 8*7=56 9*7=63 
+1*8= 8 2*8=16 3*8=24 4*8=32 5*8=40 6*8=48 7*8=56 8*8=64 9*8=72 
+1*9= 9 2*9=18 3*9=27 4*9=36 5*9=45 6*9=54 7*9=63 8*9=72 9*9=81 
+
+public class Jn26{
+  public static void main(String[] args){
+    for(int i=1;i<=9;i++){
+      for(int j=1;j<=9;j++){
+        System.out.printf("%d*%d=%2d ",j,i,j*i);
+      }
+      System.out.println();
+    }
+  }
+}
+
+Q2.
+0から99の乱数が入った以下のような２つの2次元配列を作成し、それの和を格納した2次元配列を作成し出力せよ。
+[実行結果]
+public class Jn30{
+	public static void main(String[] args){
+		System.out.println("****data1****");
+		int[][] data1=new int[2][];
+		data1[0]=new int[3];
+		data1[1]=new int[4];
+		for(int i=0;i<data1.length;i++){
+			for(int j=0;j<data1[i].length;j++){
+				data1[i][j]=new java.util.Random().nextInt(100);
+				System.out.printf("%4d",data1[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("****data2****");
+		int[][] data2=new int[2][];
+		data2[0]=new int[3];
+		data2[1]=new int[4];
+		for(int i=0;i<data2.length;i++){
+			for(int j=0;j<data2[i].length;j++){
+				data2[i][j]=new java.util.Random().nextInt(100);
+				System.out.printf("%4d",data2[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println("****結果****");
+		int[][] data3=new int[2][];
+		data3[0]=new int[3];
+		data3[1]=new int[4];
+		for(int i=0;i<data3.length;i++){
+			for(int j=0;j<data3[i].length;j++){
+				data3[i][j]=data1[i][j]+data2[i][j];
+				System.out.printf("%4d",data3[i][j]);
+			}
+			System.out.println();
+		}
+	}
+}
+
+解答例2
+import java.util.*;
+public class Jn30_k{
+
+	public static void main(String[] args) {
+		int[][][] data=new int[3][2][];
+		for(int i=0;i<data.length;i++){
+			if(i!=2){
+				System.out.printf("***data%d***%n",i+1);
+			}else{
+				System.out.println("***結果***");
+			}
+			data[i][0]=new int[3];
+			data[i][1]=new int[4];
+			for(int j=0;j<data[i].length;j++){
+				for(int k=0;k<data[i][j].length;k++){
+					if(i!=2){
+						data[i][j][k]=new Random().nextInt(100);
+						
+					}else{
+						data[i][j][k]=data[0][j][k]+data[1][j][k];
+					}
+					System.out.printf("%4d",data[i][j][k]);
+				}
+				System.out.println();
+			}
+		}
+	}
+}
+
+★24
+Day17
+
+PairPro_Java(spお題)
+1~99の番号のついたボールが入っている袋がある。
+その中から2人が交互にボールを取り出し勝負する。
+なお、取り出したボールは袋に戻さないものとする(同じボールを二度ひくことはない)
+ゲームは５回戦で競う。
+[実行例]
+
+1回戦
+A:62,B:9…Aの勝ち
+2回戦
+A:41,B:76…Bの勝ち
+3回戦
+A:79,B:27…Aの勝ち
+4回戦
+A:36,B:34…Aの勝ち
+5回戦
+A:96,B:71…Aの勝ち
+4対1でAの勝ち
+
+import java.util.*;
+public class Main2 {
+
+	public static void main(String[] args) {
+		final int GAMES=5;//ゲーム回数
+		final int BALL_NUM=99;//ボールの個数
+		/*ボール配列生成*/
+		int[] balls=new int[BALL_NUM];
+		for(int i=0;i<BALL_NUM;i++){
+			balls[i]=i+1;
+		}
+		/*ボール配列シャッフル*/
+		for(int i=0;i<balls.length;i++){
+			int index=new Random().nextInt(balls.length-i);
+			int temp=balls[index];
+			balls[index]=balls[balls.length-1-i];
+			balls[balls.length-1-i]=temp;
+		}
+		int aWin=0,bWin=0;//勝ち星管理の変数
+		//ゲーム回数分ループ
+		for(int i=0;i<GAMES;i++){
+			System.out.println(i+1+"回戦");
+			String winner;
+			//配列の先頭から順番に取っていく
+			int ballA=balls[i*2];
+			int ballB=balls[i*2+1];
+			if(ballA>ballB){
+				winner="A";
+				aWin++;
+			}else{
+				winner="B";
+				bWin++;
+			}
+			System.out.printf("A:%d,B:%d…%sの勝ち%n", ballA,ballB,winner);
+		}
+		System.out.printf("%d対%dで%sの勝ち%n", Math.max(aWin, bWin),Math.min(aWin, bWin),aWin>bWin?"A":"B");
+	}
+}
+
+import java.util.*;
+public class Main3 {
+	public static void main(String[] args) {
+		final int GAMES=5;//ゲーム回数
+		final int BALLS_NUM=99;//ボールの個数
+		/*ボール配列の生成*/
+		int[] balls=new int[BALLS_NUM];
+		for(int i=0;i<BALLS_NUM;i++){
+			balls[i]=i+1;
+		}
+		/*メインロジック*/
+		int aWin=0,bWin=0;//勝数を保持
+		/*ゲーム回数分のループ*/
+		for(int i=0;i<GAMES;i++){
+			System.out.println(i+1+"回戦");
+			int ballA=0,ballB=0;//その回何をひいたか
+			for(int j=0;j<2;j++){
+				//ランダムでボールのindexを決定(範囲が縮まっていく)
+				int index=new Random().nextInt(balls.length-(i*2+j));
+				int ball=balls[index];//ボール番号決定
+				if(j==0){
+					ballA=ball;//j==0のときはAのボール
+				}else{
+					ballB=ball;
+				}
+				//引いたボールはもう引けないので後ろにもっていく処理
+				balls[index]=balls[balls.length-1-(i*2+j)];//後ろのボールをindexの位置へ
+				balls[balls.length-1-(i*2+j)]=ball;//後ろの位置へ引いたボール番号を移動
+			}
+			String winner;
+			if(ballA>ballB){
+				winner="A";
+				aWin++;
+			}else{
+				winner="B";
+				bWin++;
+			}
+			System.out.printf("A:%d,B:%d…%sの勝ち%n", ballA,ballB,winner);
+		}
+		System.out.printf("%d対%dで%sの勝ち%n", Math.max(aWin, bWin),Math.min(aWin, bWin),aWin>bWin?"A":"B");
+	}
+}
+
+メソッドを学ぼう(教科書~p199)
+メソッド演習
+三角形の面積を計算するメソッドを作成し、以下の処理を実現せよ。
+結果の出力はユーザーが入力した値は小数点１桁,結果は小数点２桁で表示すること。
+
+[実行例]
+
+底辺>2.3
+高さ>3.1
+底辺2.3,高さ3.1の三角形の面積は3.57です。
+
+[解答例]
+import java.util.*;
+public class Main {
+
+	public static void main(String[] args) {
+		System.out.print("底辺>");
+		double b=new Scanner(System.in).nextDouble();
+		System.out.print("高さ>");
+		double h=new Scanner(System.in).nextDouble();
+		calcTriangleArea(b,h);
+
+	}
+	public static void calcTriangleArea(double bottom,double height){
+		System.out.printf("底辺%.1f,高さ%.1fの三角形の面積は%.2fです。",bottom,height,bottom*height/2);
+	}
+}
+
+★北ソフト工房2
+
+3. 分岐
+以下、
+
+import java.io.*;
+
+public class Exercise
+{
+    public static void main( String[] args ) throws IOException
+    {
+        :
+        :
+    }
+}
+の記述は省略します。
+
+練習問題 3 - 1
+int 型の変数 x、y にそれぞれ数値を入力し、x が y より大きい場合に、“xはyより大きい。”という文を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+int y = Integer.parseInt( br.readLine() );
+
+if( x > y )
+    System.out.println( "xはyより大きい。" );
+練習問題 3 - 2
+２つの整数値を入力し、大きい方（小さくない方）の数を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+int y = Integer.parseInt( br.readLine() );
+
+if( x > y )
+    System.out.println( x );
+else
+    System.out.println( y );
+練習問題 3 - 3
+int 型の変数 x、y にそれぞれ数値を入力し、x が ｙ より大きい場合には“xはyより大きい”、x が y より小さい場合には“xはyより小さい”と表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+int y = Integer.parseInt( br.readLine() );
+
+if( x > y )
+    System.out.println( "xはyより大きい。" );
+else if( x < y )
+    System.out.println( "xはyより小さい。" );
+練習問題 3 - 4
+int 型の変数 x、y にそれぞれ数値を入力し、x が ｙ より大きい場合には“xはyより大きい”、x が y より小さい場合には“xはyより小さい”、x と y が等しい場合には“xとyは等しい”と表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+int y = Integer.parseInt( br.readLine() );
+
+if( x > y )
+    System.out.println( "xはyより大きい。" );
+else if( x < y )
+    System.out.println( "xはyより小さい。" );
+else
+    System.out.println( "xとyは等しい。" );
+練習問題 3 - 5
+正の整数値を入力し、それが偶数か奇数かを判定するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+
+if( ( x % 2 ) == 0 )
+    System.out.println( "偶数です。" );
+else
+    System.out.println( "奇数です。" );
+練習問題 3 - 6
+整数値を入力し、以下の４つの分類から該当するものを表示するプログラムを作成しなさい。
+
+“正の偶数”、“正の奇数”、“負の偶数”、“負の奇数”
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+
+if( ( x % 2 ) == 0 )
+{
+    if( x >= 0 )
+        System.out.println( "正の偶数" );
+    else
+        System.out.println( "負の偶数" );
+}
+else
+{
+    if( x >= 0 )
+        System.out.println( "正の奇数" );
+    else
+        System.out.println( "負の奇数" );
+}
+練習問題 3 - 7
+試験の点数を入力し、対応する成績を表示するプログラムを３種類作成しなさい。
+
+ケース1
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int score = Integer.parseInt( br.readLine() );
+
+if( score >= 60 )
+    System.out.println( "合格" );
+else
+    System.out.println( "不合格" );
+ケース2
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int score = Integer.parseInt( br.readLine() );
+
+if( score >= 80 )
+    System.out.println( "たいへんよくできました。" );
+else if( score >= 60 )
+    System.out.println( "よくできました。" );
+else
+    System.out.println( "ざんねんでした。" );
+ケース3
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int score = Integer.parseInt( br.readLine() );
+
+if( score >= 80 )
+    System.out.println( "優" );
+else if( score >= 70 )
+    System.out.println( "良" );
+else if( score >= 60 )
+    System.out.println( "可" );
+else
+    System.out.println( "不可" );
+練習問題 3 - 8
+中間試験と、期末試験の点数（それぞれ 0 ～ 100 点）を入力し、次の条件に従って合格、不合格を判定するプログラムを作成しなさい。
+
+両方とも 60 点以上の場合、合格
+合計が 130 点以上の場合、合格
+合計が 100 点以上で、どちらかの試験が 90 点以上であれば合格
+上記以外は不合格
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int score1 = Integer.parseInt( br.readLine() );
+int score2 = Integer.parseInt( br.readLine() );
+
+if( score1 >= 60 && score2 >= 60 )
+    System.out.println( "合格" );
+else if( ( score1 + score2 ) >= 130 )
+    System.out.println( "合格" );
+else if( ( score1 + score2 ) >= 100 && ( score1 >= 90 || score2 >= 90 ) )
+    System.out.println( "合格" );
+else
+    System.out.println( "不合格" );
+別の記述例。
+
+if( ( score1 >= 60 && score2 >= 60 )
+        || ( ( score1 + score2 ) >= 130 )
+        || ( ( score1 + score2 ) >= 100 && ( score1 >= 90 || score2 >= 90 ) ) )
+    System.out.println( "合格" );
+else
+    System.out.println( "不合格" );
+練習問題 3 - 9
+曜日と、午前、午後、夜間の区別を入力し、病院が開いているか、休診であるかを表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+System.out.println( "曜日を選択してください" );
+System.out.print( "0=日曜、1=月曜、2=火曜、3=水曜、4=木曜、5=金曜、6=土曜" );
+int day = Integer.parseInt( br.readLine() );
+
+System.out.println( "時間帯を選択してください" );
+System.out.print( "0=午前、1=午後、2=夜間" );
+int zone = Integer.parseInt( br.readLine() );
+
+boolean bopen = true;
+
+if( day == 0 )
+    bopen = false;
+else if( zone == 0 && ( day == 2 || day == 5 ) )
+    bopen = false;
+else if( zone == 1 && day == 6 )
+    bopen = false;
+else if( zone == 2 && ( day == 3 || day == 6 ) )
+    bopen = false;
+
+if( bopen )
+    System.out.println( "診療しています。" );
+else
+    System.out.println( "休診です。" );
+練習問題 3 - 10
+整数値 x, y を入力し、以下の条件に該当する場合、そうであることを示す文を表示しなさい。
+
+x は y より小さく、かつ、x と y は共に偶数である。
+x と y は等しく、かつ、負の数である。
+x は y より小さい、または、x は偶数である。
+x は 10 以下または 100 以上で、かつ、y は 10 以上かつ 100 以下である。
+x も y も負の数である、ではない。（ x も y も負の数である、の否定）
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int x = Integer.parseInt( br.readLine() );
+int y = Integer.parseInt( br.readLine() );
+
+if( x < y && ( x % 2 ) == 0 && ( y % 2 ) == 0 )
+    System.out.println( "xはyより小さく、かつ、xとyは共に偶数である。" );
+
+if( x == y && x < 0 )
+    System.out.println( "xとyは等しく、かつ、負の数である。" );
+
+if( x < y || ( x % 2 ) == 0 )
+    System.out.println( "xはyより小さい、または、xは偶数である。" );
+
+if( ( x <= 10 || x >= 100 ) && ( y >= 10 && y <= 100 ) )
+    System.out.println( "xは10以下または100以上で、かつ、yは10以上かつ100以下である。" );
+
+if( ! ( x < 0 && y < 0 ) )
+    System.out.println( "xもyも負の数である、ではない。" );
+練習問題 3 - 11
+月を表す数値を入力し、その月の初めから年末までにある祝日を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+System.out.println( "何月ですか？" );
+int month = Integer.parseInt( br.readLine() );
+
+switch( month )
+{
+    case 1:
+        System.out.println("元日" );
+        System.out.println("成人の日");
+    case 2:
+        System.out.println("建国記念の日");
+    case 3:
+        System.out.println("春分の日");
+    case 4:
+        System.out.println("昭和の日");
+    case 5:
+        System.out.println("憲法記念日");
+        System.out.println("みどりの日");
+        System.out.println("こどもの日");
+    case 6:
+    case 7:
+        System.out.println("海の日");
+    case 8:
+    case 9:
+        System.out.println("敬老の日");
+        System.out.println("秋分の日");
+    case 10:
+        System.out.println("体育の日");
+    case 11:
+        System.out.println("文化の日" );
+        System.out.println("勤労感謝の日");
+    case 12:
+        System.out.println("天皇誕生日");
+}
+練習問題 3 - 12
+好きな鮨（すし）を選択させ、それに対応したメッセージを表示する、鮨占いプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+System.out.println( "お好きな寿司を選んでください" );
+System.out.println( "1:まぐろ 2:えび 3:こはだ 4:あなご 5:いくら" );
+
+int sushi = Integer.parseInt( br.readLine() );
+
+switch( sushi )
+{
+    case 1:
+        System.out.println( "何か良いことがあります。" );
+        break;
+    case 2:
+        System.out.println( "驚くほど良いことがあります。" );
+        break;
+    case 3:
+        System.out.println( "ちょっと良いことがあります。" );
+        break;
+    case 4:
+        System.out.println( "とても良いことがあります。" );
+        break;
+    case 5:
+        System.out.println( "そこそこ良いことがあります。" );
+        break;
+}
+練習問題 3 - 13
+月を表す数値を入力し、その月の日数を表示するプログラムを作成しなさい。2 月は 28 日とします。
+
+また、1 ～ 12 以外の数値が入力された場合に、“入力が間違っています”と表示しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+System.out.println( "何月ですか？" );
+int month = Integer.parseInt( br.readLine() );
+
+switch( month )
+{
+    case 2:
+        System.out.println( "28日です" );
+        break;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+        System.out.println( "30日です" );
+        break;
+    case 1:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+        System.out.println( "31日です" );
+        break;
+    default:
+        System.out.println( "入力が間違っています" );
+        break;
+}
+
+4. 繰り返し
+以下、
+
+import java.io.*;
+
+public class Exercise
+{
+    public static void main( String[] args ) throws IOException
+    {
+        :
+        :
+    }
+}
+の記述は省略します。
+
+練習問題 4 - 1
+“SPAM”という単語を 10 回表示するプログラムを作成しなさい。
+
+for( int i = 0 ; i < 10 ; i++ )
+    System.out.print( "SPAM" );
+練習問題 4 - 2
+九九、三の段（ 3 ～ 27 の 3 の倍数）を表示するプログラムを作成しなさい。
+
+for( int i = 1 ; i <= 9 ; i++ )
+    System.out.print( ( 3 * i ) + " " );
+練習問題 4 - 3
+2 の 1 乗から 8 乗までを計算し表示するプログラムを作成しなさい。
+
+int x = 1;
+
+for( int n = 1 ; n <= 8 ; n++ )
+{
+    x *= 2;
+    System.out.println( "2の" + n + "乗=" + x );
+}
+次のようにも書ける。
+
+for( int n = 1, x = 2 ; n <= 8 ; n++, x *= 2 )
+    System.out.println( "2の" + n + "乗=" + x );
+練習問題 4 - 4
+7 の階乗を計算し、表示するプログラムを作成しなさい。
+
+int x = 1;
+
+for( int i = 2 ; i <= 7 ; i++ )
+    x *= i;
+
+System.out.println( x );
+練習問題 4 - 5
+整数を 10 回入力し、平均値を求めるプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int sum = 0;
+
+for( int i = 0 ; i < 10 ; i++ )
+{
+    int value = Integer.parseInt( br.readLine() );
+    sum += value;
+}
+
+System.out.println( "平均は" + ( sum / 10 ) );
+練習問題 4 - 6
+整数、0 か 1 を 10 回入力する。これを対戦成績と考え、0 を負け、1 を勝ちとして、勝ちの総数、負けの総数を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int wins = 0;
+
+for( int i = 0 ; i < 10 ; i++ )
+{
+    int result = Integer.parseInt( br.readLine() );
+
+    if( result == 1 )
+        wins += 1;
+}
+
+System.out.println( "勝ち" + wins + "回、負け" + ( 10 - wins ) + "回" );
+練習問題 4 - 7
+次のプログラムを作成しなさい。
+
+巨人、阪神戦で毎回の得点を入力する。（１回～９回）
+入力が終わったら、それぞれの得点とどちらが勝ったかを表示する。
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int giants = 0;
+int tigers = 0;
+
+for( int game = 1 ; game <= 9 ; game++ )
+{
+    System.out.print( game + "回表、巨人の得点は？" );
+    giants += Integer.parseInt( br.readLine() );
+
+    System.out.print( game + "回裏、阪神の得点は？" );
+    tigers += Integer.parseInt( br.readLine() );
+}
+
+System.out.println( "巨人：" + giants + "点, 阪神：" + tigers + "点" );
+
+if( giants > tigers )
+    System.out.println( "巨人の勝ち" );
+else if( giants < tigers )
+    System.out.println( "阪神の勝ち" );
+else
+    System.out.println( "引き分け" );
+練習問題 4 - 8
+自然数（正の整数）を 10 回入力し、最大値を求めるプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int max_value = 0;
+
+for( int i = 0 ; i < 10 ; i++ )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( value > max_value )
+        max_value = value;
+}
+
+System.out.println( "最大値=" + max_value );
+練習問題 4 - 9
+整数を 10 回入力し、最大値と最小値を求めるプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int max_value = 0, min_value = 0;
+
+for( int i = 0 ; i < 10 ; i++ )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( i == 0 )
+    {
+        max_value = value;
+        min_value = value;
+    }
+    else
+    {
+        if( value > max_value )
+            max_value = value;
+
+        if( value < min_value )
+            min_value = value;
+    }
+}
+
+System.out.println( "最大値=" + max_value + " 最小値=" + min_value );
+または、
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int max_value = 0, min_value = 0;
+
+for( int i = 0 ; i < 10 ; i++ )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( i == 0 || value > max_value )
+        max_value = value;
+
+    if( i == 0 || value < min_value )
+        min_value = value;
+}
+
+System.out.println( "最大値=" + max_value + " 最小値=" + min_value );
+または、
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int max_value = Integer.parseInt( br.readLine() );
+int min_value = max_value;
+
+for( int i = 1 ; i < 10 ; i++ )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( value > max_value )
+        max_value = value;
+
+    if( value < min_value )
+        min_value = value;
+}
+
+System.out.println( "最大値=" + max_value + " 最小値=" + min_value );
+練習問題 4 - 10
+個数を示す数値を入力し、その個数分だけ‘*’を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int count = Integer.parseInt( br.readLine() );
+
+for( int i = 0 ; i < count ; i++ )
+    System.out.print( "*" );
+whileを使用した解答例
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int count = Integer.parseInt( br.readLine() );
+
+while( count > 0 )
+{
+    System.out.print( "*" );
+    count--;
+}
+練習問題 4 - 11
+個数を示す数値を入力し、その個数分だけ 0 ～ 9 の数字を表示するプログラムを作成しなさい。数字は 0, 1, 2, 3, , の順に表示し、9 の次は 0 に戻るものとします。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int count = Integer.parseInt( br.readLine() );
+
+for( int i = 0, out = 0 ; i < count ; i++ )
+{
+    System.out.print( out++ );
+
+    if( out > 9 )
+        out = 0;
+}
+別の解答例
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+
+int count = Integer.parseInt( br.readLine() );
+
+for( int i = 0 ; i < count ; i++ )
+    System.out.print( i % 10 );
+練習問題 4 - 12
+数値を繰り返し入力し、合計が 100 を超えたら入力を止めて合計を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int sum = 0;
+
+while( sum <= 100 )
+    sum += Integer.parseInt( br.readLine() );
+
+System.out.println( "合計は " + sum );
+練習問題 4 - 13
+ストライク・カウントを数えるプログラムを作成しなさい。
+
+１球ごとにストライクかボールかを入力する。
+３ストライクまたは４ボールになったら入力を止め、ストライクとボールのカウントを表示する。
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int strike = 0;
+int ball = 0;
+
+while( strike < 3 && ball < 4 )
+{
+    System.out.print( "ストライク=1 or ボール=2 ？" );
+
+    int judge = Integer.parseInt( br.readLine() );
+
+    if( judge == 1 )
+        strike++;
+    else if( judge == 2 )
+        ball++;
+}
+
+System.out.println( ball + "ボール," + strike + "ストライク" );
+練習問題 4 - 14
+前の問題に次の修正を加えなさい。
+
+１球ごとにストライク、ボール、ファウルの何れかを入力する。（残念ながらヒットにはなりません）
+ファウルの場合、２ストライクまではストライクにカウントするが、３ストライクにはならない。
+３ストライクまたは４ボールになったら入力を止め、ストライクとボールのカウントを表示する。
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int strike = 0;
+int ball = 0;
+
+while( strike < 3 && ball < 4 )
+{
+    System.out.print( "ストライク=1 or ボール=2 or ファウル=3？" );
+
+    int judge = Integer.parseInt( br.readLine() );
+
+    if( judge == 1 )
+        strike++;
+    else if( judge == 2 )
+        ball++;
+    else if( judge == 3 && strike < 2 )
+        strike++;
+}
+
+System.out.println( ball + "ボール," + strike + "ストライク" );
+練習問題 4 - 15
+入力された数が素数かどうかを判定するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int value = Integer.parseInt( br.readLine() );
+int n;
+
+for( n = 2 ; n <= ( value / 2 ) ; n++ ){
+    if( ( value % n ) == 0 )
+        break;
+}
+
+if( n > ( value / 2 ) )
+    System.out.println( value + "は素数です" );
+else
+    System.out.println( value + "は素数ではありません" );
+練習問題 4 - 16
+2 以上の数値を入力し、素因数分解した結果を表示しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int n = Integer.parseInt( br.readLine() );
+
+for( int x = 2 ; n > 1 ; x++ ){
+    while( ( n % x ) == 0 ){
+        System.out.print( x + " " );
+        n /= x;
+    }
+}
+練習問題 4 - 17
+九九表（一の段～九の段）を表示するプログラムを作成しなさい。
+
+for( int p = 1 ; p <= 9 ; p++ )
+{
+    for( int q = 1 ; q <= 9 ; q++ )
+        System.out.printf(" %2d", p * q );
+
+    System.out.println();
+}
+練習問題 4 - 18
+数値を繰り返して入力し、0 が入力されたら入力を止め、それまでの合計を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int sum = 0;
+
+for( ; ; )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( value == 0 )
+        break;
+
+    sum += value;
+}
+
+System.out.println( "合計は" + sum );
+練習問題 4 - 19
+数値を繰り返して入力し、0 が入力されたら入力を止め、平均値を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int sum = 0;
+int count = 0;
+
+for( ; ; )
+{
+    int value = Integer.parseInt( br.readLine() );
+
+    if( value == 0 )
+        break;
+
+    sum += value;
+    count++;
+}
+
+System.out.println( "平均は" + ( sum / count ) );
+練習問題 4 - 20
+サイズを示す数値を入力し、何等かの文字で例のような三角形を表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int size = Integer.parseInt( br.readLine() );
+
+for( int i = 0 ; i < size ; i++ )
+{
+    for( int j = 0 ; j <= i ; j++ )
+        System.out.print( "$" );
+
+    System.out.println();
+}
+練習問題 4 - 21
+サイズを示す数値を入力し、そのサイズの×印を何等かの文字で表示するプログラムを作成しなさい。
+
+BufferedReader br = new BufferedReader(
+                        new InputStreamReader( System.in ) );
+int size = Integer.parseInt( br.readLine() );
+
+for( int i = 0 ; i < size ; i++ )
+{
+    for( int j = 0 ; j < size ; j++ )
+    {
+        if( i == j || ( size - i - 1 ) == j )
+            System.out.print( "X" );
+        else
+            System.out.print( " " );
+    }
+
+    System.out.println( "" );
+}
+練習問題 4 - 22
+フィボナッチ数列を表示するプログラムを作成しなさい。
+
+最初の２つの項を 0、1 とし、1000 まで（ 1000 以下の項）を表示するものとします。
+
+int     n1 = 0;
+int     n2 = 1;
+int     n3 = n1 + n2;
+
+while( n1 <= 1000 )
+{
+    System.out.print( n1 + "," );
+
+    n1 = n2;
+    n2 = n3;
+    n3 = n1 + n2;
+}
+
+★25
+Day18
+
+Java(メソッド戻り値)
+メソッドの戻り値を学習しよう。(~202)
+
+[お題]
+intの値をを2つ受け取り、その値が等しければtrueをそうでなければfalseを返すメソッドを作成せよ。
+
+[丁寧バージョン1]
+
+public static boolean sameOf(int a,int b){
+		boolean isSame;
+		if(a==b){
+			isSame=true;
+		}else{
+			isSame=false;
+		}
+		return isSame;
+	}
+[丁寧バージョン2]
+
+public static boolean sameOf(int a,int b){
+		
+		if(a==b){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+[省略バージョン]
+
+public static boolean sameOf(int a,int b){
+		return a==b;
+	}
+
+★25
+Day19
+
+Java配列学習(オーバーロード,return)
+値渡し、参照渡し
+
+Javaの学習を始めて12日くらいの人のための問題集(値渡しと参照値渡し)
+
+メソッドの値渡しと参照(値)渡しの違いを理解するための演習です。
+Q1
+以下のソースコードを打ち込み、実行例のようになるように確認し、値渡しの挙動を確認せよ。
+public class Q1 {
+	    public static void main(String[] args){
+	    	System.out.print("数値を入力してください>");
+	    	int a=new java.util.Scanner(System.in).nextInt();
+	    	multiNum(a);
+	    	//\nは改行文字(win環境では¥n)
+	    	System.out.printf("a=%d\n",a);
+	    	System.out.println("値渡しはもともとの引数には影響しません。");
+	    }
+	    public static void multiNum(int num){
+	    	System.out.printf("%dを２倍します\n",num);
+	    	num=num*2;
+	    	System.out.printf("%dになりました。\n",num);
+	    }
+}
+
+[実行結果]
+
+ソースを表示印刷SyntaxHighlighterについて
+数値を入力してください>100
+100を２倍します
+200になりました。
+a=100
+値渡しはもともとの引数には影響しません。
+
+Q2
+以下のソースコードを打ち込み、実行例のようになるように確認し、　参照(値)渡しの挙動を確認せよ。
+
+public class Q2 {
+	    public static void main(String[] args){
+	    	System.out.print("配列の要素数を入力してください>");
+	    	int len=new java.util.Scanner(System.in).nextInt();
+	    	int[] nums=new int[len];
+	    	for(int i=0;i<nums.length;i++){
+	    		System.out.printf("nums[%d]:>",i);
+	    		nums[i]=new java.util.Scanner(System.in).nextInt();		
+	    	}
+	    	displayArray(nums);
+	    	multiNum(nums);
+	    	System.out.println("もともとの配列を出力します。");
+	    	displayArray(nums);
+	    	System.out.println("参照値渡しはもともとの引数に影響を及ぼします。(操作している配列は一つ)");
+	    }
+	    public static void multiNum(int[] nums){
+	    	System.out.println("配列の要素を２倍します。");
+	    	for(int i=0;i<nums.length;i++){
+	    		nums[i]*=2;
+	    	}
+	    	displayArray(nums);
+	    }
+	    public static void displayArray(int[] arr){
+	    	System.out.print("{");
+	    	for(int i=0;i<arr.length;i++){
+	    		System.out.printf("%d,",arr[i]);
+	    	}
+	    	System.out.println("}");
+	    }
+}
+}
+[実行結果]
+
+配列の要素数を入力してください>3
+nums[0]:>3
+nums[1]:>7
+nums[2]:>10
+{3,7,10,}
+配列の要素を２倍します。
+{6,14,20,}
+もともとの配列を出力します。
+{6,14,20,}
+参照値渡しはもともとの引数に影響を及ぼします。(操作している配列は一つ)
+
+★26
+Day20
+
+ペアプロJava(spお題)
+ジョーカーを引いたら負けというシンプルなゲーム。
+
+〜ルール〜
+ジョーカー1枚を含む５３枚のシャッフルされたトランプをn人に１枚ずつ配っていき、
+ジョーカーが配られた時点でその人を脱落としてまた初めからやり直す。
+最後の１人になったときそれまでに配られたカードの総枚数×１万円を優勝賞金とする。
+
+〜問題〜
+脱落者がでたときのそれまでに配られたカードの総枚数と、優勝者の賞金を出力
+
+〜出力例〜
+何人？＞５
+３２枚目でPlayer2が脱落しました
+＜カードを戻しシャッフルしました＞
+６６枚目でPlayer５が脱落しました
+＜カードを戻しシャッフルしました＞
+９１枚目でPlayer１が脱落しました
+＜カードを戻しシャッフルしました＞
+１３９枚目でPlayer４が脱落しました
+１３９枚目でPlayer3の優勝
+優勝賞金１３９万円
+
+獲得sp:該当者なし
+
+ヒント
+import java.util.*;
+public class Main4 {
+	public static void main(String[] args){
+		System.out.print("何人?>");
+		int playerTotal=new Scanner(System.in).nextInt();
+		int[] players=new int[playerTotal];
+		//配列にプレイヤー番号(1~n)を詰める
+		for(int i= 0;i<playerTotal;i++){
+			players[i]=i+1;
+		}
+		int totalCardCount=0;
+		
+		//5人のときは0,1,2,3の4回のループ
+		for(){
+			//何枚目にjokerが出たか(1~53)
+
+			//その枚数をtotalCardCountに追加
+
+			//その枚数では誰が負けかを0から始まるindexで取得
+			//5人の場合最初(0~4),ターン毎に一人減るので(0~3)...剰余記号使うのがポイント
+			
+			System.out.printf("%d枚目でPlayer%dが脱落しました%n", totalCardCount,players[loseIndex]);
+			
+			//脱落したプレイヤーを配列の後部に配置
+			//2値の入れ替えをしているが今回の処理でいえば2行目だけでもOK
+			
+			
+			//最初5人のときは0,1,2のとき表示
+			if(i<playerTotal-2){
+				System.out.println("＜カードを戻しシャッフルしました＞");
+			}
+		}
+		
+		//脱落者を後部に持っていっているのでindex0が優勝者
+		System.out.printf("%d枚目でPlayer%dが優勝しました%n", totalCardCount,players[0]);
+		System.out.printf("優勝賞金%d万円%n",totalCardCount);	
+	}	
+}
+[解答例]
+
+import java.util.*;
+public class Main{
+	public static void main(String[] args){
+		System.out.print("何人?>");
+		int playerTotal=new Scanner(System.in).nextInt();
+		int[] players=new int[playerTotal];
+		//配列にプレイヤー番号(1~n)を詰める
+		for(int i= 0;i<playerTotal;i++){
+			players[i]=i+1;
+		}
+		int totalCardCount=0;
+		
+		//5人のときは0,1,2,3の4回のループ
+		for(int i=0;i<playerTotal-1;i++){
+			int jokerIndex=new Random().nextInt(53)+1;//何枚目にjokerが出たか(1~53)
+			totalCardCount+=jokerIndex;//その枚数をtotaCardCountに追加
+			//その枚数では誰が負けかを0から始まるindexで取得
+			//5人の場合最初(0~4),ターン毎に一人減るので(0~3)...剰余記号使うのがポイント
+			int loserIndex=(jokerIndex-1)%(playerTotal-i);
+			
+			System.out.printf("%d枚目でPlayer%dが脱落しました%n", totalCardCount,players[loserIndex]);
+			
+			//脱落したプレイヤーを配列の後部に配置
+			//2値の入れ替えをしているが今回の処理でいえば2行目だけでもOK
+			int temp=players[loserIndex];
+			players[loserIndex]=players[players.length-1-i];
+			players[players.length-1-i]=temp;
+			
+			//最初5人のときは0,1,2のとき表示
+			if(i<playerTotal-2){
+				System.out.println("＜カードを戻しシャッフルしました＞");
+			}
+		}
+		
+		//脱落者を後部に持っていっているのでindex0が優勝者
+		System.out.printf("%d枚目でPlayer%dが優勝しました%n", totalCardCount,players[0]);
+		System.out.printf("優勝賞金%d万円%n",totalCardCount);	
+	}	
+}
+
+[演習問題]
+
+コマンドラインで与えられた引数の合計を表示する処理を作成せよ。
+引数がなかった場合は「コマンドライン引数はありません」と表示すること。
+なお、引数は数字が入力されるものとする。
+
+[実行例]
+
+java Main 30 40 50 [enter]
+引数の合計は120
+
+[解答例]
+
+public class Main {
+
+	public static void main(String[] args) {
+		if(args.length>0){
+			int sum=0;
+			for(String n:args){
+				sum+=Integer.parseInt(n);
+			}
+			System.out.println("引数の合計は"+sum);
+		}else{
+			System.out.println("コマンドライン引数はありません");
+		}
+	}
+}
+
+★27
+Day21
+
+java(enterキーで処理を進める)
+ScannerのnextLine()を使ってenterによって処理を進めよう。
+
+import java.util.*;
+public class Lesson1{
+	public static void main(String[] args){
+		System.out.print("いくつ?>");
+		int num=new Scanner(System.in).nextInt();
+		for(int i=num;i>=1;i--){
+			System.out.print(i);
+			new Scanner(System.in).nextLine();
+		}
+	}
+}
+
+スゴロク
+サイコロをふって進み20の地点のゴールを目指す処理を作成せよ。
+詳しくは実行例を参考のこと。
+
+初級課題
+人数を入力しエンターを押すと
+プレイヤー名…今回出た目(到達した地点)
+到達した地点の数分だけの[*] ゴール地点[|]
+が表示される。
+エンターを押すことによって次の人の結果が表示される。
+これを2ターン(人数分*2)分表示する処理を作成せよ。
+[実行例]
+
+何人>3 [enter]
+P1...6(6)
+******             | [enter]
+P2...3(3)
+***                | [enter]
+P3...6(6)
+******             | [enter]
+ 
+P1...6(12)
+************       | [enter]
+P2...2(5)
+*****              | [enter]
+P3...1(7)
+*******            | [enter]
+中級課題
+初級課題に続き、もし誰か一人がゴール地点を超えたらWinメッセージを表示して終了する処理を作成せよ。初級と同様に[enter]によって処理が進むようにする。
+なお、ゴールを超えた分の*は表示しなくてよい
+
+01
+　
+02
+何人>3
+03
+P1...6(6)
+04
+******             |
+05
+P2...3(3)
+06
+***                |
+07
+P3...6(6)
+08
+******             |
+09
+ 
+10
+P1...6(12)
+11
+************       |
+12
+P2...2(5)
+13
+*****              |
+14
+P3...1(7)
+15
+*******            |
+16
+ 
+17
+P1...4(16)
+18
+****************   |
+19
+P2...2(7)
+20
+*******            |
+21
+P3...5(12)
+22
+************       |
+23
+ 
+24
+P1...5(21)
+25
+********************
+26
+Goal! P1 Win!
+上級課題
+中級の処理を修正し、ゴール地点をオーバーしてしまった場合そのオーバーした分を戻る処理を加えよ。(ピッタリ20になったときのみゴールとなる)
+
+01
+何人>3
+02
+P1...3(3)
+03
+***                |
+04
+P2...1(1)
+05
+*                  |
+06
+P3...4(4)
+07
+****               |
+08
+ 
+09
+P1...4(7)
+10
+*******            |
+11
+P2...1(2)
+12
+**                 |
+13
+P3...3(7)
+14
+*******            |
+15
+ 
+16
+P1...6(13)
+17
+*************      |
+18
+P2...5(7)
+19
+*******            |
+20
+P3...4(11)
+21
+***********        |
+22
+ 
+23
+P1...1(14)
+24
+**************     |
+25
+P2...1(8)
+26
+********           |
+27
+P3...2(13)
+28
+*************      |
+29
+ 
+30
+P1...4(18)
+31
+****************** |
+32
+P2...2(10)
+33
+**********         |
+34
+P3...6(19)
+35
+*******************|
+36
+ 
+37
+P1...4(18)
+38
+Overしたので 2 戻った
+39
+****************** |
+40
+P2...5(15)
+41
+***************    |
+42
+P3...5(16)
+43
+Overしたので 4 戻った
+44
+****************   |
+45
+ 
+46
+P1...1(19)
+47
+*******************|
+48
+P2...2(17)
+49
+*****************  |
+50
+P3...1(17)
+51
+*****************  |
+52
+ 
+53
+P1...1(20)
+54
+********************
+55
+Goal! P1 Win!
+[解答例]
+
+import java.util.*;
+
+public class Sugoroku {
+	public static void main(String[] args) {
+		final int GOAL_POS = 20;
+		System.out.print("何人>");
+		int num = new Scanner(System.in).nextInt();
+		int[] membersPos = new int[num];
+		
+		while (true) {
+			for (int i = 0; i < num; i++) {
+				int dice = new Random().nextInt(6) + 1;
+				membersPos[i] += dice;
+				int backStep = 0;
+				if (membersPos[i] > GOAL_POS) {
+					backStep = membersPos[i] - GOAL_POS;
+					membersPos[i] = GOAL_POS - backStep;
+				}
+				System.out.printf("P%d...%d(%d)%n", i + 1, dice, membersPos[i]);
+				if (backStep > 0) {
+					System.out.printf("Overしたので %d 戻った%n", backStep);
+				}
+				for (int j = 0; j < GOAL_POS; j++) {
+					if(membersPos[i] != GOAL_POS && j==GOAL_POS-1){
+						System.out.print("|");
+					}else if(j<membersPos[i]){
+						System.out.print("*");
+					}else{
+						System.out.print(" ");
+					}
+				}
+				if (membersPos[i] == GOAL_POS) {
+					System.out.printf("%nGoal! P%d Win!%n", i + 1);
+					return;
+				}
+				new Scanner(System.in).nextLine();
+			}
+			System.out.println();
+		}
+	}
+}
+
+これでダメならあきらめよう。Javaメソッド最終入門1
+初学者にとって難関の一つメソッドの理解を何回かに分けてやっていく。
+
+メソッドに苦手意識がある人はここを繰り返し学習して苦手意識を克服しよう。
+
+処理の分割(メソッド分割)
+まずは以下をコメントを読みながらMethodLesson1.javaを写経する。
+
+public class MethodLesson1 {
+	//ゲームstart時の処理をまとめたメソッド
+	static void gameStart(){
+		System.out.println("点数を0で初期化");
+		System.out.println("startボタンを表示");
+	}
+	//ゲームのメイン処理を書いたメソッド
+	static void gameMain(){
+		System.out.println("ゲームのメイン処理");
+	}
+	//ゲーム終了時の処理をまとめたメソッド
+	static void gameEnd(){
+		System.out.println("スコアをDBに記録");
+		System.out.println("retryボタンを表示");
+	}
+	//メインメソッドからそれぞれの処理を呼び出す
+	public static void main(String[] args) {
+		gameStart();
+		gameMain();
+		gameEnd();
+	}
+}
+
+やってみよう
+MethodLesson2.javaを以下のように作成し(コピペで良い)以下の指示通りにプログラムを作成しよう。
+●MethodLesson2.java
+public class MethodLesson2 {
+	public static void main(String[] args) {
+		System.out.println("★カレーを作るよ★");
+		System.out.println("材料を揃える");
+		System.out.println("野菜を切る");
+		System.out.println("肉を切る");
+		System.out.println("食材を炒める");
+		System.out.println("ルーを加え煮込む");
+		System.out.println("★カレーが出来ました★");
+	}
+}
+
+1.static void preCook(){}を作成し、その中に「材料を揃える」、「野菜を切る」、「肉を切る」を移動する。
+2.static void mainCook(){}を作成し、その中に　「食材を炒める」「ルーを加え煮込む」を移動する。
+3.mainメソッドからpreCook()とmainCook()を呼び出す。
+
+[解答例]
+public class MethodLesson2 {
+	public static void main(String[] args) {
+		System.out.println("★カレーを作るよ★");
+		preCook();
+		mainCook();
+		System.out.println("★カレーが出来ました★");
+	}
+	static void preCook(){
+		System.out.println("材料を揃える");
+		System.out.println("野菜を切る");
+		System.out.println("肉を切る");
+	}
+	static void mainCook(){
+		System.out.println("食材を炒める");
+		System.out.println("ルーを加え煮込む");
+	}
+}
+
+今回は処理自体が短いのでメインメソッドだけで処理してしまっても問題ないが、100行を超える処理などは上記のように適切にメソッド分割を行ったほうがよい。
+しっかり処理分割をできるようにしよう。
+
+部品の再利用
+プログラマーはDRYの原則(Don’t repeat yourself)を大切にしなければならない。
+つまり、同じことを二度書いたら「おや？」と思う感覚が大事だ。
+その際、その繰り返されている部分をメソッドとして定義してやるとよい。
+練習しよう。まずは以下を写経する。
+●MethodLesson3.java
+
+public class MethodLesson3 {
+	//＊を20個並べて出力し改行する処理
+	static void printLine(){
+		for(int i=0;i<20;i++){
+			System.out.print("*");
+		}
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		printLine();
+		System.out.println("見出し1");
+		System.out.println("見出し1の内容");
+		printLine();
+		System.out.println("見出し2");
+		System.out.println("見出し2の内容");
+		printLine();
+		System.out.println("見出し3");
+		System.out.println("見出し3の内容");
+		printLine();
+	}
+}
+
+繰り返し登場する処理をメソッドとして切り出し、それを再利用している。
+
+引数
+メソッドには引数を設定することができる。
+まずは以下を写経
+
+●MethodLesson4.java
+
+public class MethodLesson4 {
+	//String型の引数を一つ受け取りそれの先頭に★を出力するメソッド
+	static void midashiMaker(String title){
+		System.out.println("★"+title);
+	}
+
+	public static void main(String[] args) {
+		//メソッドに実引数として"大見出し1"という文字列を渡して実行
+		midashiMaker("大見出し1");
+		System.out.println("内容");
+		midashiMaker("大見出し2");
+		System.out.println("内容");
+		midashiMaker("大見出し3");
+		System.out.println("内容");
+	}
+}
+
+引数を利用することで同じメソッドでもちょっと違う処理を実現することができるようになった。
+
+作ってみよう
+以下のようにタイトルを引数で渡すと見出しとして装飾してくれるメソッドを作成しよう。
+
+********************
+* 大見出し1
+********************
+
+●MethodLesson5.java
+1.int型の引数を１つ受け取りその数ぶんだけ*を横並びに出力し、最後に改行するメソッド
+static void printLine(int width){
+処理
+}
+を作成する。
+2.int型の引数一つとString型の引数を一つ受け取るとそれを上記のフォーマットで出力する。
+static void midashiMaker(int width,String title){
+処理
+}
+を作成する。(このメソッドの内部で１で作成したprintLineメソッドを呼び出すこと)
+3.mainメソッドに処理を記述し、以下の出力を得よ
+
+********************
+* すごい！！
+********************
+すごいことがありました。
+******************************
+* 大事件発生しました！
+******************************
+大変なことが起こりました。
+
+public class MethodLesson5 {
+	//引数で受け取った数ぶん*を横に出力し、最後に改行するメソッド
+	static void printLine(int width){
+		for(int i=0;i<width;i++){
+			System.out.print("*");
+		}
+		System.out.println();
+	}
+	//第二引数で受け取った文字列を装飾するメソッド
+	//装飾の幅は第一引数ぶんとする
+	static void midashiMaker(int width,String title){
+		printLine(width);
+		System.out.println("* "+title);
+		printLine(width);
+	}
+	
+	public static void main(String[] args) {
+		midashiMaker(20,"すごい！！");
+		System.out.println("すごいことがありました！");
+		midashiMaker(30,"大事件発生しました！");
+		System.out.println("大変なことが起こりました!");
+	}
+}
+
+演習)
+上記クラスに引数で受け取ったもじ(半角英数限定)を*で取り囲むメソッドを作成せよ。
+
+例)
+Hello
+を渡すと
+*******
+*Hello*
+*******
+
+と装飾する。
+
+確認テスト
+問)
+char型１つとint型１つの引数を受けとり、その文字でその幅分の正方形を描画するメソッド
+static void printSquare(char c , int width){
+処理
+}
+を作成し、以下の処理を実現せよ。
+[実行例]
+一文字入れてください>★
+幅を入れてください>５
+★★★★★
+★★★★★
+★★★★★
+★★★★★
+★★★★★
+
+解)
+import java.util.Scanner;
+public class MethodLesson6 {
+	//第一引数の文字で第二引数の幅の正方形を描画するメソッド
+	static void printSquare(char c , int width){
+		//外のforは行の制御
+		for(int i=0;i<width;i++){
+			//内側のループは列の制御
+			for(int j=0;j<width;j++){
+				System.out.print(c);
+			}
+			System.out.println();
+		}
+	}
+
+	public static void main(String[] args) {
+		Scanner scan =new Scanner(System.in);
+		System.out.print("一文字入れてください>");
+		String s=scan.next();
+		//Stringからcharとして取り出す。
+		char c=s.charAt(0);
+		System.out.print("幅を入れてください>");
+		int width=scan.nextInt();
+		printSquare(c,width);
+		scan.close();
+	}
+}
+
+文字列をさかさまにするメソッドを作成しよう
+import java.util.*;
+public class MethodLesson6{
+	public static void main(String[] args){
+		System.out.print("なにかいれてね>");
+		String word=new Scanner(System.in).next();
+		System.out.println(reverseWord(word));
+		System.out.println(reverseWord2(word));
+		System.out.println(reverseWord3(word));
+	}
+	public static String reverseWord(String word){
+		//文字列連結を利用する方法
+		String str="";
+		for(int i=word.length()-1;i>=0;i--){
+			str+=word.charAt(i);
+		}
+		return str;
+	}
+	public static String reverseWord2(String word){
+		//toCharArrayは文字列をchar型配列に変換する。
+		char[] cArray=word.toCharArray();
+		//配列リバースのアルゴリズム
+		for(int i=0;i<cArray.length/2;i++){
+			char temp=cArray[i];
+			cArray[i]=cArray[cArray.length-1-i];
+			cArray[cArray.length-1-i]=temp;
+		}
+		//String.valueOf(char配列)で文字列を生成
+		return String.valueOf(cArray);
+	}
+
+	public static String reverseWord3(String word){
+		//文字数でchar型配列を生成
+		char[] cArray=new char[word.length()];
+		//配列に後ろの文字から詰める
+		for(int i=0;i<word.length();i++){
+			cArray[i]=word.charAt(word.length()-1-i);
+		}
+		//new String(char配列)を使って文字列を生成
+		String str=new String(cArray);
+		return str;
+	}
+}
+
+★28
+Day23
+
+これでダメならあきらめよう。Javaメソッド最終入門2
+戻り値
+メソッドはreturnすることによって呼び出し元に値を返すことができる。
+まずは以下をコメントを読みながらMethodLesson7.javaを写経しよう。
+public class MethodLesson7 {
+	// int型の引数を2つ受け取りその和を返すメソッド
+	static int sumOf(int a, int b) {
+		return a + b;
+	}
+
+	public static void main(String[] args) {
+		// sumOfに引数として3と5を渡すと8が返ってくるので変数sumに代入
+		int sum = sumOf(3, 5);
+		// 結果を出力
+		System.out.println(sum); // 8
+		// 返ってくる値を直接出力することも出来る
+		System.out.println(sumOf(10, 20)); // 30
+	}
+}
+
+値を返すというのがどういうことかがわかっただろうか？
+
+様々な戻り値
+続けて以下を写経する。
+
+●MethodLesson8.java
+
+[解答例]
+public class MethodLesson8 {
+	// int型の引数を2つ受け取りその大きい方の値を返すメソッド
+	static int largeOf(int a, int b) {
+		if(a>=b){
+			return a;
+		}else{
+			return b;
+		}
+	}
+	//double型の引数2個を受け取って長方形の面積を返すメソッド
+	static double rectArea(double height,double width){
+		return height*width;
+	}
+	//int型の引数1個を受け取ってそれが偶数ならばtrueをそうでなければfalseを返すメソッド
+	static boolean isEven(int n){
+		return n%2==0;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(largeOf(10,20)); //20
+		System.out.println(rectArea(10.0,15.0));//150.0
+		int x=10;
+		if(isEven(x)){
+			System.out.println(x+"は偶数");
+		}else{
+			System.out.println(x+"は奇数");
+		}
+	}
+}
+
+BMIアプリの作成
+○MethodLesson9.javaを作成し以下の処理を実現せよ。
+1.身長(cm)と体重(kg)をdouble型の引数で受け取りBMIを返すメソッドを作成せよ。
+static double calcBMI(double weightKg,double heightCm){
+処理
+}
+なおBMIは
+体重(kg)/(身長(m)*身長(m))
+で求められる。
+
+2.実行すると以下の処理になるようにメインメソッドを作成せよ。
+体重を入力してください(kg)>70.2
+身長を入力してください(cm)>175.3
+体重:70.2kg,身長:175.3cmのBMIは22.8です。
+
+解)
+
+import java.util.Scanner;
+public class MethodLesson8 {
+	//体重と身長を受け取り、bmiを返すメソッド
+	static double calcBMI(double weightKg,double heightCm){
+		//cmからmに変換
+		double heightM=heightCm/100;
+		//bmiの計算
+		double bmi=weightKg/(heightM*heightM);
+		return bmi;
+	}
+
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		System.out.print("体重を入力してください(kg)>");
+		double weight=scan.nextDouble();
+		System.out.print("身長を入力してください(cm)>");
+		double height=scan.nextDouble();
+		//calcBMIを呼び出した結果をbmiに代入
+		double bmi=calcBMI(weight,height);
+		System.out.printf("体重:%.1fkg,身長:%.1fcmのBMIは%.1fです。",weight,height,bmi);
+		scan.close();
+	}
+
+}
+
+確認テスト
+税抜き価格(int)と消費税率(int)を渡すと税込み価格(int)を返すメソッドを作成し、以下の処理を実現せよ。
+なお、消費税の計算の際に出た端数は切り捨てでよい。
+[実行例]
+消費税は何％ですか>8
+価格を入力(0でお会計)>120
+価格を入力(0でお会計)>300
+価格を入力(0でお会計)>420
+価格を入力(0でお会計)>0
+お買い物合計金額は907円(税込み)です。
+解)
+import java.util.Scanner;
+public class MethodLesson9 {
+	//税抜価格(int)と消費税率(int)を受け取り税込み価格(int)を返すメソッド
+	static int calcTotalFee(int costExcludeTax ,int tax){
+		double totalFee=costExcludeTax*(1+tax/100d);
+		return (int)totalFee;
+	}
+
+	public static void main(String[] args) {
+		Scanner scan=new Scanner(System.in);
+		int cost=0;
+		int price;
+		System.out.print("消費税は何％ですか>");
+		int tax=scan.nextInt();
+		do{
+			System.out.print("価格を入力(0でお会計)>");
+			price=scan.nextInt();
+			cost+=price;
+		}while(price !=0);
+		int totalFee=calcTotalFee(cost,tax);
+		System.out.printf("お買い物合計金額は%d円(税込み)です。",totalFee);
+	}
+}
+
+これでダメならあきらめよう。Javaメソッド最終入門3
+
+引数に配列
+配列などの参照型変数を引数で渡した時の挙動を覚えよう。
+まずは以下をコメントを読みながらMethodLesson10.javaを写経しよう。
+import java.util.Arrays;
+
+public class MethodLesson10 {
+	//第一引数にint型配列を受け取り、その要素を第二引数倍にするメソッド
+	static void timesArray(int[] arr,int times){
+		//引数で入ってきたアドレスにある配列を直接書き換える
+		for(int i=0;i<arr.length;i++){
+			arr[i]=arr[i]*times;
+		}
+	}
+	public static void main(String[] args) {
+		//[1,2,3]を要素とする配列をメモリ空間に作成し、その時のアドレスをarr1は保持
+		int[] arr1=new int[]{1,2,3};
+		//timesArrayにそのアドレスを渡す
+		timesArray(arr1,2);
+		//arr1にある配列の内容が書き換わったことを確認
+		System.out.println(Arrays.toString(arr1));
+		//さらにarr1の内容を3倍する。
+		timesArray(arr1,3);
+		//arr1の値がさらに3倍されたことを確認
+		System.out.println(Arrays.toString(arr1));
+
+	}
+}
+
+アドレス値をやりとりしているので操作している配列がメモリ空間に一つしかないことを意識することが大切だ。(new したのは一回)
+
+やってみよう
+1.MethodLesson11.javaを作成する。
+2.引数で受け取った配列を逆順にするメソッド
+static void arrReverse(int[] arr){
+処理
+｝
+を作成する。
+3.mainメソッド内で要素が[1,2,3,4,5]の配列を作成する。(配列変数名:arr)
+4.配列を2で作ったメソッドを使って逆順にする。
+5.Arrays.toString(arr)を用いて結果が[5,4,3,2,1]となっていることを確認する。
+
+解）
+import java.util.Arrays;
+
+public class MethodLesson11 {
+	//引数で受け取った配列を逆順にするメソッド
+	static void arrReverse(int[] arr){
+		for(int i=0;i<arr.length/2;i++){
+			int temp=arr[i];
+			arr[i]=arr[arr.length-1-i];
+			arr[arr.length-1-i]=temp;
+		}
+	}
+	public static void main(String[] args) {
+		int[] arr=new int[]{1,2,3,4,5};
+		arrReverse(arr);
+		System.out.println(Arrays.toString(arr));
+	}
+}
+
+配列の戻り値
+戻り値として配列を指定することもできる。
+MethodLesson12を写経する。
+
+●MethodLesson12.java
+import java.util.Arrays;
+
+public class MethodLesson12 {
+	//第一引数にint型配列を受け取り、その要素を第二引数倍にした要素をもつ新しい配列を返却するメソッド
+	static int[] timesArray(int[] arr, int times) {
+		//引数で渡ってきた配列と同じ要素数の配列をメモリ空間に新しく作成
+		int[] retArr = new int[arr.length];
+		//新しい配列の要素に引数で渡ってきた要素をtimes倍した値を入れる。
+		for (int i = 0; i < retArr.length; i++) {
+			retArr[i] = arr[i] * times;
+		}
+		//新しく作成した配列(のアドレス)を返却
+		return retArr;
+	}
+
+	public static void main(String[] args) {
+		// [1,2,3]を要素とする配列をメモリ空間に作成し、その時のアドレスをarr1は保持
+		int[] arr1 = new int[] { 1, 2, 3 };
+		// timesArrayによって新しく作られた配列を受け取る
+		int[] arr2 = timesArray(arr1, 2);
+		// arr1はそのまま[1,2,3]
+		System.out.println(Arrays.toString(arr1));
+		// arr2は[2,4,6]
+		System.out.println(Arrays.toString(arr2));
+		//要素を3倍にした新しい配列のアドレスを受け取る
+		int[] arr3 = timesArray(arr2, 3);
+		// arr3は[6,12,18]
+		System.out.println(Arrays.toString(arr3));
+	}
+}
+
+処理の流れを追うとnewを3回しているのがわかる。メモリ空間上にも3つの配列が確保されている。
+配列などの参照型を扱う際はこのメモリ空間を意識することが大切だ。
+
+やってみよう
+○MethodLesson13.javaを作成し以下の処理を実現せよ。
+２つのint型配列を引数で受け取り、それを結合した配列を返すメソッドを作成せよ。
+static int[] arrMerge(int[] arr1,int[] arr2){}
+Mainメソッドにて{1,2,3}と{4,5,6,7}の配列を結合した{1,2,3,4,5,6,7}という配列を作成せよ。
+
+import java.util.Arrays;
+
+public class MethodLesson13 {
+
+	public static void main(String[] args) {
+		int[] arr1={1,2,3};
+		int[] arr2={4,5,6,7};
+		int[] arr3=arrMerge(arr1,arr2);
+		System.out.println(Arrays.toString(arr3));
+
+	}
+	public static int[] arrMerge(int[] arr1,int[] arr2){
+		int[] retArr=new int[arr1.length+arr2.length];
+		for(int i=0;i<retArr.length;i++){
+			if(i<arr1.length){
+				retArr[i]=arr1[i];
+			}else{
+				retArr[i]=arr2[i-arr1.length];
+			}
+		}
+		return retArr;
+	}
+}
+
+○MethodLesson14.javaを作成し以下の処理を実現せよ。
+1.２つのint型引数を受け取るとその範囲を要素とする　配列を作成し返却するメソッドを以下のように作成する。
+(例 引数として(2,4)と渡すと[2,3,4]、(2,-1)と渡すと[2,1,0,-1]という配列を作成する)
+//引数として最初の値と最後の値を受け取り、その範囲を要素とする配列を返却するメソッド
+	static int[] makeArrFirstToLast(int first,int last){
+		//絶対値を使って要素数をもとめ配列をnewする。
+		int[] retArr=new int[Math.abs(first-last)+1];
+		処理を書く
+		return retArr;
+	}
+
+2.mainメソッドから上記メソッドに(4,-2)の引数を渡して実行する。
+3.Arrays.toString()を使って[4,3,2,1,0,-1,-2]の配列が作成できていることを確認する。
+
+解)
+package method;
+
+import java.util.Arrays;
+
+public class MethodLesson13 {
+	//引数として最初の値と最後の値を受け取り、その範囲を要素とする配列を返却するメソッド
+	static int[] mekeArrFirstToLast(int first,int last){
+		//絶対値を使って要素数をもとめ配列をnewする。
+		int[] retArr=new int[Math.abs(first-last)+1];
+		for(int i=0;i<retArr.length;i++){
+			retArr[i]=first<last ? first++:first--;
+		}
+		return retArr;
+	}
+
+	public static void main(String[] args) {
+		int[] arr=mekeArrFirstToLast(4,-2);
+		System.out.println(Arrays.toString(arr));
+	}
+}
+
+Javaの学習を始めて18日くらいの人のための問題集
+
+メソッドと配列の練習問題。
+
+Q
+以下の手順で実行例の処理を実現せよ。
+1.配列のクローンを返却するメソッドを作成する。
+public static int[] cloneArr(int[] arr){}
+2.配列を昇順に並び替えるメソッドを作成する。
+public static void sortArr(int[] arr){}
+3.2で作ったメソッドをオーバーロードし、第二引数でtrueを渡されると降順ソートするメソッドを作成する。
+public static void sortArr(int[] arr,boolean isDesc){}
+4.配列を以下のフォーマットで出力するメソッドを作成する。
+public static void printArr(int[] arr){}
+printArrで作成した文字列の例
+{2,9,6,3,8}
+5.Mainメソッドにて以下の処理を実現する。なお、最初に作る配列は-10~10の乱数で埋め尽くすこと。
+
+[実行例]
+配列の要素数を入力してください>10
+配列を生成しました。
+{-2,0,8,2,-4,3,7,0,-4,-9}
+1...元の配列を表示,2...配列を昇順ソート,3...配列を降順ソート,4...終了>2
+{-9,-4,-4,-2,0,0,2,3,7,8}
+1...元の配列を表示,2...配列を昇順ソート,3...配列を降順ソート,4...終了>3
+{8,7,3,2,0,0,-2,-4,-4,-9}
+1...元の配列を表示,2...配列を昇順ソート,3...配列を降順ソート,4...終了>1
+{-2,0,8,2,-4,3,7,0,-4,-9}
+1...元の配列を表示,2...配列を昇順ソート,3...配列を降順ソート,4...終了>4
+アプリケーションを終了します
+
+import java.util.*;
+class Q1{
+	public static void main(String[] args){
+		Scanner s=new Scanner(System.in);
+		Random rand=new Random();
+		System.out.print("配列の要素数を入力してください>");
+		int len=s.nextInt();
+		int[] orgArr=new int[len];
+		for(int i=0;i<orgArr.length;i++){
+			orgArr[i]=rand.nextInt(21)-10;
+		}
+		System.out.println("配列を生成しました。");
+		printArr(orgArr);
+		//作業用配列の生成
+		int[] tempArr=cloneArr(orgArr);
+		while(true){
+			System.out.print("1...元の配列を表示,2...配列を昇順ソート,3...配列を降順ソート,4...終了>");
+			int select=s.nextInt();
+			switch(select){
+			case 1:
+				printArr(orgArr);
+				break;
+			case 2:
+				sortArr(tempArr);
+				printArr(tempArr);
+				break;
+			case 3:
+				sortArr(tempArr,true);
+				printArr(tempArr);
+				break;
+			case 4:
+				System.out.println("アプリケーションを終了します");
+				s.close();//スキャナークローズ
+				System.exit(0);//アプリ強制終了(０は正常終了を意味する)
+			}	
+		}		
+	}
+	public static int[] cloneArr(int[] arr){
+		int[] retArr=new int[arr.length];
+		for(int i=0;i<arr.length;i++){
+			retArr[i]=arr[i];
+		}
+		return retArr;
+	}
+	public static void sortArr(int[] arr){
+		for(int i=0;i<arr.length-1;i++){
+			for(int j=i+1;j<arr.length;j++){
+				if(arr[i] > arr[j]){
+					int temp=arr[i];
+					arr[i]=arr[j];
+					arr[j]=temp;
+				}
+			}
+		}
+	}
+	public static void sortArr(int[] arr,boolean isDesk){
+		for(int i=0;i<arr.length-1;i++){
+			for(int j=i+1;j<arr.length;j++){
+				if(!isDesk && arr[i] > arr[j] || isDesk && arr[i] < arr[j]){
+					int temp=arr[i];
+					arr[i]=arr[j];
+					arr[j]=temp;
+				}
+			}
+		}
+	}
+	public static void printArr(int[] arr){
+		System.out.print("{");
+		for(int i=0;i<arr.length;i++){
+			System.out.print(arr[i]+(i==arr.length-1 ? "":","));
+		}
+		System.out.println("}");
+	}
+}
+
+★29
+Day24
+
+配列とメソッドはプログラミングのエッセンスがぎゅっと濃縮されているので難しい部分もあると思いますがしっかりと慣れていきましょう。ようは慣れです。
+
+Javaメソッド演習
+
+ペアプロジェネレータを作ろう(配列演習)
+
+メンバーをコマンドライン引数で登録するとペアプロの組み合わせをランダムに生成するジェネレータを作成しよう。メンバーが奇数の場合は「先生」を加えて偶数にすること。
+
+[実行例1]
+偶数人で実行
+
+$ java PairPro 佐藤 山田 鈴木 田中
+{N.山田,D.鈴木}
+{N.田中,D.佐藤}
+[実行例2]
+奇数人で実行
+
+$ java PairPro 佐藤 山田 鈴木 田中 安倍
+{N.田中,D.安倍}
+{N.佐藤,D.鈴木}
+{N.先生,D.山田}
+[実行例3]
+引数なしで実行した場合はメッセージが表示される
+
+$ java PairPro
+引数にメンバーを入れてもう一度実行してください。
+[解答例]
+
+import java.util.*;
+
+public class PairPro {
+	public static void main(String[] args) {
+		if(args.length>0){
+			//members配列をargsの参照で作成
+			String[] members=args;
+			if(args.length %2!=0){
+				//奇数の場合は要素数を一つ増やした配列を指すようにする
+				members=new String[args.length+1];
+				for(int i=0;i<args.length;i++){
+					//argsにある分はそのまま代入
+					members[i]=args[i];
+				}
+				//配列の最後に先生を追加
+				members[members.length-1]="先生";
+			}
+			shuffleArr(members);
+			printPair(members);
+		}else{
+			System.out.println("引数にメンバーを入れてもう一度実行してください。");
+		}
+	}
+	//配列シャッフル
+	static void shuffleArr(String[] members){
+		for(int i=0;i<members.length-1;i++){
+			int index=new Random().nextInt(members.length-i);
+			String temp=members[index];
+			members[index]=members[members.length-1-i];
+			members[members.length-1-i]=temp;
+		}
+	}
+	//表示
+	static void printPair(String[] members){
+		for(int i=0;i<members.length;i+=2){
+			System.out.printf("{N.%s,D.%s}%n",members[i],members[i+1]);
+		}
+	}	
+}
+
+★30
+Day25
+
+Java(spお題)
+下の図のように、今日の日付とある人の生年月日を入力すると、その人が現在何歳かを表示する。
+
+【実行画面】
+今日の年は？＞2012【enterキー】
+今日の月は？＞4【enterキー】
+今日の日は？＞16【enterキー】
+誕生日の年は？＞1976【enterキー】
+誕生日の月は？＞6【enterキー】
+誕生日の日は？＞12【enterキー】
+あなたの年齢は35歳です。
+
+[解答例]
+import java.util.*;
+public class Lesson2{
+	public static void main(String[] args){
+		Scanner scan=new Scanner(System.in);
+		System.out.print("今日の年は?>");
+		int yer=scan.nextInt();
+		System.out.print("今日の月は?>");
+		int month=scan.nextInt();
+		System.out.print("今日の日は?>");
+		int day=scan.nextInt();
+		System.out.print("誕生日の年は?>");
+		int firstYer=scan.nextInt();
+		System.out.print("誕生日の月は?>");
+		int firstMonth=scan.nextInt();
+		System.out.print("誕生日の日は?>");
+		int firstDay=scan.nextInt();
+		int ansYer=yer-firstYer;
+		if(month<firstMonth || (month==firstMonth && day<firstDay)){
+			ansYer-=1;
+		}
+		System.out.printf("あなたの年齢は%d歳です。",ansYer);
+	}
+
+★31
+Day26
+
+配列＆メソッド演習(spお題)
+配列とメソッドを使ってカードゲームを作ってみよう。
+カードゲームを作ろう(配列演習)
+
+配列の演習としてカードゲームを作ってみよう。
+カードのデッキを作る際には下の配列を使うこと
+
+String[] suits={"♠","♦","♥","♣"};
+//フォントの関係で表示に不具合が出る場合は下の配列を使う
+//String[] suits={"S","D","H","C"};
+String[] nums={"1","2","3","4","5","6","7","8","9","10","J","Q","K"};
+[初級課題]
+要素数が５２個の文字列型の配列を作成し、以下の表示を実現せよ。
+
+　
+♠1   ♠2   ♠3   ♠4   ♠5   ♠6   ♠7   ♠8   ♠9   ♠10  ♠J   ♠Q   ♠K   
+♦1   ♦2   ♦3   ♦4   ♦5   ♦6   ♦7   ♦8   ♦9   ♦10  ♦J   ♦Q   ♦K   
+♥1   ♥2   ♥3   ♥4   ♥5   ♥6   ♥7   ♥8   ♥9   ♥10  ♥J   ♥Q   ♥K   
+♣1   ♣2   ♣3   ♣4   ♣5   ♣6   ♣7   ♣8   ♣9   ♣10  ♣J   ♣Q   ♣K   
+[中級課題]
+カードをシャッフルし、その中から５枚を取り出す。
+その結果を数字を小さい順に表示せよ(スーツは考慮しない、今回はKを最大とする)
+
+♠1   ♠2   ♠3   ♠4   ♠5   ♠6   ♠7   ♠8   ♠9   ♠10  ♠J   ♠Q   ♠K   
+♦1   ♦2   ♦3   ♦4   ♦5   ♦6   ♦7   ♦8   ♦9   ♦10  ♦J   ♦Q   ♦K   
+♥1   ♥2   ♥3   ♥4   ♥5   ♥6   ♥7   ♥8   ♥9   ♥10  ♥J   ♥Q   ♥K   
+♣1   ♣2   ♣3   ♣4   ♣5   ♣6   ♣7   ♣8   ♣9   ♣10  ♣J   ♣Q   ♣K   
+
+♠1   ♠10  ♠J   ♠Q   ♠K   
+[上級課題]
+その5枚がロイヤルストレートフラッシュかどうかを判定せよ。
+
+♠1   ♠2   ♠3   ♠4   ♠5   ♠6   ♠7   ♠8   ♠9   ♠10  ♠J   ♠Q   ♠K   
+♦1   ♦2   ♦3   ♦4   ♦5   ♦6   ♦7   ♦8   ♦9   ♦10  ♦J   ♦Q   ♦K   
+♥1   ♥2   ♥3   ♥4   ♥5   ♥6   ♥7   ♥8   ♥9   ♥10  ♥J   ♥Q   ♥K   
+♣1   ♣2   ♣3   ♣4   ♣5   ♣6   ♣7   ♣8   ♣9   ♣10  ♣J   ♣Q   ♣K   
+
+♠1   ♠10  ♠J   ♠Q   ♠K   
+ロイヤルストレートフラッシュです！
+[解答例]
+初級
+
+import java.util.*;
+public class CardGame {
+
+	public static void main(String[] args) {
+		String[] suits={"♠","♦","♥","♣"};
+		//フォントの関係で表示に不具合が出る場合は下の配列を使う
+		//String[] suits={"S","D","H","C"};
+		String[] nums={"1","2","3","4","5","6","7","8","9","10","J","Q","K"};
+		String[] deck=createDeck(suits,nums);
+		showCards(deck);
+		
+		
+		
+	}
+	public static String[] createDeck(String[] suits,String[] nums){
+		
+		String[] deck=new String[suits.length*nums.length];
+		for(int i=0;i<deck.length;i++){
+			deck[i]=suits[i/nums.length]+nums[i%nums.length];
+		}
+		return deck;
+	}
+	public static void showCards(String[] cards){
+		for(int i=0;i<cards.length;i++){
+			System.out.printf("%-5s",cards[i]);
+			if((i+1)%13==0){
+				System.out.println();
+			}
+		}
+		System.out.println();
+	}
+	
+
+}
+上級
+
+import java.util.*;
+public class CardGame {
+
+	public static void main(String[] args) {
+		String[] suits={"♠","♦","♥","♣"};
+		//フォントの関係で表示に不具合が出る場合は下の配列を使う
+		//String[] suits={"S","D","H","C"};
+		String[] nums={"1","2","3","4","5","6","7","8","9","10","J","Q","K"};
+		String[] deck=createDeck(suits,nums);
+		showCards(deck);
+		shuffleDeck(deck);
+		String[] hands=createHands(0,5,deck);
+		//hands=new String[]{"♠1","♠K","♠10","♠Q","♠J"};
+		showHands(hands,suits);
+		if(isRoyal(hands,suits)){
+			System.out.println("ロイヤルストレートフラッシュです！");
+		}else{
+			System.out.println("ロイヤルストレートフラッシュではありません。");
+		}
+		//System.out.println(isFlash(new String[]{"♠1","♠1","♠1","♠1","♥1"}));
+		//System.out.println(isStraightFlash(new String[]{"♠1","♠K","♠10","♠Q","♠J"},suits));
+		//getStraightFlashCount(deck,suits);
+		
+		
+	}
+	public static String[] createDeck(String[] suits,String[] nums){
+		
+		String[] deck=new String[suits.length*nums.length];
+		for(int i=0;i<deck.length;i++){
+			deck[i]=suits[i/nums.length]+nums[i%nums.length];
+		}
+		return deck;
+	}
+	public static void showCards(String[] cards){
+		for(int i=0;i<cards.length;i++){
+			System.out.printf("%-5s",cards[i]);
+			if((i+1)%13==0){
+				System.out.println();
+			}
+		}
+		System.out.println();
+	}
+	public static void shuffleDeck(String[] deck){
+		for(int i=0;i<deck.length-1;i++){
+			int index=new Random().nextInt(deck.length-i);
+			String card=deck[index];
+			deck[index]=deck[deck.length-1-i];
+			deck[deck.length-1-i]=card;
+		}
+	}
+	public static String[] createHands(int firstIndex,int cardCount,String[] deck){
+		String[] hands=new String[cardCount];
+		for(int i=firstIndex;i<firstIndex+cardCount;i++){
+			hands[i]=deck[i];
+		}
+		return hands;
+	}
+	public static int getSuitIndex(String card,String[] suits){
+		String suit=String.valueOf(card.charAt(0));
+		int i;
+		for(i=0;i<suits.length;i++){
+			if(suit.equals(suits[i])){
+				break;
+			}
+		}
+		return i;
+	}
+	public static int getCardNum(String card){
+		String strNum=card.substring(1,card.length());
+		
+		int num=0;
+		switch(strNum){
+		case "1":
+		case "2":
+		case "3":
+		case "4":
+		case "5":
+		case "6":
+		case "7":
+		case "8":
+		case "9":
+		case "10":
+			num=Integer.parseInt(strNum);
+			break;
+		case "J":
+			num=11;
+			break;
+		case "Q":
+			num=12;
+			break;
+		case "K":
+			num=13;
+		}
+		return num;
+	}
+	public static void sortCards(String[] cards,String[] suits){
+		for(int i=0;i<cards.length-1;i++){
+			for(int j=i+1;j<cards.length;j++){
+				if(
+				getCardNum(cards[i])>getCardNum(cards[j])
+				|| (getCardNum(cards[i])==getCardNum(cards[j]) && getSuitIndex(cards[i],suits) > getSuitIndex(cards[j],suits))
+				){
+					String card=cards[i];
+					cards[i]=cards[j];
+					cards[j]=card;
+				}
+			}
+		}
+	}
+	public static void showHands(String[] hands,String[] suits){
+		sortCards(hands,suits);
+		showCards(hands);
+	}
+	public static boolean isFlush(String[] hands){
+		char first=hands[0].charAt(0);
+		int i;
+		for(i=1;i<hands.length;i++){
+			if(hands[i].charAt(0) != first){
+				break;
+			}
+		}
+		return i==hands.length;
+	}
+	public static boolean isRoyal(String[] hands,String[] suits){
+		sortCards(hands,suits);
+		if(!isFlush(hands)){
+			return false;
+		}
+		String[] sample={"1","10","J","Q","K"};
+		int i;
+		for(i=0;i<hands.length;i++){
+			String num=hands[i].substring(1,hands[i].length());
+			if(!num.equals(sample[i])){
+				break;
+			}
+		}
+		return i==hands.length;
+		
+	}
+	//ストフラが出るまで回し続け何回目で出たかを表示するメソッド
+	public static void getStraightFlashCount(String[] deck,String[] suits){
+		int count=0;
+		while(true){
+			count++;
+			shuffleDeck(deck);
+			String[] hands=createHands(0,5,deck);
+			if(isRoyal(hands,suits)){
+				showHands(hands,suits);
+				System.out.println(count);
+				break;
+			}
+		}
+	}
+
+}
+
+★32
+Day27
+
+splitでJavaの文字列を分割しよう! 良く使うサンプル付き!
+
+１．String.split(String)は正規表現で文字列を分割する
+Stringのsplit(String)は、文字列を引数で指定した区切り文字の正規表現にマッチする部分で分割したString配列を戻します。
+
+区切り文字の間に文字を含まない部分がある場合は(下記例での,,)、その部分は長さ0の文字列となります(nullではありません)。
+
+String str = "A,BC,,D";
+String[] split = str.split(",");
+System.out.println(Arrays.toString(split)); // → ["A", "BC", "", "D"]
+System.out.println(split .length); // → 4
+文字列が区切り文字を含まない場合は、文字列がそのまま設定された、長さ1のString配列が戻ります。
+
+String str = "A,BC,,D";
+String[] split = str.split("あ");
+System.out.println(Arrays.toString(split)); // → ["A,BC,,D"] ※配列のインデックス0にそのまま入っている
+System.out.println(split.length); // → 1
+正規表現がよくわからない場合でも、基本的には区切り文字列をそのまま指定してもらって構いません。動作がおかしい場合は、後述する「正規表現で特別な意味を持つ文字」を含めていないか確認してみてください。
+
+１-１．正規表現で気を付けたい文字
+splitでの区切り文字は、正規表現だということに注意しましょう。正規表現では特別な意味を持つ文字がいくつかあるので、パッと見どおりに動かないことがあります。
+
+正規表現で気を付けたい文字は、概ね以下のものです。文脈によって意味があったりなかったりします。
+
+[]-.+*?()|^$
+
+例えば、“.”は正規表現だと「何かの1文字」を意味します。“.”そのものを区切り文字にしたい場合は、\でエスケープして正規表現としての意味を打ち消すか、java.util.regex.Patternのquoteなどを使いましょう。
+
+String str = "A.BC..D";
+String[] split1 = str.split(".");
+String[] split2 = str.split("\\.");
+String[] split4 = str.split(Pattern.quote("."));
+String[] split3 = str.split("[.]");
+System.out.println(Arrays.toString(split1)); // → [] ※長さ0の文字列
+System.out.println(Arrays.toString(split2)); // → ["A", "BC", "", "D"]
+System.out.println(Arrays.toString(split3)); // → 同上
+System.out.println(Arrays.toString(split4)); // → 同上
+
+２．String.split(String, int)は分割する数を制限する
+splitには、二番目にintの引数を持つメソッドもあります。このintは、分割する数を制限するのに使い、負の数値、0、正の数値で意味が違ってきます。
+
+負の数字を指定すると、全ての区切り文字で分割した結果となります。中身が空でも、全ての要素を取得したい場合に使います。
+
+String str = "A,B,C,,,";
+String[] split = str.split(",", -1);
+System.out.println(Arrays.toString(split)); // → ["A", "B", "C", "", "", ""]
+System.out.println(split.length); // → 6
+0を指定すると、分割結果の後ろ部分で、値を持たない部分が省略されます。値が空の部分はいらない場合に使います。split(String)はこの動きです。
+
+String str = "A,B,C,,,";
+String[] split = str.split(",", 0);
+System.out.println(Arrays.toString(split)); // → ["A", "B", "C"]
+System.out.println(split.length); // → 3
+正の数値を指定すると、先頭から指定した数だけ分割します。残りの部分は区切り文字が入ったままになります。一部分だけ分割したい場合に便利です。
+
+String str = "A,B,C,,,";
+ 
+String[] split1 = str.split(",", 1);
+System.out.println(Arrays.toString(split1)); // → ["A,B,C,,,"]
+System.out.println(split1.length); // → 1
+ 
+String[] split2 = str.split(",", 2);
+System.out.println(Arrays.toString(split2)); // → ["A", "B,C,,,"]
+System.out.println(split2.length); // → 2
+ 
+String[] split3 = str.split(",", 3);
+System.out.println(Arrays.toString(split3)); // → ["A", "B", "C,,,"]
+System.out.println(split3.length); // → 3
+
+３．【応用】splitの使い方の例
+３-１．複数の区切り文字で分割する
+今までの例では区切り文字を一つだけ使っていました。ですが、区切り文字は正規表現ですので複数の文字を使えます。以下の例では、“=”と“,”の二つを指定しています。文字列の書式が固定であれば、なかなか便利に使えますよ。
+
+String str = "KEY=VALUE1,VALUE2,VALUE3";
+String[] split = str.split("[=,]");
+System.out.println(Arrays.toString(split)); // → ["KEY", "VALUE1", "VALUE2", "VALUE3"]
+System.out.println(split.length); // → 4
+３-２．複数の空白を一つとして分割する
+複数の空白を一つとして分割することも簡単です。正規表現の+を使って、連続する区切り文字を1つにみなしています。
+
+String str = "A    B  C        D";
+String[] split = str.split(" +");
+System.out.println(Arrays.toString(split)); // → ["A", "B", "C", "D"]
+System.out.println(split.length); // → 4
+３-３．文字単位に分割する
+文字単位に分割したい場合は、区切り文字を“”とするといいかもしれません。少々裏技チックですが、文字の間の空文字列にマッチしていると考えてください。
+
+String str = "ABCDEF";
+String[] split = str.split("");
+System.out.println(Arrays.toString(split)); // → ["A", "B", "C", "D", "E", "F"]
+System.out.println(split.length); // → 6
+３-４．改行で分割する
+改行で分割したい場合は、単純に改行を区切り文字とすればOKです。末尾の空行も欲しいなら、2番目の引数にマイナスの数値を指定してください。
+
+String str = "A\nBC\n\nD";
+String[] split = str.split("\n");
+System.out.println(Arrays.toString(split)); // → ["A", "BC", "", "D"]
+System.out.println(split.length); // → 4
+複数の種類の改行が含まれている可能性があるなら、それらを正規表現でor指定しましょう。
+
+String str = "A\nBC\r\n\rD";
+String[] split = str.split("\r\n|\r|\n");
+System.out.println(Arrays.toString(split)); // → ["A", "BC", "", "D"]
+System.out.println(split.length); // → 4
+３-５．分割結果をListにする
+splitは分割結果をStringの配列で戻します。でもListの方が使いやすい場合もありますので、java.util.ArraysのasListを使って、Listに変換するのがお手軽です。
+
+String str = "A,BC,,D";
+List<String> split = Arrays.asList(str.split(","));
+System.out.println(split); // → ["A", "BC", "", "D"]
+System.out.println(split.size()); // → 4
+３-６．分割文字自体を含める
+少し特別な正規表現の書き方をすれば、分割に使った文字列そのものを結果に含められます。これは、正規表現の先読み・後読みと呼ばれる機能を使っています。
+
+後ろに付ける場合は、以下のようにします。
+
+String str = "A,BC,,D";
+String[] split = str.split("(?<=,)");
+System.out.println(Arrays.toString(split)); // → ["A,", "BC,", ",", "D"]
+System.out.println(split.length); // → 4
+前に付ける場合は以下のようにします。
+
+String str = "A,BC,,D";
+String[] split = str.split("(?=,)");
+System.out.println(Arrays.toString(split)); // → ["A", ",BC", ",", ",D"]
+System.out.println(split.length); // → 4
+
+４．まとめ
+この記事ではStringのsplitを紹介しました。引数に指定した正規表現にマッチするものを区切り文字とし、文字列を分割して配列にするメソッドです。二番目の引数の数値を使うことで、どのような配列にするかを指定出来たりもします。
+
+splitの使い方は簡単ですが、指定できるものが正規表現であることを活かすと、なかなかパワフルに使えたりもします。ぜひ正規表現について学んで、splitを便利に使いましょう。
+
+
+
+

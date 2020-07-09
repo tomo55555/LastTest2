@@ -1,0 +1,291 @@
+さらっと、C#の記述まとめ
+C#
+この記事は最終更新日から3年以上が経過しています。
+参考
+
+C#とは
+①.NET Frameworkで動作するプログラミング言語。
+※.NET Framework:
+マイクロソフトが提供するアプリケーション開発、実行環境
+
+②Visual Studioで始めよう。
+※Visual Studio:
+統合開発環境
+
+③オブジェクト指向言語であるが、コンポーネント指向もサポートしている。
+
+④ガベージコレクション有り。
+
+⑤ソースファイルは「.cs」という拡張子。
+以下でコンパイルができ、
+アプリケーションなら「.exe」
+ライブラリなら「.dll」
+というファイルが出来る。
+
+コンパイル
+csc hello.cs
+構造
+名前空間の使用
+usingディレクティブを用いることで、
+名前空間のメンバを省略して使える。
+
+using System;
+名前空間の指定
+namespace 名前空間
+{
+}
+クラス
+[public|private|protected|internal] class クラス名
+{
+}
+メソッド
+[public|private|protected|internal] [static] 戻り型 メソッド名([引数])
+{
+  return;
+}
+Main関数
+.exeプログラムのエントリポイント。
+
+①Mainはstaticである必要がある。
+②戻り値はvoidかint。
+③引数は、コマンドライン引数を表している。
+
+static void Main(string[] args)
+{
+  System.Console.WriteLine(args.Length);
+}
+型と変数、定数
+型
+説明	型
+符号付きの整数	sbyte、short、int、long
+符号なしの整数	byte、ushort、uint、ulong
+Unicode 文字	char
+IEEE 浮動小数点	float、double
+高精度の 10 進数	decimal
+ブール値	bool
+列挙型	enum E {...} 形式のユーザー定義型
+構造体の型	struct S {...} 形式のユーザー定義型
+null 許容値型	null 値を持つその他すべての値型の拡張子
+その他すべての型の最終的な基底クラス	object
+Unicode 文字列	string
+class	C {...} 形式のユーザー定義型
+インターフェイス型	interface I {...} 形式のユーザー定義型
+配列型	1 次元または多次元、たとえば int[] および int[,]
+デリゲート型	delegate int D(...) 形式のユーザー定義型
+ボックス化とボックス化解除
+値型も以下のように行うことで、オブジェクトとして扱われる。
+
+//ボックス化
+int i = 1;
+object o = i;
+
+//ボックス化解除
+int j = (int)o;
+ローカル定数
+const 型 定数名 = 値;
+配列
+定義
+int[] a1 = new int[10];
+int[,] a2 = new int[10, 5];
+int[,,] a3 = new int[10, 5, 2];
+
+int[] a = new int[] {1, 2, 3};
+式
+説明	演算子
+等しい	==
+等しくない	!=
+条件AND	&&
+条件OR	||
+ステートメント
+if
+if ()
+{
+}
+else if ()
+{
+}
+else
+{
+}
+switch
+int n = 1;
+switch (n)
+{
+  case 値:
+    break;
+  default:
+    break;
+}
+while
+while ()
+{
+}
+※break, continue
+
+do
+{
+} while();
+
+## for
+```csharp
+for (初期化; 条件式; 変化式)
+{
+}
+foreach
+foreach (オブジェクト in 変数)
+{
+
+}
+goto
+loop:
+System.Console.WriteLine(1);
+
+if (true)
+  goto loop;
+例外
+try
+{
+}
+catch ()
+{
+}
+finally
+{
+}
+クラスとオブジェクト
+インスタンス化
+Test t = new Test();
+アクセス修飾子
+修飾子	説明
+public	アクセス制限なし
+protected	このクラス、もしくは派生したクラスに制限
+internal	このプログラムに制限
+private	このクラスに制限
+継承
+public class Parent
+{
+}
+
+public class child : Parent
+{
+}
+※オーバーライドされた基底クラスのメンバを呼び出すときは、
+「base」キーワードを使用する。
+
+読み込み専用フィールド
+「readonly」をつける。
+
+this
+インスタンス化されたオブジェクト自身。
+
+抽象メソッドとその実装
+public abstruct class Chusho
+{
+  public abstruct int Test();
+}
+
+public class Jisso : Chusho
+{
+  public override int Test() {
+  }
+}
+メソッドのオーバーロード
+同じメソッド名でも、引数が違えば何個でも定義できる。
+
+コンストラクタ
+クラス名と同じ名前のメソッド名で宣言。
+
+public class Hoge
+{
+  public void Hoge(int i)
+  {
+  }
+}
+プロパティ
+JavaでいうSetter、Getter。
+
+定義例
+アクセス修飾子 型 プロパティ名
+{
+  set
+  {
+    return field;
+  }
+  get
+  {
+    field = value;
+  }
+}
+使用例
+Test test = new Test();
+
+test.propName = "hoge";
+string hoge = test.propName;
+インターフェイス
+interface Hoge
+{
+    void test1();
+}
+interface Fuga
+{
+    void test2();
+}
+public class Bar : Hoge, Fuga
+{
+  public void test1()
+  {
+  }
+  public void test2()
+  {
+  }
+} 
+デリゲート
+メソッドの戻り値や引数の定義だけを事前にしておき、
+実態は後からセットする仕組み。
+
+delegate 戻り値 DelegateName([引数]);
+DelegateName 変数 = 実体となる関数([引数]);
+ジェネリック
+メソッドやプロパティで使用する型をパラメータとして定義し、
+使用する時に決定する機能。
+
+オーバロードの冗長などを簡易にしたり、
+動的なサイズを可能にするListやDictionaryもジェネリックを用いて、
+使用することが出来る。
+
+※List、Dictionary・・・
+多言語でいうList、ArrayList、Hash、Hashtableなどのオブジェクト。
+
+ジェネリッククラス定義
+class ClassName<T>
+{
+}
+ジェネリックメソッド定義
+アクセス修飾子 型 メソッド名<T> ([引数])
+{
+}
+Tはお決まりなだけで、別になんでもいいらしい。
+
+あとは、好きなところでTを使っておいて、
+インスタンス化やメソッド呼び出しの際に、Tに使いたい型を指定すると、
+クラスないしメソッドのTがそれで置き換わる。
+
+例
+class Test<T>
+{
+  private T val;
+
+  public void Save(T val)
+  {
+    this.val = val;
+  }
+
+  public T Load() {
+    return this.val;
+  }
+}
+
+・・・
+
+Test<int> testObj = new Test<int>();
+test.Save(1);

@@ -1,0 +1,227 @@
+SQLチートシート
+SQL
+基本構文
+select from where 構文
+select 得たい列 from table名 where 条件式;
+全ての列を得たい場合は を使用する。
+whereの条件が複数ある場合はANDまたはORでつなぐ。
+sql
+select * from users;
+select name, age from users where age > 20 AND gender='female';
+
+※必要な列に絞ることでパフォーマンスが改善し料金が抑えられるので、なるべく、 は使用しないにしましょう
+
+sqlの記述順序
+select
+from
+where
+group by
+having
+order by
+limit
+sqlの実行順序
+from
+where
+group by
+having
+select
+order by
+limit
+selectの順番だけ実行と記述で順序がことなることに注意。
+
+集約関数
+※集約関数では、nullは無視されるので特に配慮は不要
+
+合計値を求めるsum
+2019年に入ってからの売り上げが知りたい場合
+
+select sum(amount) from orders where order_time >= '2018-01-01 00:00:00';
+平均値avg
+select avg(price) from orders where order_time >= '2018-01-01 00:00:00';
+最小値min,max
+select min(price) from places;
+数を数えるcount
+-- 女性ユーザー
+select count(*) from users where  gender='male';
+-- 四月のUU(応用)
+select count(distinct user=id) from access_logs where between '2019-04-01' AND '2019-04-31';
+グループごとに集計するgroupby
+-- 都道府県ごとのホテルの数
+select prefecture, count(*) from places group by prefenture;
+-- 2018年の月別UU(応用)
+select created_month, count(distinct user_id) form access_logs where created_month between '2019-01-01 ' AND '2019-01-01' group by created_month;
+created_monthのカラムがない場合、asを用いてcreated_atから作り直す必要があるが、後述
+
+having
+group byされたものから、絞り込み
+
+select request_month, count(*) from access_logs where created_at between '2018-01-01 00:00:00' AND  '2019-01-01 00:00:00' group by request_month having count(*) > 1000;
+データの並び替え
+order by
+-- 価格の安い順にホテルを出力
+--価格が同じときは登録日時が早い順
+select * from places order by prices asc, id asc;
+ascは低い順、descは高い順
+カンマ区切りで複数指定できる
+
+関数と演算子
+絶対値の取得
+select abs(-10);
+四捨五入round
+-- 税込み価格を表示
+select id, name, round(price * 1.08, 0) from places;
+文字列結合concat
+select concat(family_name, 'さん') from users;
+日付と時刻の演算
+主な演算子
+現在の日付・・current_date
+現在の時刻・・current_timestamp
+n日後の日付 d + interval n day
+時刻の日や月のみを取り出して出力・・extract
+値を特定の型としてキャスト・・cast
+-- 2018年1月に作られたplacesの名前を取り出す
+select name from places where extract(month_year from created_at)=201801;
+
+--UU
+SELECT DATE_FORMAT(created_at, ‘%Y-%m’) as reg_time,COUNT(DISTINCT user_id) 
+FROM access_logs GROUP BY reg_time ;
+
+テーブルの結合
+内部結合 innner join
+select reservation.id, places_id from reservation inner join
+on reservation.places_id = places.id; 
+サブクエリ
+
+-- 2018年に商品を購入していないユーザーの一覧
+select * from users where not in
+(select id from orders where created_at between 20180101 and 20190101)
+
+-- 全ホテルの平均単価よりも高いホテルのみを取得し、商品単価の高い順に並べる
+select * from places where price > (select avg(price) from places)
+order by price desc;
+
+SQL Serverチートシート
+SQLServer
+Transact-SQL
+SQL Server(RDB)に使うtransact SQLの私的チートシート。
+逐次増やしていきます。
+
+テーブル操作関係
+テーブルを作る
+CREATE TABLE test_table (
+   [id] int not null primary key,
+   [name] nvarchar(50) not null
+);
+テーブルを作る（先頭列idを自動インクリメント行にする）
+GUIで編集していると気づきにくいですが、自動インクリメント（identity insert）の設定ができるのは、テーブル作成時と行追加時のみです。
+
+CREATE TABLE mw_log (
+   id int identity not null primary key ,
+   name nvarchar(50) not null
+);
+テーブルに行を追加する
+INSERT INTO mw_log (id,name)
+values (2,'ボルシチ')
+テーブルに列を追加する
+ALTER TABLE mw_log add [updatedate] datetime not null default getDate();
+テーブルを削除する
+DROP TABLE mw_log
+テーブルに複数項目からなるの主キーを設定する
+テーブル作成時には、複数の項目からなる主キー制約を設定できないので、テーブルを作った後に設定します。
+主キーは自動的にクラスタ化インデックスになるので、例示のCLUSTEREDはなくても動きます。
+
+CREATE table mw_log_detail
+(id int not null,
+ UpdateDate datetime not null);
+
+ ALTER table mw_log_detail
+ ADD CONSTRAINT pk_mw_log_dtail
+ PRIMARY KEY CLUSTERED (id,UpdateDate);
+データベースの情報を取得する
+データベースのテーブル一覧を取得する
+SELECT * FROM INFORMATION_SCHEMA.tables
+データベースのカラムの一覧を取得する
+SELECT * FROM INFORMATION_SCHEMA.columns
+データベースの容量を減らしたい時に
+プレゼンやデモ、説明会用にデータベースの容量を少なくしたい時に。
+
+インデックスを削除してDBの容量を節約する。
+DROP INDEX index_hogehoge on table_name_hoge
+プレゼンやデモ、説明会用にデータベースの容量を少なくしたい時に。
+
+SELECT
+    o.name AS [tabele_name]
+    i.name as [index_name]
+ FROM sysindexes i
+ INNER JOIN sys.objects o 
+        ON o.object_id = i.id
+ WHERE i.name like 'INDEX_%'
+データベースのテーブルの中身を全削除するSQL文を作る。
+注意：生成したSQLの実行時は外部キー制約を一時的に外すなどの工夫が必要です。
+
+SELECT 'TRUNCATE TABLE ' + table_name FROM INFORMATION_SCHEMA.tables WHERE table_type='BASE TABLE'
+データベースが遅くなった時の対処
+統計情報の更新(DB全体)
+exec sp_updatestats
+統計情報の更新(指名)
+UPDATE STATISTICS dbo.hogetable hogeindex
+統計情報の削除（指名）
+DROP STATISTICS duo.hogetable.hogeindex
+プロセスを確認・キルする
+急なDBパフォーマンスダウンの時、ロックエスカレーションなどが考えられます。
+SSMSの利用状況モニタでGUIでも作業できますが、急ぐ場合はコマンドの方が対処しやすいです。
+特にパフォーマンス低下は対処優先になりやすいので、確認方法、注意点をまとめます。
+
+プロセスの一覧を取得
+sp_who
+プロセスをkillする
+一応ロールバックするらしい。
+
+kill 621
+ストアドプロシージャの操作
+ストアドプロシージャを作成する
+CREATE PROCEDURE select_today_update 
+--ここに引数
+AS
+
+SELECT  * from mw_log A INNER JOIN
+mw_log_detail B ON A.id=B.id
+WHERE convert(nvarchar,UpdateDate,112)=convert(nvarchar,getDate(),112)
+ストアドプロシージャを変更する
+ALTER PROCEDURE select_today_update 
+--ここに引数
+AS
+
+SELECT  * from mw_log A INNER JOIN
+mw_log_detail B ON A.id=B.id
+WHERE convert(nvarchar,UpdateDate,112)=convert(nvarchar,getDate(),112)
+ストアドプロシージャを削除する
+DROP PROCEDURE select_today_update 
+トリガー操作
+トリガーの一覧を取得する
+SELECT * FROM sys.triggers
+日々のチューニング
+あまり利用されていないインデックス順に表示
+利用頻度が低いインデックスは削除。 ORDER BY以下は目的に応じて計算式に係数を入れるなど工夫します。
+
+Use DBName
+
+SELECT 
+    o.name As table_name,
+    i.name As index_name,
+    s.user_seeks,
+    s.user_scans,
+    s.user_updates
+FROM
+    sys.objects o INNER JOIN
+    sys.indexes i ON o.object_id = i.object_id INNER JOIN
+    sys.dm_db_index_usage_stats s ON i.index_id=s.index_id
+WHERE
+    o.type='U' AND database_id = DB_ID() AND
+    s.object_id = OBJECT_ID('table_name')
+ORDER BY
+    s.user_seeks+s.user_scans+s.user_updates
+文字列操作
+文字の長さを取得する
+
+SELECT LEN (‘コンニチハ’)

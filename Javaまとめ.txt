@@ -1,0 +1,580 @@
+Java学習をまとめてみた(1)
+Java
+Java入門
+新人プログラマ応援
+この記事は最終更新日から1年以上が経過しています。
+これはJava学習の為に参考テキストで学んだ内容のまとめである。
+詳しい説明は省き、自身の備忘録も兼ねてポイントをまとめることにした。
+
+参考資料
+スッキリ分かるJava入門第2版
+
+1.基本構成
+以下のように記載する。「クラス名」に好きなクラス名を入れ、ファイル名も同様にする。
+例)
+クラス名→TestJava
+ファイル名→TestJava.java
+
+public class クラス名 {
+　　public static void main(String[] args) {
+　　
+　　"処理内容"
+
+　　}
+}
+2.実行
+「test」と出力する以下の内容をファイルに記載し、それをコンパイルして実行。
+
+public class TestJava{
+    public static void main(String[] args){
+        System.out.println("test");
+    }
+}
+コンパイル
+javac TestJava.java
+
+実行(コンパイルによってTestJava.javaが出来上がるが、実行時は、".class"はつけない)
+java TestJava
+
+出力結果
+test
+
+3.改行(println)
+標準出力する表示内容の改行をメソッドによって切り替える。htmlでいうところの<br>タブ。
+
+public class Kaigyo {
+　　public static void main(String[] args) {
+
+　　　　System.out.print("printは");
+　　　　System.out.print("改行しない");
+　　　　System.out.println("");
+　　　　System.out.println("printlnは");
+　　　　System.out.println("改行をする");
+　　}
+}
+出力結果
+
+printは改行しない
+printlnは
+改行をする
+※ここからはメソッド処理のみを記載する。
+
+4.大きい値を評価(Math.max)
+int a =10;
+int b =100;
+//Math.max(①,②) 大きいほうの値が採用される
+int big = Math.max(a,b);
+System.out.println("Math.maxメソッドで評価。" + a + "と" + b + "で大きいのは" + big );       
+出力結果
+Math.maxメソッドで評価。10と100で大きいのは100
+
+5.文字列を数字に変換(Integer.parseInt)
+String age = "30";
+//String型をint型に変換
+int n = Integer.parseInt(age);
+System.out.println("数値に変換した場合" + ( n + 1 ) + "になります" );
+System.out.println("数値に変換しない場合" + ( age + 1 ) + "になります" );   
+出力結果
+比較すると数値へ変換したnは加算され、文字列のままのageは加算されずに結合しているのが分かる。
+
+数値に変換した場合31になります
+数値に変換しない場合301になります
+6.乱数(Random)
+0以上かつ"nextInt"で指定した値未満の数値をランダムで表示。"nextInt(6)"のみでは0～5で表示される。1~6で表示したい場合は、"nextInt(6)+1"とすることで、生成した乱数に1がプラスされるので、0~5であった範囲が1~6となる。
+
+int r = new java.util.Random() .nextInt(6)+1;
+System.out.println("サイコロを振ります" );
+System.out.println("サイコロの結果は" + r + "です" );
+出力結果
+
+サイコロを振ります
+サイコロの結果は6です
+7.入力受付(Scanner(System.in))
+実行中にキーボードからの入力情報を受け取ることができる。
+
+System.out.println("あなたの名前を入力して下さい。" );
+//キーボードから1行の文字列の入力を受け付ける。nextLineは文字列
+String gest = new java.util.Scanner(System.in).nextLine();
+
+System.out.println("あなたの年齢を入力して下さい。" );
+//キーボードから1つの整数の入力を受け付ける。nextIntは数字
+int tosi = new java.util.Scanner(System.in).nextInt();
+
+System.out.println
+("ようこそ、" + tosi + "歳の" + gest + "さん");
+実行結果
+
+あなたの名前を入力して下さい。
+○○○　←キーボードから入力
+あなたの年齢を入力して下さい。
+△△　←キーボードから入力
+ようこそ、△△歳の○○○さん
+8.関係演算子
+条件式で使用する処理を分岐する為の条件記号
+
+演算子	意味
+==	左辺と右辺が等しい　
+!=	左辺と右辺が異なる
+>	左辺が右辺より大きい
+<	左辺が右辺より小さい
+>=	左辺が右辺より大きいか等しい
+<=	左辺が右辺より小さいか等しい
+※文字列の比較を行う場合は、"文字列型変数.equals(比較文字列)"を使用する。
+使用例）
+
+String moziretu = new String("比較"); 
+String moziretu2 = new String("比較");
+　if(moziretu.equals(moziretu2)) {
+　　　System.out.println("OK");
+　}else{
+　System.out.println("NG");
+　}
+9.論理演算式
+演算子	意味
+&&	～かつ　
+パイプ	～または
+!	条件式の逆転
+※パイプ=||
+
+if((age >= 18 && grender ==1 ) || (age >= 16 && gender ==0 )) {
+// ageが18以上かつgenderが1   または ageが16以上かつgenderが0
+
+// 条件を否定形にした場合
+if(!( age == 10 )) {
+// ageが10ではない
+10.条件分岐
+※ここからは、実行結果は記載しないので、処理結果がイメージできない場合は、自身の端末で試してほしい。
+
+①if文
+書き方は、if文、if-else文、if-else if-else文の3パターンあり
+
+if文
+条件式に当てはまるときは処理を実行。当てはまらないときは何もしない。
+
+if( kakunin.equals( "OK" )) {
+    System.out.println("占いを開始します");
+　　　　　}
+if-else文
+条件式に当てはまるときは処理を実行。当てはまらないときは、elseの処理を実行。
+
+if( kakunin.equals( "OK" )) {
+    System.out.println("占いを開始します");
+　　　　　}else{
+    System.out.println("占いアプリを終了します");
+        }
+if-else if-else文
+条件に当てはまらなかった場合、別の条件で評価する方法。else ifで別条件を指定。
+
+System.out.println("おみくじアプリを行いますか？");
+
+    System.out.print("Y/N:");
+    String ck = new java.util.Scanner(System.in).nextLine();
+
+if( ck.equals( "Y" ) || ck.equals( "y" )) {
+    System.out.println("あなたの運勢が出ました。");
+
+        int omikuji = new java.util.Random().nextInt(9);
+    omikuji++;
+
+        if(omikuji ==1 ) {
+            System.out.println("結果は、大吉です");
+        } else if(omikuji <=3 ) {
+            System.out.println("結果は、中吉です");
+        } else if(omikuji <=6 ) {
+            System.out.println("結果は、小吉です");
+        } else if(omikuji <=9 ) {
+            System.out.println("結果は、凶です");
+    　　　　//if-else if-else文は最後のelseは使っても使わなくても良い
+        } else {
+            System.out.println("結果は、大凶です");
+        }
+    } else {
+        System.out.println("おみくじアプリを終了します");
+    }
+②switch文
+条件が複数ある場合、switch文にする事で、処理をスッキリさせられる場合がある。
+【switch文ルール】
+・すべての条件式が左辺と右辺が一致するかを比較する式で「>」「<」「!=」等が使われていない。
+・比較する値が整数、文字列、文字の一致で、小数や真偽値ではない。
+・switchの直後に書くのは条件式ではなく変数名
+・caseの横には値とコロン
+・caseの処理の末尾にはbreak文
+・defaultラベルはそれ以外の処理が不要な場合は省略可能
+
+System.out.println("もう一度おみくじアプリを行いますか？");
+
+    System.out.print("Y/N:");
+    String ck2 = new java.util.Scanner(System.in).nextLine();
+    if( ck2.equals( "Y" ) || ck2.equals( "y" )) {
+        System.out.println("あなたの運勢が出ました。");
+
+        int omikuji2 = new java.util.Random().nextInt(4);
+        omikuji2++;
+
+        switch (omikuji2) {
+        case 1:
+            System.out.println("結果は、大吉です");
+            break;
+        case 2:
+            System.out.println("結果は、中吉です");
+            break;
+        case 3:
+            System.out.println("結果は、小吉です");
+            break;
+        case 4:
+            System.out.println("結果は、凶です");
+            break;
+        case 5:
+            System.out.println("結果は、大凶です");
+            break;
+        }
+    } else {
+        System.out.println("おみくじアプリを終了します");
+    }
+それぞれのcase文の後にbreak文で明示的に処理を中断してあげなければ、その条件の下にある処理も続けて実行されてしまう。それは、switch文が条件の合う処理までジャンプさせるだけのものだからである。
+だが、break文をあえて書かずに2つの条件を使用するパターンが下の例。
+
+System.out.println("もう一度おみくじアプリを行いますか？");
+
+System.out.print("Y/N:");
+String ck3 = new java.util.Scanner(System.in).nextLine();
+if( ck3.equals( "Y" ) || ck3.equals( "y" )) {
+    System.out.println("あなたの運勢が出ました。");
+
+    int omikuji3 = new java.util.Random().nextInt(9);
+    omikuji3++;
+
+    switch (omikuji3) {
+    case 1:
+        System.out.println("結果は、大吉です");
+        break;
+
+    case 2:
+    case 3:
+        System.out.println("結果は、中吉です");
+        break;
+
+    case 4:
+    case 5:
+    case 6:
+        System.out.println("結果は、小吉です");
+        break;
+
+    case 7:
+    case 8:
+    case 9:
+        System.out.println("結果は、凶です");
+        break;
+
+    case 10:
+        System.out.println("結果は、大凶です");
+        break;
+    }
+} else {
+    System.out.println("おみくじアプリを終了します");
+}
+11.繰り返し
+①while文
+while文には、2種類のバリエーションがある。
+
+while文(前置判定)
+ブロックを実行する前に条件判断を行う。
+
+int temperature =25;
+// whileの条件に一致する場合、このブロックを繰り返し実行　　　
+while (temperature >20) {
+    temperature--;
+    System.out.println("温度を1度下げました");
+}           
+do while文(後置判定)
+ブロック実行後に、条件判断を行う。
+
+System.out.print("Y/N:");
+String ck4 = new java.util.Scanner(System.in).nextLine();
+if( ck4.equals( "Y" ) || ck4.equals( "y" )) {
+
+int temperature2 =25;
+    do {
+        temperature2--;
+        System.out.println("温度を1度下げました");
+    } while(temperature2 >20);
+} else {
+    System.out.println("終了します");
+}
+②for文
+【for文ルール】
+・for(①変数の初期化処理 ; ②繰り返し条件 ; ③繰り返し終了時処理)
+・他で宣言されている変数は使用不可
+・for文内で宣言した件数は実行後、消失するので再利用は可
+・for文での値の増減方法 2つずつ増やす i+=2 | 1つずつ減らす i--
+
+for( int i =0 ; i <10 ; i++ ) {
+System.out.println( "for文繰り返し" + ( i + 1 ) + "週目");
+    }
+ループ変数を外出しにして、初期化処理をforから省略することもできる。
+
+int i = 0 ;
+for(; i < 5 ; i++ ) {
+System.out.print( "for文繰り返し" + ( i + 1 ) + "週目→");
+}
+for文のループを2重にした場合。
+
+// 九九の表
+System.out.println("九九の段です。");
+
+for( int x = 1; x < 10; x++) {
+    for( int y =1; y < 10; y++) {
+        System.out.print( x * y );
+        System.out.print(" ");
+    }
+    System.out.println("");
+}
+break文は、繰り返し処理自体を中断。
+
+// 九九の表
+// break文で、対象処理以降を飛ばす
+System.out.println("九九の段(break文)、五の段までです。");
+
+for( int x = 1; x < 10; x++) {
+    if( x == 6 ) {
+    break;
+    }
+    for( int y =1; y < 10; y++) {
+        System.out.print( x * y );
+        System.out.print(" ");
+    }
+    System.out.println("");
+}
+continue文は、対象処理だけ、中断し、次の繰り返しに進む。
+
+// 九九の表
+// continue文で、対象処理だけとばす
+System.out.println("九九の段(continue文)、五の段をとばします。");
+
+    for( int x = 1; x < 10; x++) {
+        if ( x == 5 ) {
+        continue;
+        }
+        for( int y =1; y < 10; y++) {
+            System.out.print( x * y );
+            System.out.print(" ");
+        }
+        System.out.println("");
+    }
+無限ループを意図して作る場合の作成方法
+※強制終了されない限り、永久に繰り返しを行う
+以下の2つの方法で作るのが一般的。
+
+①while(ture){処理}
+②for(;;){処理}
+
+12.配列
+・配列の作成：「　型[] 配列変数名 = new 型[5];　」
+・配列変数名.length で、要素数がいくつかチェックできる。
+
+以下の例では、配列を作成し、要素数の確認と配列(score[1])に入れた値の確認をしている
+
+int[] score = new int[5];
+int kakunin = score.length;
+    score[1] = 30;
+    System.out.println("配列の値：" + kakunin);
+    System.out.println("score[1]の値：" + score[1]);
+変数は自動で初期化はされない為、下記のように初期値を設定しなければ、コンパイルエラーになる
+
+int x;
+System.out.println(x);
+配列変数は、自動的に初期化される。
+intやdouble等→0
+boolean→false
+
+以下の場合は、0が出力される。
+
+int[] score2 = new int[5];
+System.out.println("score2[1]の値：" + score2[1]);
+以下の場合は、falseが出力される。
+
+boolean[] score3 = new boolean[5];
+System.out.println("score3[1]の値：" + score3[1]);
+String型では初期値を設定しない場合、nullと返る
+
+String[] score4 = new String[5];
+System.out.println("score4[1]の値：" + score4[1]);
+省略記法
+・[]内に数字を入れなくても{}を使えば割り振られる。
+・new 配列変数名 は省略できる。
+
+// score5にo~4の要素を設定
+int[] score5 = new int[] { 20 ,30 ,40 ,50 ,60 };
+// score6にo~4の要素を設定
+int[] score6 = { 20 ,30 ,40 ,50 ,60 };
+
+System.out.println("score5[3]の値：" + score5[3]);
+System.out.println("score6[4]の値：" + score6[4]);
+配列をループで回す
+for文の繰り返し条件に要素数の数を設定することで、配列の要素数分繰り返しが行われる
+for( int i = 0 ; i< 配列変数名.lenght ; i++ );
+
+int[] score7 = new int[] { 100 ,200 ,300 ,400 ,500 };
+    for( int i = 0 ; i < score7.length ; i++ ) {
+    System.out.println(score7[i]);
+    }
+配列を使用し、合計と平均を計算してみる
+
+// 配列に点数を格納
+int[] score8 = { 80 , 85 , 70 , 70 , 80 };
+int sum = 0 ;
+　　　　　// 配列数分繰り返し処理
+    for( int i = 0 ; i < score8.length ; i++ ) {
+        // sum変数に配列の値を追加していく
+        sum = sum + score8[i];
+    }
+        System.out.println("sum:" + sum);
+       // sumから要素数分を割り、平均を算出
+    　　int ave = sum / score8.length;
+　　　   System.out.println("ave:" + ave);
+拡張for文
+・for( 要素の型 任意の変数名:配列変数名 )
+・配列の要素を１つずつ取り出すループを簡単に書く為に使用するfor文
+
+下の例で見るとかなりシンプルになっているのが分かる。
+for文　　：for( int i = 0 ; i < score8.length ; i++ ) {
+拡張for文：for( int value : score9 ) {
+
+int[] score9 = { 100 , 90 , 100 , 100 , 90 };
+    int sum2 = 0 ;
+        for( int value : score9 ) {
+        sum2 = sum2 + value;
+        }
+            System.out.println("sum2:" + sum2);
+            int ave2 = sum / score9.length;
+            System.out.println("ave2:" + ave2);
+配列のlengthと文字列のlength()
+・配列では、「配列変数名.length」で、要素数をカウント
+・文字列では、「文字列変数名.length()」で、文字数をカウント
+
+String s ="JAVAで開発";
+System.out.println( s + "は、" + s.length() + "文字です。" );
+2次元配列
+・宣言→ 要素の型[] 配列変数名 = new 要素の型[行数][列数]
+・配列変数名[行の添え字][列の添え字]
+
+以下の例では、親配列、子配列の要素の数を表示
+
+int[][] score10 = { { 10 , 20 ,30 } , { 40 , 50 , 60 } };
+System.out.println("行数を表示" + score10.length ); //親配列(行数)を表示
+System.out.println("列数を表示" +  score10[0].length ); //子配列(要素0の列数)を表示
+13.ガベージコレクション
+メモリ圧迫を防ぐ為に、参照されずに使われないメモリを自動削除する仕組み
+参照型変数にnullを入れると参照を切る(どこからも参照されないとガベージコレクションの対象になる)
+
+以下の例は、意図的に参照されないようにしている。
+
+int[] a = { 1 , 2 , 3};
+a = null;
+a[0] = 10;
+System.out.println(a[0]);
+上記の場合、参照を切っているので、「NullPointerException」と出力される
+14.メソッド
+メソッドの定義
+
+public static 型の戻り値 メソッド名（引数リスト）{
+メソッドが呼び出されたときの処理
+}
+作成例
+
+public static void hello(String name){
+    System.out.println( name + "さん、こんにちは");
+}
+戻り値の利用
+ansに計算式を入れてreturnする内容をredメソッドで値を入れて使用
+
+public static int ret(int a, int b){
+    int ans = a + b;
+    return ans;
+}
+メソッドの呼び出し方法
+メソッド（引数リスト）※呼び出し時に渡したい変数等をカンマ区切りで引数リストに指定する
+
+public static void main(String[] args){
+    hello("太郎");
+    hello("次郎");
+
+    int ans = ret(100,50);
+    System.out.println("戻り値は：" + ans);
+
+    System.out.println(ret(ret(10,20) , ret(30,40)));
+    ret(10,5);
+}
+15.オーバーロード
+・通常同じメソッドは使用できないが、型が違えば使用できる。同じ名前の定義をオーバーロードという
+・戻り値の型以降の情報(メソッドのシグネチャ：メソッド名、引数の型・個数・並び順)が異なればオーバーロード可能
+
+使用例
+
+// int型
+    public static int ret(int a, int b){
+        return a + b;
+    }
+
+// double型
+    public static double ret(double a, double b){
+        return a + b;
+    }
+
+// String型
+    public static String ret(String a, String b){
+        return a + b;
+    }
+
+// 引数の数が違う場合もオーバーロード可能
+    public static int ret2(int a, int b){
+        return a + b;
+    }
+
+    public static int ret2(int a, int b, int c){
+        return a + b + c;
+    }
+
+16.メソッドの引数・戻り値に配列を用いる
+配列は変数の中身ではなく、アドレスごと渡すので、呼び出し先の変更はそのまま影響がでる
+
+// 引数に配列を入れる(拡張for文使用)
+public static void ckArray(int[] array){
+    for(int x : array){
+        System.out.println(x);
+    }
+}
+// 配列をメソッド呼び出しで渡す
+public static void methArray(int[] array){
+    for(int i =0; i < array.length; i++){
+        array[i]++;
+    }
+}
+// 戻り値に配列を渡す(拡張for文使用)
+public static int[] retArray(int size){
+    int[] newArray = new int[size];
+    for(int i = 0; i < newArray.length; i++ ){
+    newArray[i] = i;
+    }
+    return newArray;
+}
+17.コマンドライン引数
+mainメソッドのString型配列には、実行時に引数をつけて実行することで、文字列配列を受け取れる
+
+public class CmdLine {
+    public static void main(String[] args){
+        // 一つ目の引数に名前
+        System.out.println("こんにちは、" + args[0] +"さん");
+        // 二つ目の引数に職業
+        System.out.println("職業は、" + args[1] +"ですね");
+    }
+}
+上記の内容で、ファイルを作成し、コンパイル後、以下のように実行する。
+java CmdLine 太郎 エンジニア
+
+実行結果
+
+こんにちは、太郎さん
+職業は、エンジニアですね
+今回のまとめは、以上になる。
+また、学習内容がたまったら投稿する予定。

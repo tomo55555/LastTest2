@@ -1,0 +1,642 @@
+★python授業ルーム
+
+46cEQsLS  16:07
+jupyterlabのセル全部実行は
+ctrl+aでセルを全選択してshift+enter
+:+1:
+2
+
+
+
+
+
+
+
+46cEQsLS  11:56
+右クリックメニューから`Clear All Output`を選択すると出力結果を全部消せるようです。ショートカットコマンドは設定項目自体ないのかも？
+https://qiita.com/YH0132/items/7588479a3c979a1f287e
+
+QiitaQiita
+Jupyter Lab ショートカット一覧(Windows) とキー割り当て変更方法 - Qiita
+#【概要】 書籍 [スッキリわかるPython入門](https://book.impress.co.jp/books/1118101169)を読みJupyter Labを使い始めたのですが、 **Jupyter Notebook*... (51 kB)
+https://qiita-user-contents.imgix.net/https%3A%2F%2Fcdn.qiita.com%2Fassets%2Fpublic%2Farticle-ogp-background-1150d8b18a7c15795b701a55ae908f94.png?ixlib=rb-1.2.2&w=1200&mark=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D380%26txt%3DJupyter%2520Lab%2520%25E3%2582%25B7%25E3%2583%25A7%25E3%2583%25BC%25E3%2583%2588%25E3%2582%25AB%25E3%2583%2583%25E3%2583%2588%25E4%25B8%2580%25E8%25A6%25A7%2528Windows%2529%2520%25E3%2581%25A8%25E3%2582%25AD%25E3%2583%25BC%25E5%2589%25B2%25E3%2582%258A%25E5%25BD%2593%25E3%2581%25A6%25E5%25A4%2589%25E6%259B%25B4%25E6%2596%25B9%25E6%25B3%2595%26txt-color%3D%2523333%26txt-font%3DAvenir-Black%26txt-size%3D54%26txt-clip%3Dellipsis%26txt-align%3Dcenter%252Cmiddle%26s%3D6566cfcbd339b190fc862ba5b3d7c32d&mark-align=center%2Cmiddle&blend=https%3A%2F%2Fqiita-user-contents.imgix.net%2F~text%3Fixlib%3Drb-1.2.2%26w%3D840%26h%3D500%26txt%3D%2540YH0132%26txt-color%3D%2523333%26txt-font%3DAvenir-Black%26txt-size%3D45%26txt-align%3Dright%252Cbottom%26s%3D28a1287b1a2fc62f68071d4af674d491&blend-align=center%2Cmiddle&blend-mode=normal&s=d1e174a4bc27e672bcc1257ccd41f469
+
+Ayame Tsuchiya  08:58
+http://ac-stegral.hateblo.jp/entry/2018/04/17/005218
+
+stegral の雑記stegral の雑記
+Anaconda導入するにあたってPathが通らなかった件 - stegral の雑記
+こんにちは。ステラです。 情報系では必須であろうプログラミングですが、 きちんとプログラムを書こうとすると開発環境が必要になります Anaconda インストーラーパッケージのダウンロードはこちらから。 www.anaconda.com 今はやりの「機械学習」は「Python」が主流 ならば、やるしかないと思って「Python 開発環境」 と調べると「Anaconda インストール」なるものが出てきた 早速インストールするのですが、 どうもこのインストール中のチェックボックスに 英語で「環境変数を設定するか」という項目があるのですが、 なぜかデフォルトはチェックが外れている まぁ、C言語でもJ…
+2018年4月17日 (22 kB)
+https://cdn-ak.f.st-hatena.com/images/fotolife/s/stegral/20180417/20180417003927.png
+08:59
+パスは入力せずにPATH→新規→参照からで、フォルダを選んでいきました
+09:00
+C:\Users\1219AM\Anaconda3
+C:\Users\1219AM\Anaconda3\Scripts
+
+mjpurin  09:00
+~/.bashrcに以下を追記
+export PYTHONIOENCODING=utf8
+
+mjpurin  09:17
+https://joytas.net/programming/python/dog_year
+
+ジョイタスネット
+Python ミッション1_犬年齢計算機 | ジョイタスネット
+今回から簡単な演習問題を通してpythonを学習していく。python3を使って行っていくので実行環境を整えて行ってもらいたい。 Windowsなら 「win python3 インストール」 Macなら 「mac python3 インストール」 あたりでググればいくらでも情報が出てくる。やりやすそうな記事を見つけてインストールしてもらいたい。 pythonは2ではなく新しい3で行っていくのでそこだ
+2019年6月7日
+
+Nakaya  10:13
+https://matome.naver.jp/odai/2146097952597620101
+
+NAVER まとめNAVER まとめ
+【ドラえもん】 恐怖！くりまんじゅう問題の解答まとめ - NAVER まとめ
+では、バイバインでくりまんじゅうを増やしてみようじゃないか。一日後...「ドラえもーん！地球が埋まっちゃったよ！」なんてことになってしまうのか！くりまんじゅう問... (12 kB)
+https://rr.img.naver.jp/mig?src=http%3A%2F%2Fwww.eatsmart.jp%2Fimage%2Ffood%2F00%2F00%2F06%2F14195.jpg&twidth=1200&theight=1200&qlt=80&res_format=jpg&op=r
+:ハハハ:
+1
+:+1:
+1
+
+
+mjpurin  11:23
+手を入力(0.グー、1.チョキ,2.パー>) 1
+あなたはチョキ
+PCはチョキ
+あいこ。
+手を入力(0.グー、1.チョキ,2.パー>) 1
+あなたはチョキ
+PCはグー
+あなたの負けです。。。
+
+mjpurin  12:48
+import random
+hands=['グー','チョキ','パー']
+while True:
+    user = int(input(f'手を入力(0.{hands[0]},1.{hands[1]},2.{hands[2]})>'))
+    pc=random.randint(0,len(hands)-1)
+    print(f'あなたは{hands[user]}')
+    print(f'PCは{hands[pc]}')
+    diff=(user+3-pc)%3
+    if diff==0:
+        print('あいこ。')
+        continue
+    elif diff==2:
+        print('あなたの勝ちです!')
+    else:
+        print('あなたの負けです。。。')
+    break
+
+mjpurin  13:01
+import random
+hands=['グー','チョキ','パー']
+results=['あいこ','あなたの負けです!','あなたの勝ちです']
+while True:
+    user = int(input(f'手を入力(0.{hands[0]},1.{hands[1]},2.{hands[2]})>'))
+    pc=random.randint(0,len(hands)-1)
+    print(f'あなたは{hands[user]}')
+    print(f'PCは{hands[pc]}')
+    diff=(user+3-pc)%3
+    print(results[diff]);
+    if  diff !=0:
+        break
+
+mjpurin  13:33
+for i in range(10,0,-1):
+    print(i,end=',')
+print('Lift off !')
+
+mjpurin  14:36
+nums=[1,1]
+while True :
+    num=nums[len(nums)-2]+nums[len(nums)-1]
+    if num > 1000:
+        break
+    nums.append(num)
+print(nums)
+ratios=[]
+for i in range(1,len(nums)):
+    ratios.append(int((nums[i]/nums[i-1])*1000)/1000)
+print(ratios)
+
+mjpurin  09:51
+temp=[]
+for hour in range(8,18):
+    temp.append(float(input(f'{hour}時:')))
+for t in temp:
+    print(t)
+temp_new=[]
+for hour in range(8,18):
+    if hour==13:
+        temp_new.append('N/A')
+    else:
+        temp_new.append(temp[hour-8])
+print(temp)
+print(temp_new)
+temp_new.remove('N/A')
+print(type(removed),removed)
+print(f'平均気温:{sum(temp_new)/len(temp_new)}')
+
+Nakaya  14:13
+https://note.com/hungair0925/n/ncf67859dc7bc
+
+note（ノート）note（ノート）
+[Python]カメに夜空の星を描いてもらう｜つじのび太｜note
+#turtleモジュールからカメオブジェクトをインポート from turtle import Turtle #turtleモジュールから画面を表示させ続けるモジュールをインポート from turtle import done #randomモジュールからランダムな整数を生成するモジュールをインポート from random import randint #turtleモジュールからスクリーンオブジェクトをインポート from turtle import Screen #カメオブジェクトを生成 tur = Turtle() #カメの大きさを指定 tur.shapesize(1 (102 kB)
+https://d2l930y2yx77uc.cloudfront.net/production/uploads/images/9471036/rectangle_large_type_2_3b20740c83dea049fd1527b4dcce0fee.jpeg
+
+mjpurin  10:39
+def analyze_scores(sansu,kokugo,rika,syakai,eigo=None,*others):
+    data=[sansu,kokugo,rika,syakai,eigo]+list(others)
+    for d in data:
+        if d==None:
+            data.remove(d)
+    return [max(data),min(data),sum(data)/len(data)]
+[x,n,g]=analyze_scores(1,2,3,4,5,6,7,8,9)
+print(x)
+10:40
+def analyze_scores(sansu,kokugo,rika,syakai,eigo=None,*others):
+    data=[sansu,kokugo,rika,syakai,eigo]+list(others)
+    for d in data:
+        if d==None:
+            data.remove(d)
+    return [max(data),min(data),sum(data)/len(data)]
+[x,n,g]=analyze_scores(1,2,3,4,5,6,7,8,9)
+print(x)
+
+mjpurin  11:25
+def int_input(msg:str)->int:
+    str_num=input(msg)
+    return int(str_num)
+def calc_payment(amount:int,people=2:int)->tuple:
+    dnum=amount/people
+    pay=dnum//100 *100
+    if dnum > pay:
+        pay=int(pay+100)
+    payorg=amount-pay*(people-1)
+    return pay,payorg
+def show_payment(pay:int,payorg:int,people=2:int)->None:
+    print('***支払額***')
+    print('1人あたり{}円({}人)、幹事は{}円です'.format(pay,people-1,payorg))
+
+Ayame Tsuchiya  12:57
+[name,blood]=input('名前と血液型をカンマで区切って1行で入力').split(',')
+
+mjpurin  13:43
+print('相性診断!')
+data=[set(input('{}人目の趣味を入力>>'.format(i+1)).split(',')) for i in range(2)]
+print('二人の相性は{:.1f}%です'.format(len(data[0]&data[1])/len(data[0]|data[1])*100))
+
+mjpurin  14:00
+print('相性診断!')
+data=[None]*2
+for i in range(len(data)):
+    data[i]=set(input('{}人目の趣味を入力>>'.format(i+1)).split(','))
+print('二人の相性は{:.1f}%です'.format(len(data[0]&data[1])/len(data[0]|data[1])*100))
+
+46cEQsLS  14:31
+import queue
+import threading
+import turtle
+def tes1():
+    for _ in range(360):
+        graphics.put(turtle1.forward)
+        graphics.put(turtle1.left)
+def tes2():
+    for _ in range(360):
+        graphics.put(turtle2.forward)
+        graphics.put(turtle2.right)
+def process_queue():
+    while not graphics.empty():
+        (graphics.get())(1)
+    if threading.active_count() > 1:
+        turtle.ontimer(process_queue, 100)
+graphics = queue.Queue(1)  # size = number of hardware threads you have - 1
+turtle1 = turtle.Turtle('turtle')
+turtle1.speed('fastest')
+thread1 = threading.Thread(target=tes1)
+thread1.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
+thread1.start()
+turtle2 = turtle.Turtle('turtle')
+turtle2.speed('fastest')
+thread2 = threading.Thread(target=tes2)
+thread2.daemon = True  # thread dies when main thread (only non-daemon thread) exits.
+thread2.start()
+process_queue()
+turtle.exitonclick()
+
+tanabe  10:47
+1000未満の3または5の倍数の和を求めよ。
+
+ミヤタ  10:49
+[0, 1, 2, 0, 2, 4, 0, 3, 6]
+
+Ayame Tsuchiya  10:51
+[False, False, True, False]
+[18, 19, 20, 33, 34, 35]
+
+sekizawa  10:53
+[['A1', 'A2', 'A3'],
+ ['B1', 'B2', 'B3'],
+ ['C1', 'C2', 'C3'],
+ ['D1', 'D2', 'D3']]
+
+Hanoi  10:54
+[5,10,15,10,5]
+
+唐澤  10:58
+[1, 27, 125, 343]
+
+46cEQsLS  11:06
+[[0, 0], [0, 1], [1, 0], [1, 1]]
+
+Fujimine  11:07
+[[8, 6, 4, 2], [7, 5, 3, 1]]
+
+しんぼー  11:07
+[0, 1, -2, 3, -4]
+
+tanabe  11:10
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+46cEQsLS  11:29
+[1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'FizzBuzz', 16, 17, 'Fizz', 19, 'Buzz', 'Fizz', 22, 23, 'Fizz', 'Buzz', 26, 'Fizz', 28, 29, 'FizzBuzz', 31, 32, 'Fizz', 34, 'Buzz', 'Fizz', 37, 38, 'Fizz', 'Buzz', 41, 'Fizz', 43, 44, 'FizzBuzz', 46, 47, 'Fizz', 49, 'Buzz']
+
+mjpurin  13:01
+IMG_3262.JPG 
+IMG_3262.JPG
+
+
+
+mjpurin  13:23
+import time
+cache={}
+def fibo(n):
+    global cache
+    if n in cache:
+        return cache[n]
+    if n==0:
+        result= 0
+    elif n==1:
+        result= 1
+    else:
+        result= fibo(n-1)+fibo(n-2)
+    cache[n]=result
+    return result
+for i in range(20,101,5):
+    start=time.time()
+    result=fibo(i)
+    end=time.time()
+    duration=end-start
+    print(i,result,duration)
+
+mjpurin  13:48
+import turtle
+def setup(pencil):
+    pencil.color('blue')
+    pencil.penup()
+    pencil.goto(-200,100)
+    pencil.pendown()
+def koch(pencil,size,order):
+    if order==0:
+        pencil.forward(size)
+    else:
+        for angle in [60,-120,60,0]:
+            koch(pencil,size/3,order-1)
+            pencil.left(angle)
+def main():
+    pencil=turtle.Turtle()
+    setup(pencil)
+    order=3
+    size=400
+    koch(pencil,size,order)
+if __name__ == '__main__':
+    main()
+    turtle.tracer(100)
+    turtle.mainloop()
+
+mjpurin  13:26
+print(max([int(input('{}番目の数値を入力'.format(i+1))) for i in range(3)]
+13:27
+from math import pi
+for i in range(5):
+    print( int(round(pi)) if i==0 else round(pi,i))
+
+mjpurin  13:44
+カンマ区切りで入力> 3,4,5
+1hit 1blow
+カンマ区切りで入力> 6,7,8
+0hit 0blow
+カンマ区切りで入力> 6
+正解は[3,5,1]でした
+ans [3,4,5]
+input [3,3,3] //1hit 2blow
+ans[3,3,1]
+input[3,1,5] //1hit 2blow
+ans[3,3,3]
+input[3,3,1] //2hit 4blow （編集済み） 
+
+mjpurin  13:15
+割り勘くん_と_tk_—_python_den_py_—_136×27.png 
+割り勘くん_と_tk_—_python_den_py_—_136×27.png
+
+
+13:18
+割り勘くん0.png 
+割り勘くん0.png
+
+
+
+mjpurin  09:50
+print("これから無人島でしばらく一人で生活しなくてはなりません。")
+print("好きなものを一つだけ持って行くとしたら何を持って行く？")
+print("1: ナイフ")
+print("2: 携帯電話")
+print("3: 漫画")
+
+mjpurin  09:59
+print("現実的な道具を選んだあなたは..")
+    print("現実的な身の丈にあった相手を選ぶでしょう。")
+    print("誰かとつながる道具を選んだあなたは..")
+    print("話し好きな賑やかな相手が相応しいでしょう。")
+    print("実用よりも娯楽アイテムを選んだあなたは..")
+    print("夢見がちなので、理想がとても高いでしょう。")
+
+mjpurin  10:05
+print("\n----\n")
+print("無人島生活から、将来の恋人について分かります。")
+
+mjpurin  10:40
+import random
+import time
+# 変数の初期化
+a=b=0
+goal=20
+# ユーザーからの入力を得る
+user=input('aとbのどちらのカメが勝つか?')
+# 競争開始
+print('競争開始!')
+# aとbのどちらもゴールしていない間繰り返す
+while a < goal and b<goal:
+    print('---')
+    a+=random.randint(1,6)
+    b+=random.randint(1,6)
+    print('a:'+'>'*a +'@')
+    print('b:'+'>'*b +'@')
+    time.sleep(1)
+# 判定
+if a == b:
+    winner='同時'
+elif a > b:
+    winner='a'
+else:
+    winner='b'
+# 予想は当たった?
+if winner == user:
+    print('当たり')
+else:
+    print('はずれ')
+
+mjpurin  11:06
+じゃんけん1回目
+あなたの手は？
+0:グー、1:チョキ、2:パー> 1
+PCの手は2
+勝ち
+じゃんけん2回目
+0:グー、1:チョキ、2:パー> 2
+PCの手は2
+あいこ
+じゃんけん3回目
+0:グー、1:チョキ、2:パー> 2
+PCの手は1
+負け
+結果(3戦) win:1 lose:1 draw:1
+
+mjpurin  11:33
+import random
+n=3
+win=lose=draw=0
+for i in range(1,n+1):
+    print(f'じゃんけん{i}回目')
+    print('あなたの手は?')
+    user=int(input('0:グー、1:チョキ、2:パー>'))
+    pc=random.randint(0,2)
+    print(f'pcの手は{pc}')
+    diff=(user-pc + 3)%3
+    if diff == 0:
+        print('あいこ')
+        draw+=1
+    elif diff == 2:
+        print('勝ち')
+        win+=1
+    else:
+        print('負け')
+        lose+=1
+print(f'結果({n}戦) win:{win} lose:{lose} draw:{draw}')
+11:38
+points = [62, 58, 72, 60, 47, 81, 74, 65, 59, 38]
+
+mjpurin  12:49
+# 三択クイズ
+# クイズデータを二次元のリストで表現 --- (*1)
+quiz_list = [
+    # [問題, 選択肢1, 選択肢2, 選択肢3, 答え]
+    ["夏目漱石の本名は？", "石男", "浩介", "金之助", 3],
+    ["野口英世が亡くなった場所は？", "福島", "ガーナ", "パリ", 2],
+    ["福澤諭吉が広めたものは？", "カレー", "電灯", "天ぷら", 1],
+    ["樋口一葉が書いた小説は？", "双葉", "十三夜", "歌世界", 2]
+]
+
+mjpurin  13:02
+# 三択クイズ
+# クイズデータを二次元のリストで表現 --- (*1)
+quiz_list = [
+    # [問題, 選択肢1, 選択肢2, 選択肢3, 答え]
+    ["夏目漱石の本名は？", "石男", "浩介", "金之助", 3],
+    ["野口英世が亡くなった場所は？", "福島", "ガーナ", "パリ", 2],
+    ["福澤諭吉が広めたものは？", "カレー", "電灯", "天ぷら", 1],
+    ["樋口一葉が書いた小説は？", "双葉", "十三夜", "歌世界", 2]
+]
+import random
+# シャッフル
+random.shuffle(quiz_list)
+# 繰り返し出題する
+for quiz in quiz_list:
+    print('[問題]')
+    print(quiz[0])
+    # 選択肢を表示
+    for i in range(1,4):
+        print(str(i)+':'+quiz[i])
+    user=int(input('答えは?'))
+    if user==quiz[4]:
+        print('正解!')
+    else:
+        print('ハズレ...答えは',quiz[quiz[4]],'です')
+    print('---')
+
+mjpurin  13:13
+# レストランのメニュー
+menu_dict = {
+    "洋風カレー": 900,
+    "オムライス": 870,
+    "ラザニア": 790,
+    "ハンバーグ定食": 920,
+    "トマトパスタ": 720
+}
+13:17
+洋風カレー:900->1170円
+オムライス:870->1131円
+ヒント(切り上げ計算)
+math.ceil(72.4) ->73
+
+mjpurin  13:42
+# 今回集計するデータ --- (*1)
+s = """
+サンマ,カツオ,サンマ,サンマ,マグロ,フグ,マグロ,マグロ,マグロ,サンマ,ニシン,イワシ,サンマ,サンマ,カツオ,サンマ,カツオ,サンマ,カツオ,サンマ,マグロ,マグロ,マグロ,ニシン
+"""
+# データの前後にある空白を除去 --- (*2)
+s = s.strip()
+# カンマでデータを区切る --- (*3)
+s_list = s.split(",")
+（編集済み）
+
+mjpurin  13:59
+# 今回集計するデータ --- (*1)
+s = """
+サンマ,カツオ,サンマ,サンマ,マグロ,フグ,マグロ,マグロ,マグロ,サンマ,ニシン,イワシ,サンマ,サンマ,カツオ,サンマ,カツオ,サンマ,カツオ,サンマ,マグロ,マグロ,マグロ,ニシン
+"""
+# データの前後にある空白を除去 --- (*2)
+s = s.strip()
+# カンマでデータを区切る --- (*3)
+s_list = s.split(",")
+# 空のdictを作成
+dic=dict()
+# forでリストを回しながらdictを更新していく
+for fish in s_list:
+    if fish in dic:
+        dic[fish]+=1
+    else:
+        dic[fish]=1
+# 結果を出力
+for name,count in dic.items():
+    print(f'{name}={count}')
+
+mjpurin  09:35
+# あるクラスのテスト結果
+test_list = [
+  { "名前": "田中", "国語": 80, "算数": 45, "社会": 90 },
+  { "名前": "鈴川", "国語": 62, "算数": 70, "社会": 58 },
+  { "名前": "早川", "国語": 77, "算数": 69, "社会": 74 }
+]
+
+mjpurin  10:33
+ある水族館では入場料が2000円です。
+ただし、3才未満は無料
+6才未満は500円
+60才以上は1500円
+そして月曜であれば2割引き
+この水族館の入場料を計算する関数calc_feeを定義して
+実行例
+print(calc_fee(18,False)) ->2000
+print(calc_fee(20,True))->1600
+print(calc_fee(2,False))->0
+print(calc_fee(70,True))->1200
+
+mjpurin  11:08
+show_next_olympic(2016) ->
+2016年の次のオリンピックは2020年
+show_next_olympic(2018) ->
+2018年の次のオリンピックは2020年
+show_next_olympic(2020) ->
+2020年の次のオリンピックは2024年
+
+mjpurin  12:54
+# 東京の天気をJSONで取得できるURL --- (*1)
+url = "http://weather.livedoor.com/forecast/webservice/json/v1"
+url += "?city=130010"
+
+mjpurin  13:02
+# 東京の天気をJSONで取得できるURL --- (*1)
+url = "http://weather.livedoor.com/forecast/webservice/json/v1"
+url += "?city=130010"
+# Webから天気情報を取得する
+import urllib.request as req
+res=req.urlopen(url)
+json_data=res.read()
+# JSONデータをPythonのデータ型(今回は辞書)に変換
+import json
+data=json.loads(json_data)
+# 結果を表示
+for row in data['forecasts']:
+    label=row['dateLabel']
+    telop=row['telop']
+    print(label + ":" + telop)
+
+mjpurin  13:19
+# 天気予報を取得するモジュール
+# URLからJSONデータをダウンロードする関数
+def get_json(url):
+    import urllib.request as req
+    import json
+    # データをダウンロード
+    res=req.urlopen(url)
+    json_data=res.read()
+    # JSONデータをPythonで使えるように読み込む
+    return json.loads(json_data)
+# 都市IDを取得することで天気情報を取得する関数
+def get_weather(city_id):
+    url = "http://weather.livedoor.com/forecast/webservice/json/v1"
+    url += "?city=" + str(city_id)
+    data=get_json(url)
+    s=''
+    for row in data['forecasts']:
+        label=row['dateLabel']
+        telop=row['telop']
+        s+=label+":"+telop+"\n"
+    return s
+# モジュールとして利用されるかどうかの判定
+if __name__ == '__main__':
+    res=get_weather(130010) # 東京の天気を取得
+    print(res)
+
+mjpurin  13:42
+http://weather.livedoor.com/forecast/webservice/json/v1?city=130010
+
+mjpurin  13:58
+https://api.aoikujira.com/zip/zip.php?zn=110-0006
+14:00
+https://api.aoikujira.com/zip/zip.php?zn=110-0006&fmt=json
+14:03
+1枚目のファイル名 zip_addr.py
+2枚目のファイル名 test_zip_addr.py
+import zip_addr
+print(zip_addr.get_addr('144-0054'))
+結果
+東京都大田区新蒲田
+
+mjpurin  09:54
+https://youtu.be/mpL8I-c3aKc?t=414
+
+YouTubeYouTube | TA。の編集練習場
+１０分で分かるメダルゲームの作り方 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#python授業ルーム へのメッセージ
+

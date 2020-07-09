@@ -1,0 +1,4009 @@
+Day44
+
+JSP & Servlet-１日目
+
+Q1_1.Servletを使って、以下のようなページを作成しよう。Servletファイル名は[Lesson1.java]リクエストurlは下の画像参照のこと。(計算はプログラムですること)
+
+必要であれば以下をコピペしてつかってよい。
+
+out.println("<!DOCTYPE html>");
+out.println("<html>");
+out.println("<head>");
+out.println("<meta charset='utf-8' />");
+out.println("<title>Lesson</title>");
+out.println("</head>");
+out.println("<body>");
+out.println("</body>");
+out.println("</html>");
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+@WebServlet("/lesson1")
+public class Lesson1 extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int x=1000,y=3000;
+		int sum=0;
+		for(int i=x;i<=y;i++){
+			sum+=i;
+		}
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out=response.getWriter();
+		out.println("<!DOCTYPE html>");
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<meta charset='utf-8' />");
+		out.println("<title>Lesson</title>");
+		out.println("</head>");
+		out.println("<body>");
+		out.println("<p>"+x+"から"+y+"までの和は"+sum+"です。");
+		out.println("</body>");
+		out.println("</html>");
+	}
+}
+
+Q1_2.Q1_1と同じ内容を出力するページをJSPを使って記せ。ファイル名は[lesson1.jsp]リクエストURLは以下の実行例と同一にすること。
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+int x=1000,y=3000;
+int sum=0;
+for(int i=x;i<=y;i++){
+	sum += i;
+}
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Lesson1</title>
+</head>
+<body>
+<p><%=x %>から<%=y %>までの和は<%=sum %>です。</p>
+</body>
+</html>
+
+Q2.JSPを使って以下のページを作成せよ。合計点の計算はプログラムにさせること。
+
+必要であれば以下のクラスを使って良い
+●model.Team.java
+package model;
+
+public class Team {
+	private String name;
+	private String[] score;
+	public Team(String name,String[] score){
+		this.name=name;
+		this.score=score;
+	}
+	public String getName(){
+		return this.name;
+	}
+	public String[] getScore(){
+		return this.score;
+	}
+	public String getTotalScore(){
+		int sum=0;
+		for(String s:this.score){
+			if(s.equals("x")){
+				break;
+			}
+			if(s.endsWith("x")){
+				s=s.substring(0, s.length()-1);
+			}		
+			sum+=Integer.parseInt(s);			
+		}
+		return String.valueOf(sum);
+	}
+}
+
+[解答例]
+●score.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*"%>
+<%
+Team[] teams=new Team[2];
+teams[0]=new Team("巨人",new String[]{"0","0","2","2","0","3","2","0","0","0","1"});
+teams[1]=new Team("阪神",new String[]{"2","0","0","1","0","0","1","0","5","0","2x"});
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>スコアボード</title>
+<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+<table>
+<tr>
+<th></th>
+<%for(int i=1;i<=teams[0].getScore().length;i++) {%>
+<td><%=i %></td>
+<%} %>
+<th>計</th></tr>
+<%for(int i=0;i<teams.length;i++) {%>
+<tr>
+<th><%=teams[i].getName() %></th>
+<%for(int j=0;j<teams[i].getScore().length;j++){ %>
+<td><%=teams[i].getScore()[j] %></td>
+<%} %>
+<td><%= teams[i].getTotalScore()%></td>
+</tr>
+<%} %>
+</table>
+</body>
+</html>
+
+★Day47
+
+JSP & Servlet(numapp作成)
+
+mvcを使って簡単なじゃんけん数字分析アプリを作成してみよう！
+
+実行例
+ブラウザに
+http://localhost:8080/numapp/Main
+と入力するとフォームが表示される。
+
+
+数字をカンマ区切りで入力する。（この際、数字は整数)
+
+
+送信ボタンを押すと結果が表示される
+
+
+戻るを押すと最初から
+
+
+解答例
+
+package model;
+
+import java.io.Serializable;
+
+public class Num implements Serializable{
+	private String org;
+	private int len;
+	private int max;
+	private int min;
+	private int sum;
+	public Num(){}
+	public String getOrg() {
+		return org;
+	}
+	public void setOrg(String org) {
+		this.org = org;
+	}
+	public int getLen() {
+		return len;
+	}
+	public void setLen(int len) {
+		this.len = len;
+	}
+	public int getMax() {
+		return max;
+	}
+	public void setMax(int max) {
+		this.max = max;
+	}
+	public int getMin() {
+		return min;
+	}
+	public void setMin(int min) {
+		this.min = min;
+	}
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+}
+package model;
+
+public class NumLogic {
+	public void execute(Num num){
+		String[] nums=num.getOrg().split(",");	
+		int first=Integer.parseInt(nums[0]);
+		int max,min,sum;
+		max=min=sum=first;
+		
+		for(int i=1;i<nums.length;i++){
+			int pick=Integer.parseInt(nums[i]);
+			if(pick>max){
+				max=pick;
+			}
+			if(pick<min){
+				min=pick;
+			}
+			sum+=pick;
+		}
+		num.setLen(nums.length);
+		num.setMax(max);
+		num.setMin(min);
+		num.setSum(sum);
+	}
+}
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Num;
+import model.NumLogic;
+
+
+@WebServlet("/Main")
+public class Main extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/form.jsp");
+		rd.forward(request, response);
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String org=request.getParameter("org");
+		Num num=new Num();
+		num.setOrg(org);
+		NumLogic nl=new NumLogic();
+		nl.execute(num);
+		request.setAttribute("num", num);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/result.jsp");
+		rd.forward(request, response);	
+	}
+}
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<p>数字をカンマ区切りで入力してください</p>
+<form action="/numapp/Main" method="post">
+<input type="text" name="org"><br>
+<input type="submit" value="送信">
+</form>
+</body>
+</html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.Num"%>
+<%
+	Num num=(Num)request.getAttribute("num");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<p>元の文字列:<%=num.getOrg() %></p>
+<p>要素数:<%=num.getLen() %></p>
+<p>最大値:<%=num.getMax() %></p>
+<p>最小値:<%=num.getMin() %></p>
+<p>合計:<%=num.getSum() %></p>
+<a href="/numapp/Main">戻る</a>
+</body>
+</html>
+
+★Day48
+
+JSP & Servlet(じゃんけんゲーム)]
+
+MVCに分割して以下のようなジャンケンゲームを作成してみよう。勝敗数はゲーム中保持される。
+セッションスコープを利用すること。
+
+●実行すると以下のような画面が表示される。
+
+●手を選んで送信を押すと結果が表示される
+
+●カウントをリセットするをクリックするとリセットされる
+
+
+1.新規動的プロジェクトでjyan2を作成する。
+2.modelパッケージにRspクラスを以下のように作成する。
+●model.Jyan.java
+
+package model;
+
+import java.io.Serializable;
+
+public class Jyan implements Serializable{
+	private String userHand;
+	private String pcHand;
+	private String result;
+	private int win;
+	private int lose;
+	public String getUserHand() {
+		return userHand;
+	}
+	public void setUserHand(String userHand) {
+		this.userHand = userHand;
+	}
+	public String getPcHand() {
+		return pcHand;
+	}
+	public void setPcHand(String pcHand) {
+		this.pcHand = pcHand;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public int getWin() {
+		return win;
+	}
+	public void setWin(int win) {
+		this.win = win;
+	}
+	public int getLose() {
+		return lose;
+	}
+	public void setLose(int lose) {
+		this.lose = lose;
+	}
+	
+
+}
+
+3.modelパッケージにRspLogicクラスを以下のように作成する
+●model.JyanLogic.java
+
+package model;
+import java.util.Random;
+public class JyanLogic {
+	public void execute(Jyan jyan,int userHand){
+		String[] hands={"グー","チョキ","パー"};
+		jyan.setUserHand(hands[userHand]);
+		int pcHand=new Random().nextInt(hands.length);
+		jyan.setPcHand(hands[pcHand]);
+		int diff=(userHand+3 - pcHand) % 3;
+		String result;
+		if(diff==0){
+			result="あいこです";
+		}else if(diff==2){
+			result="あなたの勝ち";
+			jyan.setWin(jyan.getWin()+1);
+		}else{
+			result="あなたの負け";
+			jyan.setLose(jyan.getLose()+1);
+		}
+		jyan.setResult(result);
+	}
+}
+
+4.controllerパッケージの中にMainクラスを作成する。
+●controller.Main.java
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.Jyan;
+import model.JyanLogic;
+
+/**
+ * Servlet implementation class Main
+ */
+@WebServlet("/Main")
+public class Main extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action=request.getParameter("action");
+		if(action != null && action.equals("reset")){
+			HttpSession session=request.getSession();
+			session.removeAttribute("jyan");
+		}
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/main.jsp");
+		rd.forward(request, response);
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String hand=request.getParameter("hand");
+		HttpSession session=request.getSession();
+		Jyan j=(Jyan)session.getAttribute("jyan");
+		if(j==null){
+			j=new Jyan();
+		}
+		JyanLogic jl=new JyanLogic();
+		jl.execute(j,Integer.parseInt(hand));
+		session.setAttribute("jyan", j);
+		
+		doGet(request, response);
+	}
+
+}
+
+5.WebContent/WEB-INF/の中にviewフォルダを作成しその中にmain.jspを以下のように作成する。
+●WebContent/WEB-INF/view/main.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*"%>
+<%
+Jyan j=(Jyan)session.getAttribute("jyan");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<h1>ジャンケンゲーム!</h1>
+<form action="/jyan2/Main" method="post">
+<input type="radio" name="hand" value="0" <%=j !=null && j.getUserHand().equals("グー") ? "checked":"" %>>グー
+<input type="radio" name="hand" value="1" <%=j !=null && j.getUserHand().equals("チョキ") ? "checked":"" %>>チョキ
+<input type="radio" name="hand" value="2" <%=j !=null && j.getUserHand().equals("パー") ? "checked":"" %>>パー
+<input type="submit" value="送信">
+</form>
+<% if (j != null){ %>
+<p>あなたは<%=j.getUserHand() %></p>
+<p>PCは<%=j.getPcHand() %></p>
+<p><%=j.getResult() %></p>
+<p>Win:<%=j.getWin() %></p>
+<p>Lose:<%=j.getLose() %></p>
+<a href="/jyan2/Main?action=reset">カウントをリセットする</a>
+<%} %>
+</body>
+</html>
+
+6.実行してみよう。
+
+★Day49
+
+JSP & Servlet(数当てゲーム作成)
+
+mvcを使って数当てアプリを作成してみよう！
+
+実行例
+ブラウザに
+http://localhost:8080/HighLow/Main
+と入力するとフォームが表示される。
+
+
+数字を入れて送信。
+
+
+もっと上か、もっと下というヒントとともに入力履歴が表示される。
+(表示の際にはolとliタグを利用)
+当たるまでこれを繰り返し、正解したら正解と表示される。
+
+
+もう一度を押すと最初から
+
+
+解答例
+package model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class HighLow implements Serializable{
+	private int correctAns;
+	private int userAns;
+	private String msg;
+	private List<Integer> list;
+	public HighLow(){
+		this.correctAns=new Random().nextInt(100)+1;
+		list=new ArrayList<Integer>();
+	}
+	
+	public int getCorrectAns() {
+		return correctAns;
+	}
+	public void setCorrectAns(int correctAns) {
+		this.correctAns = correctAns;
+	}
+	
+	public int getUserAns() {
+		return userAns;
+	}
+
+	public void setUserAns(int userAns) {
+		this.userAns = userAns;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	public List<Integer> getList() {
+		return list;
+	}
+	public void setList(List<Integer> list) {
+		this.list = list;
+	}
+}
+package model;
+
+public class HighLowLogic {
+	
+	public void execute(HighLow hl,int userAns){
+		hl.setUserAns(userAns);
+		hl.getList().add(userAns);
+		String msg;
+		if(userAns>hl.getCorrectAns()){
+			msg="もっと下だよ";
+		}else if(userAns<hl.getCorrectAns()){
+			msg="もっと上だよ";
+		}else{
+			msg="正解!";
+		}
+		hl.setMsg(msg);
+	}
+}
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.HighLow;
+import model.HighLowLogic;
+
+@WebServlet("/Main")
+public class Main extends HttpServlet {
+	private String path="/WEB-INF/view/main.jsp";
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HighLow hl=new HighLow();
+		HttpSession session=request.getSession();
+		session.setAttribute("hl", hl);
+		RequestDispatcher rd=request.getRequestDispatcher(this.path);
+		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userAns=request.getParameter("userAns");
+		HttpSession session=request.getSession();
+		HighLow hl=(HighLow)session.getAttribute("hl");
+		HighLowLogic hll=new HighLowLogic();
+		hll.execute(hl,Integer.parseInt(userAns));
+		session.setAttribute("hl", hl);
+		RequestDispatcher rd=request.getRequestDispatcher(this.path);
+		rd.forward(request, response);
+	}
+}
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*"%> 
+<%
+	HighLow hl=(HighLow)session.getAttribute("hl");
+
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<p>1〜100の乱数を生成したよ!</p>
+<p>いくつかな？</p>
+<form action="/HighLow/Main" method="post">
+<input type="number" name="userAns" value="<%=hl.getUserAns()%>">
+<input type="submit" value="送信">
+</form>
+<% if (hl.getList().size() >0){ %>
+	<p><%=hl.getMsg() %></p>
+	<ol>
+	<% for(int i:hl.getList()){%>
+		<li><%=i %></li>
+	<%} %>
+	</ol>
+<%} %>
+<%if(hl.getUserAns()==hl.getCorrectAns()){ %>
+	<a href="/HighLow/Main">もう一度</a>
+<%} %>
+</body>
+</html>
+
+★Day50
+
+JSP & Servlet-7日目(Applicationスコープ)
+
+[作成]
+1.エクリプス、新規動的Project作成から「joytas7」アプリケーションを作成する。
+2.modelの作成。modelパッケージにProductクラスを以下のように作成
+●model.Product.java
+package model;
+
+import java.io.Serializable;
+
+public class Product implements Serializable{
+	private String name;
+	private String price;
+	private String updated;
+	public Product(){}
+	public Product(String name,String price,String updated){
+		this.name=name;
+		this.price=price;
+		this.updated=updated;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getUpdated() {
+		return updated;
+	}
+	public void setUpdated(String updated) {
+		this.updated = updated;
+	}
+	
+
+}
+
+●main.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+List<Product> list=(List<Product>)application.getAttribute("list");
+String err=(String)request.getAttribute("err");
+String msg=(String)request.getAttribute("msg");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<title>Joytas7(Applicationスコープ)</title>
+</head>
+<body>
+<div class="container" style="margin-top:20px;">
+<p>商品を登録してください。</p>
+<% if(err !=null){%>
+<div class="alert alert-danger" role="alert">
+<%=err %>
+</div>
+<%} %>
+<% if(msg !=null){%>
+<div class="alert alert-success" role="alert">
+<%=msg %>
+</div>
+<%} %>
+<form action="/joytas7/main" method="post" >
+  <div class="form-group">
+    <label for="name">製品名:</label>
+    <input type="text" id="name" name="name" class="form-control" style="width:200px;">
+  </div>
+  <div class="form-group">
+    <label for="price">価格:</label>
+    <input type="number" id="price" name="price" class="form-control" style="width:200px;">
+  </div>
+  <button type="submit" class="btn btn-primary">登録</button>
+</form>
+<%if(list != null){%>
+<table class="table table-striped mt-4">
+<tr><th>製品名</th><th>価格</th><th>登録日</th></tr>
+<%for(Product p:list) {%>
+<tr><th><%=p.getName() %></th><td><%=String.format("%,3d円",Integer.parseInt(p.getPrice())) %></td><td><%=p.getUpdated() %></td></tr>
+<%} %>
+</table>
+<%} %>
+</div>
+<script>
+var forms=document.getElementsByClassName("form-control");
+var alerts=document.getElementsByClassName("alert");
+for(var i=0;i<forms.length;i++){
+	forms[i].addEventListener("focus",function(){
+		for(var j=0;j<alerts.length;j++){
+			alerts[j].style.display="none";
+		}
+	});
+}
+</script>
+</body>
+</html>
+
+●controller.Main.java
+
+package controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Product;
+
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+          
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd= request.getRequestDispatcher("/WEB-INF/view/main.jsp");
+		rd.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext application =this.getServletContext();
+		List<Product> list=(List<Product>)application.getAttribute("list");
+		if(list == null){
+			list=new ArrayList<>();
+		}
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String price=request.getParameter("price");
+		if(name.isEmpty() || price.isEmpty()){
+			request.setAttribute("err","未記入の項目があります！");
+		}else{
+			Date date=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			String updated=sdf.format(date);
+			Product product=new Product(name,price,updated);
+			list.add(0,product);
+			application.setAttribute("list", list);
+			request.setAttribute("msg","1件登録しました。");
+		}		
+		doGet(request,response);		
+	}
+}
+
+5.以下のアドレスにリクエストして、実行例のようになることを確認する。
+http://localhost:8080/joytas7/main
+
+JSP & Servlet(野菜カート作成)
+
+package model;
+
+import java.io.Serializable;
+
+public class Vegetable implements Serializable{
+	private String name;
+	private int price;
+	public Vegetable() {
+		super();
+	}
+	public Vegetable(String name, int price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+}
+
+package model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Cart implements Serializable{
+	private List<Vegetable> list;
+	private int total;
+	public Cart() {
+		super();
+		list=new ArrayList<>();
+		total=0;
+	}
+
+	public List<Vegetable> getList() {
+		return list;
+	}
+	public void setList(List<Vegetable> list) {
+		this.list = list;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+}
+
+package model;
+
+public class CartLogic {
+	public void execute(Cart cart,Vegetable vege) {
+		cart.getList().add(vege);
+		cart.setTotal(cart.getTotal()+vege.getPrice());
+	}
+}
+
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.Cart;
+import model.CartLogic;
+import model.Vegetable;
+
+@WebServlet("/Main")
+public class Main extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/cart.jsp");
+		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String price=request.getParameter("price");
+		if(name.isEmpty() || price.isEmpty()) {
+			request.setAttribute("err", "未記入の項目があります");
+		}else {
+			HttpSession session=request.getSession();
+			Cart cart=(Cart)session.getAttribute("cart");
+			if(cart==null) {
+				cart=new Cart();
+			}
+			Vegetable vege=new Vegetable(name,Integer.parseInt(price));
+			CartLogic logic=new CartLogic();
+			logic.execute(cart, vege);
+			session.setAttribute("cart", cart);
+			request.setAttribute("msg", vege.getName()+"をカートに追加しました");
+		}
+
+		doGet(request, response);
+	}
+
+}
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+Cart cart=(Cart)session.getAttribute("cart");
+String err=(String)request.getAttribute("err");
+String msg=(String)request.getAttribute("msg");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<title>VegetableCart</title>
+</head>
+<body>
+<div class="container" style="margin-top:20px;">
+<p>商品をカートに入れてください</p>
+<% if(err !=null){%>
+<div class="alert alert-danger" role="alert">
+<%=err %>
+</div>
+<%} %>
+<% if(msg !=null){%>
+<div class="alert alert-success" role="alert">
+<%=msg %>
+</div>
+<%} %>
+<form action="/vegecart/Main" method="post" >
+  <div class="form-group">
+    <label for="name">商品名:</label>
+    <input type="text" id="name" name="name" class="form-control" style="width:200px;">
+  </div>
+
+  <div class="form-group">
+    <label for="price">価格:</label>
+    <input type="number" id="price" name="price" class="form-control" style="width:200px;">
+  </div>
+  <button type="submit" class="btn btn-primary">カートに追加</button>
+</form>
+<%if(cart != null){%>
+<div class="alert alert-secondary float-right" role="alert">
+ 	<%=String.format("合計:%,d円",cart.getTotal()) %>
+</div>
+
+<table class="table table-striped mt-4">
+<tr><th>商品名</th><th>価格</th></tr>
+	<%for(Vegetable v:cart.getList()) {%>
+	<tr><th><%=v.getName() %></th><td><%=String.format("%,d円",v.getPrice()) %></td></tr>
+	<%} %>
+</table>
+<%} %>
+</div>
+</body>
+</html>
+
+JSP & Servlet(暗算ゲーム)
+
+以下のような暗算アプリを作成しよう。
+正答数と誤答数はアプリケーションスコープで管理すること。
+問題は50~99までの二つの値の掛け算とすること。
+
+〇問題が出題される
+
+〇答えを入力して、送信ボタンを押すと結果が表示され。正答数などが増える。
+
+〇retryを押すと違う問題が出題される
+
+〇間違えた場合、誤答数が増える
+
+
+解答例
+
+Model
+●model.Stat.java
+package model;
+
+import java.io.Serializable;
+
+public class Stat implements Serializable{
+	private int correct;
+	private int wrong;
+	public Stat() {
+		correct=0;
+		wrong=0;
+	}
+	public int getCorrect() {
+		return correct;
+	}
+	public void setCorrect(int correct) {
+		this.correct = correct;
+	}
+	public int getWrong() {
+		return wrong;
+	}
+	public void setWrong(int wrong) {
+		this.wrong = wrong;
+	}
+
+}
+
+●model.StatLogic.java
+package model;
+
+public class StatLogic {
+	public void correctPlus(Stat stat) {
+		stat.setCorrect(stat.getCorrect()+1);
+	}
+	public void wrongPlus(Stat stat) {
+		stat.setWrong(stat.getWrong()+1);
+	}
+}
+
+●model.Qs.java
+package model;
+
+import java.io.Serializable;
+
+public class Qs implements Serializable{
+
+	private int correctAns;
+	private String userAns;
+	private boolean isCorrect;
+	private String qString;
+
+	public String getqString() {
+		return qString;
+	}
+	public void setqString(String qString) {
+		this.qString = qString;
+	}
+	public int getCorrectAns() {
+		return correctAns;
+	}
+	public void setCorrectAns(int correctAns) {
+		this.correctAns = correctAns;
+	}
+	public String getUserAns() {
+		return userAns;
+	}
+	public void setUserAns(String userAns) {
+		this.userAns = userAns;
+	}
+	public boolean isCorrect() {
+		return isCorrect;
+	}
+	public void setCorrect(boolean isCorrect) {
+		this.isCorrect = isCorrect;
+	}
+
+}
+
+●model.QsLogic.java
+package model;
+
+public class QsLogic {
+	public void create(Qs qs,int numsCount,int min,int max) {
+		int[] nums=new int[numsCount];
+		for(int i=0;i<numsCount;i++) {
+			nums[i]=(int)(Math.random()*(max-min+1))+min;
+		}
+
+		int result=nums[0];
+		for(int i=1;i<nums.length;i++) {
+			result*=nums[i];
+		}
+		qs.setCorrectAns(result);
+		String qString="";
+		for(int i=0;i<nums.length;i++) {
+			qString+=nums[i]+(i==nums.length-1? "=":"×");
+		}
+		qs.setqString(qString);
+	}
+	public void result(Qs qs,String userAns) {
+		qs.setUserAns(userAns);
+		int ans=Integer.parseInt(userAns);
+		qs.setCorrect(qs.getCorrectAns()==ans);
+	}
+}
+
+Controller
+●controller.Calc.java
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.Qs;
+import model.QsLogic;
+import model.Stat;
+import model.StatLogic;
+
+/**
+ * Servlet implementation class Calc
+ */
+@WebServlet("/calc")
+public class Calc extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		final int NUMCOUNT=2,MIN=50,MAX=99;
+		ServletContext application=this.getServletContext();
+		Stat stat=(Stat)application.getAttribute("stat");
+		if(stat==null) {
+			stat=new Stat();
+		}
+		application.setAttribute("stat",stat);
+
+		Qs qs=new Qs();
+		QsLogic logic=new QsLogic();
+		logic.create(qs,NUMCOUNT,MIN,MAX);
+		HttpSession session=request.getSession();
+		session.setAttribute("qs",qs);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/index.jsp");
+		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ans=(String)request.getParameter("ans");
+		HttpSession session=request.getSession();
+		Qs qs=(Qs)session.getAttribute("qs");
+		QsLogic logic=new QsLogic();
+		logic.result(qs,ans);
+		ServletContext application=this.getServletContext();
+		Stat stat=(Stat)application.getAttribute("stat");
+		StatLogic statLogic=new StatLogic();
+		if(qs.isCorrect()) {
+			statLogic.correctPlus(stat);
+		}else {
+			statLogic.wrongPlus(stat);
+		}
+
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/index.jsp");
+		rd.forward(request, response);
+	}
+
+}
+
+View
+●/WEB-INF/view/index.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*"%>
+  <%
+  Stat stat=(Stat)application.getAttribute("stat");
+  Qs qs=(Qs)session.getAttribute("qs");
+  String userAns=qs ==null? "":qs.getUserAns();
+  %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>暗算君</title>
+</head>
+<body>
+<h1>暗算にチャレンジ</h1>
+<p>正答数:<%=stat.getCorrect() %>　誤答数:<%=stat.getWrong() %></p>
+<form action="/calcapp/calc" method="post">
+<p><%=qs.getqString() %><input type="number" name="ans" value="<%=userAns%>"><input type="submit" value="送信"></p>
+</form>
+<%if(qs.getUserAns() !=null){ %>
+<p><%=qs.getqString()+qs.getCorrectAns()  %></p>
+<p><%=qs.isCorrect()?"正解":"不正解" %>
+<p><a href="/calcapp/calc">Retry</a></p>
+<%} %>
+</body>
+</html>
+
+★Day51
+
+JSP & Servlet(csvファイル読み込み)
+
+csvファイルを読み込んでみよう。今回はそこで作成したオブジェクトをアプリケーションスコープに配置する。
+実行すると、csvファイルの内容をテーブルで出力される。
+
+[実行例]
+
+
+[作例]
+1.CSVLessonプロジェクトを作成する。
+
+2.以下からsample.csvをダウンロードする。
+
+3.WebContentフォルダ内にdataフォルダを作成し、その中にsample.csvをコピペによって配置する。
+
+Model
+4.modelパッケージを作成しその中にSales.javaを作成する。
+●model.Sales.java
+package model;
+
+import java.io.Serializable;
+
+public class Sales implements Serializable{
+  private String year;
+  private String salesA;
+  private String salesB;
+  public Sales(){}
+  public Sales(String year,String salesA,String salesB){
+    this.year=year;
+    this.salesA=salesA;
+    this.salesB=salesB;
+  }
+  
+  public String getYear() {
+	return year;
+}
+public void setYear(String year) {
+	this.year = year;
+}
+public String getSalesA() {
+	return salesA;
+}
+public void setSalesA(String salesA) {
+	this.salesA = salesA;
+}
+public String getSalesB() {
+	return salesB;
+}
+public void setSalesB(String salesB) {
+	this.salesB = salesB;
+}
+}
+
+5.modelパッケージ内にSalesParser.javaを以下のように作成する。
+
+package model;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class SalesParser {
+	public List<Sales> getList(String path){
+		List<Sales> list=new ArrayList<>();
+		BufferedReader br=null;
+		try {
+			FileInputStream fis=new FileInputStream(path);
+			InputStreamReader isr=new InputStreamReader(fis,"UTF-8");
+			br=new BufferedReader(isr);
+			String line;
+			while((line=br.readLine()) !=null){
+				if(line.startsWith("年度")){
+					continue;
+				}
+				/*
+				 splitの第二引数は分割数、ここに負の値を設定すると最後の部分が空白でも空白文字列として配列を作る
+				 例)
+				 String csv="hoge,fuga,,bar,,";
+				 String[] data=csv.split(",",-1);
+				 結果)data[0]="hoge",data[1]="fuga",data[2]="",data[3]="bar",data[4]="",data[5]=""
+				 */
+				String[] data=line.split(",",-1);
+				String year=data[0];
+				String salesA=data[1];
+				String salesB=data[2];
+				Sales sales=new Sales(year,salesA,salesB);
+				
+				list.add(sales);
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if(br != null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+}
+
+Controller
+6.controllerパッケージ内にIndex.javaを以下のように作成する。
+●controller.Index.java
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Sales;
+import model.SalesParser;
+
+
+@WebServlet("/index")
+public class Index extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext application=this.getServletContext();
+		
+		List<Sales> list=(List<Sales>) application.getAttribute("list");
+		if(list==null){
+			String path=application.getRealPath("/WEB-INF/data/sample.csv");
+			SalesParser parser=new SalesParser();
+			list=parser.getList(path);
+			application.setAttribute("list",list);
+		}
+		
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/index.jsp");
+		rd.forward(request, response);
+	}
+
+}
+
+View
+7.WEB-INF内にviewフォルダーを作成し、index.jspを以下のように作成する。
+●/WEB-INF/view/index.jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+ <%
+ List<Sales> list=(List<Sales>)application.getAttribute("list");
+ %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<table border="1">
+<tr><th>年度</th><th>SalesA</th><th>SalesB</th></tr>
+<%for(Sales s:list){%>
+<tr><td><%=s.getYear() %></td><td><%=s.getSalesA() %></td><td><%=s.getSalesB() %></td><tr>
+<%} %>
+</table>
+</body>
+</html>
+
+★Day52
+
+JSP & Servlet-(DB接続の基礎DAO)
+
+サーバーサイドにJavaを利用しMySQLからデータを取得し一覧表示する処理のサンプル
+[作成]
+１．MySQLでデータベース[lunchapp]を作成する。
+CREATE DATABASE lunchapp
+DEFAULT CHARACTER SET utf8;
+
+2．データベースlunchappに[lunches]テーブルを作成する。
+CREATE TABLE lunches(
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ name VARCHAR(30),
+ menu VARCHAR(30)
+ );
+
+3.初期データを挿入しておく
+INSERT INTO lunches(name,menu)VALUES
+ ("subway","チリチキン"),("はなまる","かけうどん(小)"),("吉野家","牛丼(並)")
+
+4.エクリプス。新規動的プロジェクトより「lunchapp」を作成する。
+4_1.以下のリンクからjdbcをダウンロード(5.1.47)
+
+5.WEB-INF/lib/の中にJDBC,META-INFの直下にcontext.xmlを配置する。(詳しくは前回の記事参照)
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+      name="jdbc/jsp"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/lunchapp"
+      connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false;useUnicode=true;characterEncoding=UTF-8;"
+      username="root"
+      password="root"
+      validationQuery="select 1"/>
+ </Context>
+
+6.modelパッケージにLunch.javaを作成する。
+●model.Lunch.java
+package model;
+
+import java.io.Serializable;
+
+public class Lunch  implements Serializable{
+	private int id;
+	private String name;
+	private String menu;
+	public Lunch() {}
+	public Lunch(String name,String menu) {
+		this.name=name;
+		this.menu=menu;
+	}
+	public Lunch(int id,String name,String menu) {
+		this(name,menu);
+		this.id=id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getMenu() {
+		return menu;
+	}
+	public void setMenu(String menu) {
+		this.menu = menu;
+	}
+
+}
+
+「dao作成」
+7.daoパッケージ内にLunchDAO.javaを作成する。
+●dao.LunchDAO.java
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import model.Lunch;
+
+public class LunchDAO {
+	private Connection db;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+	//接続共通処理
+	private void connect() throws NamingException, SQLException {
+		Context context = new InitialContext();
+		DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/jsp");
+		this.db = ds.getConnection();
+	}
+
+	//切断共通処理
+	private void disconnect() {
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (db != null) {
+				db.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Lunch> findAll() {
+		List<Lunch> list = new ArrayList<>();
+		try {
+			this.connect();
+			ps = db.prepareStatement("SELECT * FROM lunches");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String menu = rs.getString("menu");
+				Lunch l = new Lunch(id, name, menu);
+				list.add(l);
+			}
+		} catch (NamingException | SQLException e) {
+
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+
+		return list;
+	}
+	public void insertOne(Lunch lunch) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("INSERT INTO lunches(name,menu) VALUES(?,?)");
+			ps.setString(1,lunch.getName());
+			ps.setString(2,lunch.getMenu());
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+	public Lunch findOne(int id) {
+		Lunch lunch=null;
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM lunches WHERE id=?");
+			ps.setInt(1, id);
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				String name=rs.getString("name");
+				String menu=rs.getString("menu");
+				lunch=new Lunch(id,name,menu);
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+
+		return lunch;
+	}
+	public void updateOne(Lunch lunch) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("UPDATE lunches SET name=?,menu=? WHERE id=?");
+			ps.setString(1, lunch.getName());
+			ps.setString(2, lunch.getMenu());
+			ps.setInt(3, lunch.getId());
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+	public void deleteOne(int id) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("DELETE FROM lunches WHERE id=?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+
+}
+
+8.controllerパッケージ内にRead.java(Servlet)を作成
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.LunchDAO;
+import model.Lunch;
+
+@WebServlet("/Read")
+public class Read extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		LunchDAO dao=new LunchDAO();
+		List<Lunch> list=dao.findAll();
+		request.setAttribute("list", list);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/read.jsp");
+		rd.forward(request, response);
+	}
+
+}
+
+9./WEB-INF/viewフォルダにread.jspを作成
+●read.jsp(/WEB-INF/view/read.jsp)
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+List<Lunch> list=(List<Lunch>)request.getAttribute("list");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<a href="/lunchapp/Create">新規追加</a>
+<%if(list !=null && list.size()>0){ %>
+<table border="1">
+<tr><th>id</th><th>name</th><th>menu</th><th></th></tr>
+<%for(Lunch lunch:list){ %>
+<tr>
+<td><%=lunch.getId() %></td>
+<td><%=lunch.getName() %></td>
+<td><%=lunch.getMenu() %></td>
+<td>
+<a href="/lunchapp/Update?id=<%=lunch.getId() %>">更新</a>
+<a href="/lunchapp/Delete?id=<%=lunch.getId() %>" onclick="return confirm('id=<%=lunch.getId()%>を削除してよろしいですか？');">削除</a>
+</td>
+</tr>
+<%} %>
+</table>
+<%} %>
+</body>
+</html>
+
+[実行]
+サーブレット（Read)から実行してみよう。以下のように表示されれば成功だ。
+
+10.controllerパッケージ内にCreate.java(Servlet)を作成
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.LunchDAO;
+import model.Lunch;
+
+/**
+ * Servlet implementation class Create
+ */
+@WebServlet("/Create")
+public class Create extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+  
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/create.jsp");
+		rd.forward(request, response);
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String menu=request.getParameter("menu");
+		Lunch lunch=new Lunch(name,menu);
+		LunchDAO ld=new LunchDAO();
+		ld.insertOne(lunch);
+
+		response.sendRedirect("/lunchapp/Read");
+	}
+
+}
+
+11./WEB-INF/viewフォルダにcreate.jspを作成
+●create.jsp(/WEB-INF/view/create.jsp)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/lunchapp/Create" method="post">
+なまえ:<input type="text" name="name"><br>
+メニュー:<input type="text" name="menu"><br>
+<button type="submit">追加</button>
+</form>
+</body>
+</html>
+
+アップデート
+12.controllerパッケージ内にUpdate.java(Servlet)を作成
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.LunchDAO;
+import model.Lunch;
+
+/**
+ * Servlet implementation class Update
+ */
+@WebServlet("/Update")
+public class Update extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String s_id=request.getParameter("id");
+		if(s_id==null) {
+			response.sendRedirect("/lunchapp/Read");
+		}else {
+			LunchDAO dao=new LunchDAO();
+			Lunch lunch=dao.findOne(Integer.parseInt(s_id));
+			request.setAttribute("lunch", lunch);
+			request.getRequestDispatcher("/WEB-INF/view/update.jsp").forward(request, response);
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String id=request.getParameter("id");
+		String name=request.getParameter("name");
+		String menu=request.getParameter("menu");
+		Lunch lunch=new Lunch(Integer.parseInt(id),name,menu);
+		LunchDAO dao=new LunchDAO();
+		dao.updateOne(lunch);
+		response.sendRedirect("/lunchapp/Read");
+	}
+
+}
+
+13./WEB-INF/viewフォルダにupdate.jspを作成
+●update.jsp(/WEB-INF/view/update.jsp)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+Lunch lunch=(Lunch)request.getAttribute("lunch");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="/lunchapp/Update" method="Post">
+なまえ:<input type="text" name="name" value="<%=lunch.getName()%>"><br>
+メニュー:<input type="text" name="menu" value="<%=lunch.getMenu() %>"><br>
+<input type="hidden" name="id" value="<%=lunch.getId() %>">
+<button type="submit">更新</button>
+</form>
+</body>
+</html>
+
+DELETE
+14.controllerパッケージ内にDelete.java(Servlet)を作成
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.LunchDAO;
+
+/**
+ * Servlet implementation class Delete
+ */
+@WebServlet("/Delete")
+public class Delete extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id=request.getParameter("id");
+		if(id !=null) {
+			LunchDAO dao=new LunchDAO();
+			dao.deleteOne(Integer.parseInt(id));
+		}
+		response.sendRedirect("/lunchapp/Read");
+	}
+
+
+
+}
+
+JSP & Servlet(MySQLとの連携Todoアプリ)
+
+DAOを使って基本的なCRUDを実現しよう。今回はTodoアプリを作成する。(作成の流れはここを参照するとよい。）
+
+［実行例]
+●最初の画面
+
+
+●新規を押した
+
+
+●タイトルと重要度(1~5)を入力し登録ボタンを押すと一覧画面にTodoが表示される
+
+
+●３件ほど登録した状態。重要度が高い順に表示される。
+
+
+●水槽の掃除の隣の更新リンクをクリック
+
+
+●重要度を4にして更新リンクを押した。
+
+
+●新聞をかうの削除ボタンを押すとモーダルウィンドウで確認が開く
+
+
+●ＯＫを押すと削除された
+
+
+[作成]
+１．MySQLでデータベース[todoapp]を作成する。
+CREATE DATABASE todoapp
+DEFAULT CHARACTER SET utf8;
+
+2．データベースtodoappに[todos]テーブルを作成する。
+CREATE TABLE todos(
+ id INT PRIMARY KEY AUTO_INCREMENT,
+ title VARCHAR(30),
+ importance INT
+ );
+
+3.エクリプス。新規動的プロジェクトより「todoapp」を作成する。
+5.WEB-INF/lib/の中にJDBC,META-INFの直下にcontext.xmlを配置する。(詳しくはここの記事参照)
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+      name="jdbc/jsp"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/todoapp"
+      connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false;useUnicode=true;characterEncoding=UTF-8;"
+      username="root"
+      password="root"
+      validationQuery="select 1"/>
+ </Context>
+
+6.modelパッケージ
+●model.Todo.java
+
+package model;
+
+import java.io.Serializable;
+
+public class Todo implements Serializable{
+	private int id;
+	private String title;
+	private int importance;
+	public Todo() {}
+	public Todo(String title,int importance) {
+		this.title=title;
+		this.importance=importance;
+	}
+	public Todo(int id, String title, int importance) {
+		this(title,importance);
+		this.id = id;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public int getImportance() {
+		return importance;
+	}
+	public void setImportance(int importance) {
+		this.importance = importance;
+	}
+	public String getStar() {
+		String stars="";
+		for(int i=0;i<this.importance;i++) {
+			stars+="★";
+		}
+		return stars;
+	}
+
+
+
+}
+
+7.daoパッケージ
+●dao.TodoDAO.java
+
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import model.Todo;
+
+public class TodoDAO {
+	private Connection db; //todoappデータベースに接続されたコネクション
+	private PreparedStatement ps; //sql文を保持する変数
+	private ResultSet rs; //結果セット(SQL文を実行した結果の集合)を保持
+
+	//接続処理
+	private void connect() throws NamingException, SQLException {
+		Context context = new InitialContext();
+		DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/jsp");
+		db = ds.getConnection();
+	}
+
+	//切断処理
+	private void disconnect() {
+
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (ps != null) {
+				ps.close();
+			}
+			if (db != null) {
+				db.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	public List<Todo> findAll(){
+		List<Todo> list=new ArrayList<>();
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM todos ORDER BY importance DESC");
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				int id=rs.getInt("id");
+				String title=rs.getString("title");
+				int importance=rs.getInt("importance");
+				list.add(new Todo(id,title,importance));
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+		return list;
+	}
+	public void insertOne(Todo todo) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("INSERT INTO todos(title,importance) VALUES(?,?)");
+			ps.setString(1, todo.getTitle());
+			ps.setInt(2, todo.getImportance());
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+	public Todo findOne(int id) {
+		Todo todo=null;
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM todos WHERE id=?");
+			ps.setInt(1, id);
+			rs=ps.executeQuery();
+			if(rs.next()) {
+				String title=rs.getString("title");
+				int importance=rs.getInt("importance");
+				todo=new Todo(id,title,importance);
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+		return todo;
+	}
+	public void updateOne(Todo todo) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("UPDATE todos SET title=?,importance=? WHERE id=?");
+			ps.setString(1, todo.getTitle());
+			ps.setInt(2, todo.getImportance());
+			ps.setInt(3, todo.getId());
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+	public void deleteOne(int id) {
+		try {
+			this.connect();
+			ps=db.prepareStatement("DELETE FROM todos WHERE id=?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			this.disconnect();
+		}
+	}
+}
+
+8.controllerパッケージ
+●controller.Read.java
+
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.TodoDAO;
+import model.Todo;
+
+
+@WebServlet("/Read")
+public class Read extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		TodoDAO dao=new TodoDAO();
+		List<Todo> list=dao.findAll();
+		request.setAttribute("list", list);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/read.jsp");
+		rd.forward(request, response);
+	}
+
+	
+
+}
+
+●controller.Create.java
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.TodoDAO;
+import model.Todo;
+
+/**
+ * Servlet implementation class Create
+ */
+@WebServlet("/Create")
+public class Create extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Create() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/create.jsp");
+		rd.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String title=request.getParameter("title");
+		String importance=request.getParameter("importance");
+		Todo todo=new Todo(title,Integer.parseInt(importance));
+		TodoDAO dao=new TodoDAO();
+		dao.insertOne(todo);
+
+		response.sendRedirect("/todoapp/Read");
+	}
+
+}
+
+●controller.Update.java
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.TodoDAO;
+import model.Todo;
+
+/**
+ * Servlet implementation class Update
+ */
+@WebServlet("/Update")
+public class Update extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Update() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String s_id=request.getParameter("id");
+		if(s_id == null) {
+			response.sendRedirect("/todoapp/Read");
+		}else {
+			TodoDAO dao=new TodoDAO();
+			Todo todo =dao.findOne(Integer.parseInt(s_id));
+			request.setAttribute("todo", todo);
+			RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/update.jsp");
+			rd.forward(request, response);
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String title=request.getParameter("title");
+		String importance=request.getParameter("importance");
+		String id=request.getParameter("id");
+		Todo todo=new Todo(Integer.parseInt(id),title,Integer.parseInt(importance));
+		TodoDAO dao=new TodoDAO();
+		dao.updateOne(todo);
+
+		response.sendRedirect("/todoapp/Read");
+
+	}
+
+}
+
+●controller.Delete.java
+
+package controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.TodoDAO;
+
+/**
+ * Servlet implementation class Delete
+ */
+@WebServlet("/Delete")
+public class Delete extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public Delete() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String s_id=request.getParameter("id");
+		if(s_id !=null) {
+			TodoDAO dao=new TodoDAO();
+			dao.deleteOne(Integer.parseInt(s_id));
+		}
+		response.sendRedirect("/todoapp/Read");
+	}
+
+
+
+}
+
+9.view(/WEB-INF/view/の中に以下のjspファイルを配置する)
+
+●read.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.Todo,java.util.*"%>
+ <%
+ List<Todo> list=(List<Todo>)request.getAttribute("list");
+ %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TodoApp</title>
+</head>
+<body>
+<a href="/todoapp/Create">新規</a>
+<% if(list !=null && list.size() >0){ %>
+<table>
+<%for(Todo t:list){ %>
+<tr>
+<td>●<%=t.getTitle() %></td><td><%=t.getStar() %></td>
+<td><a href="/todoapp/Update?id=<%=t.getId()%>">更新</a>
+<a href="/todoapp/Delete?id=<%=t.getId()%>" onclick="return confirm('[<%=t.getTitle()%>]を削除してよろしいですか？');">削除</a>
+</td>
+</tr>
+<%} %>
+</table>
+<%}else{ %>
+<p>Todoはまだありません</p>
+<%} %>
+</body>
+</html>
+
+●create.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TodoApp</title>
+</head>
+<body>
+<form action="/todoapp/Create" method="post">
+Title:<input type="text" name="title"><br>
+重要度:<input type="number" name="importance" min="1" max="5" value="3"><br>
+<button type="submit">登録</button>
+</form>
+</body>
+</html>
+
+●update.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.Todo"%>
+<%
+Todo todo=(Todo)request.getAttribute("todo");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TodoApp</title>
+</head>
+<body>
+<form action="/todoapp/Update" method="post">
+Title:<input type="text" name="title" value="<%=todo.getTitle() %>"><br>
+重要度:<input type="number" name="importance" value="<%=todo.getImportance() %>"><br>
+<input type="hidden" name="id" value="<%=todo.getId() %>"><br>
+<button type="submit">更新</button>
+
+</form>
+</body>
+</html>
+
+★Day53
+
+JSP & Servlet-11日目(CSVパース)
+
+株価csvファイルの読み書きを読みこんで表を作成してみよう。
+●株価csvファイル
+Icon
+下からダウンロード
+ 1 file(s)    303.12 KB
+[実行例]
+リクエストを投げると、以下のようなWEBページが表示される。
+
+●●株価表の作成●●
+1.エクリプス動的プロジェクトから[stockapp]を作成。
+2．下から株価csvファイルをダウンロード
+3.WEB-INF/の中にdataフォルダを作成し、そこにコピペでcsvファイルを貼り付ける。
+4.modelパッケージを作成しその中にStock.java(Beans)を以下のように作成する。
+
+●model.Stock.java
+
+package model;
+
+public class Stock implements Serializable{
+	//コード,銘柄名,市場,始値,高値,安値,終値,出来高,売買代金
+	private String code,name,place,open,high,low,end,amount,sales;
+	public Stock(){}
+	public Stock(String code, String name, String place, String open, String high, String low, String end,
+			String amount, String sales) {
+		this.code = code;
+		this.name = name;
+		this.place = place;
+		this.open = open;
+		this.high = high;
+		this.low = low;
+		this.end = end;
+		this.amount = amount;
+		this.sales = sales;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getPlace() {
+		return place;
+	}
+	public void setPlace(String place) {
+		this.place = place;
+	}
+	public String getOpen() {
+		return open;
+	}
+	public void setOpen(String open) {
+		this.open = open;
+	}
+	public String getHigh() {
+		return high;
+	}
+	public void setHigh(String high) {
+		this.high = high;
+	}
+	public String getLow() {
+		return low;
+	}
+	public void setLow(String low) {
+		this.low = low;
+	}
+	public String getEnd() {
+		return end;
+	}
+	public void setEnd(String end) {
+		this.end = end;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getSales() {
+		return sales;
+	}
+	public void setSales(String sales) {
+		this.sales = sales;
+	}
+	
+	
+}
+
+5.modelパッケージ内にStockParser.javaを以下のように作成
+●model.StockParser.java
+
+package model;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockParser {
+	public List<Stock> getList(String path){
+		List<Stock> list=new ArrayList<>();
+		BufferedReader br=null;
+		try {
+			FileInputStream fis=new FileInputStream(path);
+			InputStreamReader isr=new InputStreamReader(fis,"UTF-8");
+			br=new BufferedReader(isr);
+			String line;
+			while((line=br.readLine()) != null){
+				if(line.startsWith("コード")){
+					continue;
+				}
+				String[] vals=line.split(",",-1);
+				list.add(new Stock(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6],
+				vals[7], vals[8]));
+				
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			if(br !=null){
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}	
+		return list;
+	}
+
+}
+
+6.controllerパッケージを作成し、その中にIndex.java(Servlet)を作成する。
+●controller.Index.java
+
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Stock;
+import model.StockParser;
+
+
+@WebServlet("/index.html")
+public class Index extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext application=this.getServletContext();
+		List<Stock> list=(List<Stock>)application.getAttribute("list");
+		if(list==null){
+			String path=application.getRealPath("/WEB-INF/data/stocks_2017-08-16.csv");
+			StockParser parser=new StockParser();
+			list=parser.getList(path);
+			application.setAttribute("list",list);
+		}
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/index.jsp");
+		rd.forward(request, response);		
+	}
+}
+
+7.WEB-INFの中にviewフォルダを作り、その中にindex.jspを作成する。
+●index.jsp(WEB-INF/view/index.jsp)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+  <% 
+  List<Stock> list=(List<Stock>)application.getAttribute("list");
+ 
+  %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Insert title here</title>
+</head>
+<body>
+<%if(list !=null && list.size() >0) {%>
+<table border="1">
+<tr>
+<th>コード</th>
+<th>銘柄名</th>
+<th>市場</th>
+<th>始値</th>
+<th>高値</th>
+<th>安値</th>
+<th>終値</th>
+<th>出来高</th>
+<th>売買代金</th>
+</tr>
+<%for(Stock s:list){ %>
+<tr>
+<td><%=s.getCode() %></td>
+<td><%=s.getName() %></td>
+<td><%=s.getPlace() %></td>
+<td><%=s.getOpen() %></td>
+<td><%=s.getHigh() %></td>
+<td><%=s.getLow() %></td>
+<td><%=s.getEnd() %></td>
+<td><%=s.getAmount() %></td>
+<td><%=s.getSales() %></td>
+</tr>
+<%} %>
+</table>
+<%} %>
+
+</body>
+</html>
+
+8.以下のように表示されれば成功だ。
+
+[別解]
+配列を使った解答例
+〇model.Stock.java
+
+package model;
+
+import java.io.Serializable;
+
+public class Stock implements Serializable{
+	private String[] data;
+	public Stock() {};
+	public Stock(String[] data) {
+		this.data=data;
+	}
+	public String[] getData() {
+		return data;
+	}
+	public void setData(String[] data) {
+		this.data = data;
+	}
+
+
+}
+
+〇model.StockParser.java
+
+package model;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class StockParser {
+	private List<String> headers;
+	public List<Stock> getList(String path){
+		List<Stock> list=new ArrayList<>();
+		BufferedReader br=null;
+		try {
+			FileInputStream fis=new FileInputStream(path);
+			InputStreamReader isr=new InputStreamReader(fis,"UTF-8");
+			br=new BufferedReader(isr);
+			String line;
+			while((line=br.readLine())!=null) {
+				String[] data=line.split(",",-1);
+				if(line.startsWith("コード")) {
+					this.headers=Arrays.asList(data);
+				}else {
+					Stock stock=new Stock(data);
+					list.add(stock);
+				}
+			}
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(list.size());
+		return list;
+	}
+	public List<String> getHeaders() {
+		return this.headers;
+	}
+}
+
+〇controller.Index.java
+
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Stock;
+import model.StockParser;
+
+@WebServlet("/Index")
+public class Index extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ServletContext application=this.getServletContext();
+		List<Stock> list=(List<Stock>)application.getAttribute("list");
+		if(list ==null) {
+			String path=application.getRealPath("/WEB-INF/data/stocks_2017-08-16.csv");
+			StockParser parser=new StockParser();
+			list=parser.getList(path);
+			List<String> headers=parser.getHeaders();
+			application.setAttribute("headers", headers);
+			application.setAttribute("list", list);
+		}
+		request.getRequestDispatcher("/WEB-INF/view/index.jsp").forward(request, response);
+	}
+}
+
+〇/WEB-INF/view/index.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+List<String> headers=(List<String>)application.getAttribute("headers");
+List<Stock> list=(List<Stock>)application.getAttribute("list");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p>全<%=list.size() %>件</p>
+<%if(list != null && list.size()>0){ %>
+	<table border="1">
+		<tr>
+		<%for(String header:headers) {%>
+			<th><%=header %></th>
+		<%} %>
+		<tr>
+		<%for(Stock s:list){ %>
+		<tr>
+			<%for(String str:s.getData()){ %>
+			<td><%=str %></td>
+			<%} %>
+		</tr>
+		<%} %>
+	</table>
+<%} %>
+</body>
+</html>
+
+
+JSP & Servlet(株価検索アプリ)
+
+1.新規動的プロジェクトからstockappを作成する。
+2.以下から株価csvファイルをダウンロードする。
+3.新規フォルダからassetsフォルダを配置し、その中にさきほどダウンロードしたcsvファイルを配置する。
+4.MySQLのコネクターをWEB-INF/libフォルダ内に配置
+5.MySQLで新規データベースでstockappを作成する。
+
+CREATE DATABASE stockapp
+DEFAULT CHARACTER SET utf8;
+
+6.stockapp内にstocksテーブルを作成する。
+
+CREATE TABLE stocks(
+code varchar(10),
+name varchar(255),
+place varchar(100),
+open varchar(30),
+high varchar(30),
+low varchar(30),
+end varchar(30),
+amount varchar(30),
+sales varchar(30)
+ );
+
+7.Javaでデータベースに接続しファイルを読み込みながらインサートする。
+新規クラスからutilパッケージにInsertDB.javaを以下のように作成する。
+util.InsertDB.java
+
+package util;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class InsertDB {
+	public static void main(String[] args){
+		try {
+			FileInputStream fis = new FileInputStream("assets/stocks_2017-08-16.csv");
+			InputStreamReader isr=new InputStreamReader(fis,"UTF-8");
+			BufferedReader br=new BufferedReader(isr);
+			//DB接続
+			Class.forName("com.mysql.jdbc.Driver");
+			String url="jdbc:mysql://localhost:3306/stockapp?useUnicode=true&characterEncoding=utf8";
+			String user="root";
+			String pass="root";
+			Connection db=DriverManager.getConnection(url,user,pass);
+			db.setAutoCommit(false);
+			PreparedStatement ps=db.prepareStatement("INSERT INTO stocks VALUES(?,?,?,?,?,?,?,?,?)");
+			String line;
+			while((line=br.readLine()) !=null){
+				if(line.startsWith("コード")){
+					continue;
+				}
+				String[] vals=line.split(",",-1);
+				ps.setString(1, vals[0]);
+				ps.setString(2, vals[1]);
+				ps.setString(3, vals[2]);
+				ps.setString(4, vals[3]);
+				ps.setString(5, vals[4]);
+				ps.setString(6, vals[5]);
+				ps.setString(7, vals[6]);
+				ps.setString(8, vals[7]);
+				ps.setString(9, vals[8]);
+				ps.executeUpdate();
+			}
+			db.commit();
+			db.close();
+			br.close();
+			System.out.println("done!");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+8.Javaアプリケーションで実行しよう。以下のようにDBにデータが挿入されれば成功だ。
+9.DBにデータが入ったのでこのあとはWebアプリとして仕上げる。最初にMETA−INFフォルダ内context.xmlを以下のように作成して配置する。
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+      name="stockapp"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/stockapp"
+      connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false;useUnicode=true;characterEncoding=UTF-8;"
+      username="root"
+      password="root"
+      validationQuery="select 1"/>
+ </Context>
+
+10.modelパッケージ内にStock.javaを作成する。
+model.Stock.java
+
+package model;
+
+import java.io.Serializable;
+
+public class Stock implements Serializable{
+	private String code,name,place,open,high,low,end,amount,sales;
+	public Stock(){}
+	public Stock(String code, String name, String place, String open, String high, String low, String end,
+			String amount, String sales) {
+		this.code = code;
+		this.name = name;
+		this.place = place;
+		this.open = open;
+		this.high = high;
+		this.low = low;
+		this.end = end;
+		this.amount = amount;
+		this.sales = sales;
+	}
+	public String getCode() {
+		return code;
+	}
+	public String getName() {
+		return name;
+	}
+	public String getPlace() {
+		return place;
+	}
+	public String getOpen() {
+		return open;
+	}
+	public String getHigh() {
+		return high;
+	}
+	public String getLow() {
+		return low;
+	}
+	public String getEnd() {
+		return end;
+	}
+	public String getAmount() {
+		return amount;
+	}
+	public String getSales() {
+		return sales;
+	}	
+}
+
+10.続いてmodelパッケージ内にStockDAOを以下のように作成
+model.StockDAO.java
+
+package model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+public class StockDAO {
+	private Connection db;
+	private PreparedStatement ps;
+	private ResultSet rs;
+	
+	private void connect() throws NamingException, SQLException{
+		Context context=new InitialContext();
+		DataSource ds=(DataSource)context.lookup("java:comp/env/stockapp");
+		db=ds.getConnection();	
+	}
+	private void disconnect(){
+		try {
+			if(rs !=null){
+				rs.close();
+			}
+			if(ps != null){
+				ps.close();
+			}
+			if(db !=null){
+				db.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public List<Stock> getList(int limit,int offset){
+		List<Stock> list=new ArrayList<>();
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM stocks LIMIT ? OFFSET ?");
+			ps.setInt(1, limit);
+			ps.setInt(2, offset);
+			rs=ps.executeQuery();
+			while(rs.next()){
+				Stock stock=new Stock(
+						rs.getString("code"),
+						rs.getString("name"),
+						rs.getString("place"),
+						rs.getString("open"),
+						rs.getString("high"),
+						rs.getString("low"),
+						rs.getString("end"),
+						rs.getString("amount"),
+						rs.getString("sales")
+						);
+				list.add(stock);
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return list;
+	}
+	public List<Stock> getList(String code,int limit,int offset){
+		List<Stock> list=new ArrayList<>();
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM stocks WHERE code LIKE ? LIMIT ? OFFSET ?");
+			ps.setString(1, code+"%");
+			ps.setInt(2, limit);
+			ps.setInt(3, offset);
+			rs=ps.executeQuery();
+			while(rs.next()){
+				Stock stock=new Stock(
+						rs.getString("code"),
+						rs.getString("name"),
+						rs.getString("place"),
+						rs.getString("open"),
+						rs.getString("high"),
+						rs.getString("low"),
+						rs.getString("end"),
+						rs.getString("amount"),
+						rs.getString("sales")
+						);
+				list.add(stock);
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return list;
+	}
+	public int getCount(){
+		int total=0;
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT count(*) AS total FROM stocks");
+			rs=ps.executeQuery();
+			if(rs.next()){
+				total=rs.getInt("total");
+			}
+		} catch (NamingException | SQLException e) {
+			
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return total;
+	}
+	public int getCount(String code){
+		int total=0;
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT count(*) AS total FROM stocks WHERE code LIKE ?");
+			ps.setString(1, code+"%");
+			rs=ps.executeQuery();
+			if(rs.next()){
+				total=rs.getInt("total");
+			}
+		} catch (NamingException | SQLException e) {
+			
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return total;
+	}	
+}
+
+11.controllerパッケージ内にIndex.javaを作成する。
+controller.Index.java
+
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.Stock;
+import model.StockDAO;
+
+
+@WebServlet("/index.html")
+public class Index extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private static final int LIMIT=20;
+       
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String page=request.getParameter("page");
+		int pageNo=page==null ? 1:Integer.parseInt(page);
+		String code=request.getParameter("code");
+		StockDAO dao=new StockDAO();
+		List<Stock> list=null;
+		int total;
+		if(code==null){
+			total=dao.getCount();
+			list=dao.getList(LIMIT, (pageNo-1)*LIMIT);
+		}else{
+			total=dao.getCount(code);
+			list=dao.getList(code, LIMIT,(pageNo-1)*LIMIT);
+			request.setAttribute("code", code);
+		}
+		request.setAttribute("total", total);
+		request.setAttribute("page", pageNo);
+		request.setAttribute("limit", LIMIT);
+		request.setAttribute("list", list);
+		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/view/index.jsp");
+		rd.forward(request, response);
+	}
+}
+
+12.WEB-INFの中にviewフォルダを作成しその中にindex.jspを作成する。
+/WEB-INF/view/index.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.util.*,model.*"%>
+<%
+Integer total=(Integer)request.getAttribute("total");
+Integer pageNo=(Integer)request.getAttribute("page");
+Integer limit=(Integer)request.getAttribute("limit");
+List<Stock> list =(List<Stock>)request.getAttribute("list");
+String code=(String)request.getAttribute("code");
+code=code==null? "":code;
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>株価App</title>
+</head>
+<body>
+<form action="/stockapp/" method="get">
+コード:<input type="text" name="code" value="<%=code %>">
+<button type="submit">検索</button>
+</form>
+<%if(!code.isEmpty()){ %>
+<a href="/stockapp/">一覧</a>
+<%} %>
+<%if(list != null && list.size() >0){ %>
+<p>全<%=total %>件中<%=(pageNo-1)*limit+1 %>~<%=Math.min(total,pageNo*limit) %>件表示</p>
+<p>
+<%if(pageNo>1){ %>
+<a href="/stockapp/index.html?page=<%=pageNo-1+(code.isEmpty()?"":"&code="+code) %>">&larr;前へ</a>
+<%} %>
+<%if(pageNo*limit<total){ %>
+<a href="/stockapp/index.html?page=<%=pageNo+1+(code.isEmpty()?"":"&code="+code) %>">次へ&rarr;</a>
+<%} %>
+</p>
+<table border="1">
+<tr>
+<th>コード</th>
+<th>銘柄名</th>
+<th>市場</th>
+<th>始値</th>
+<th>高値</th>
+<th>安値</th>
+<th>終値</th>
+<th>出来高</th>
+<th>売買代金</th>
+</tr>
+<%for(Stock s:list){ %>
+<tr>
+<td><%=s.getCode() %></td>
+<td><%=s.getName() %></td>
+<td><%=s.getPlace() %></td>
+<td><%=s.getOpen() %></td>
+<td><%=s.getHigh() %></td>
+<td><%=s.getLow() %></td>
+<td><%=s.getEnd() %></td>
+<td><%=s.getAmount() %></td>
+<td><%=s.getSales() %></td>
+
+</tr>
+<%} %>
+</table>
+<%} %>
+</body>
+</html>
+
+★Day54
+JSP & Servlet-8日目(MySQLとの連携)
+
+いよいよMySQLと連携させて、標準的なCRUDアプリを作成してみよう。
+[実行例]
+●スタート画面
+
+
+●フォームに入力する
+
+
+●登録ボタンを押すと、登録しましたというメッセージが表示されるとともに下部にリストアップ。
+
+
+●同様の作業を繰り返し3件ほど登録する。
+
+
+●更新ボタンを押すとその情報がフォームに表示され、編集モードとなる(図はpro3の更新を押した)
+
+
+●値段を8000円に変更して、更新ボタンを押した。
+
+
+●削除を押すと確認のダイアログ(今回はpro1の削除ボタンを押した)
+
+
+●okを押すと項目が削除される。
+
+
+[作成]
+１．MySQLでデータベース[product]を作成する。
+CREATE DATABASE product
+DEFAULT CHARACTER SET utf8;
+
+2
+DEFAULT CHARACTER SET utf8;
+2．データベースproductに[products]テーブルを作成する。
+
+CREATE TABLE products(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(255) NOT NULL,
+price INT,
+updated DATETIME
+);
+
+３.https://dev.mysql.com/downloads/connector/j/にアクセスして、MySQLのJDBCをダウンロードする。
+
+遷移したら「No thanks, just start my download.」をクリック
+
+
+4.エクリプス。新規動的Webプロジェクトを選択し「joytas8」を作成する。
+5.WEB-INFフォルダにあるlibフォルダに先程ダウンロードしたJDBCをコピペで貼り付ける。
+
+6.context.xmlを以下のように編集。
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+      name="jdbc/jsp"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/product"
+      connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false"
+      username="root"
+      validationQuery="select 1"/>
+ </Context>
+
+上はrootユーザー、パスワードなしが前提だが、ユーザー、パスワードを設定している場合は以下
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+  <Resource
+      name="jdbc/jsp"
+      auth="Container"
+      type="javax.sql.DataSource"
+      driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/product"
+      connectionProperties="autoReconnect=true;verifyServerCertificate=false;useSSL=false;requireSSL=false"
+      username="ユーザーネーム"
+      password="パスワード"
+      validationQuery="select 1"/>
+ </Context>
+
+7.作成したcontext.xmlをMETA-INFの直下に配置
+
+
+8.modelの作成。modelパッケージにProductクラスを以下のように作成
+●model.Product.java
+
+package model;
+import java.io.Serializable;
+
+public class Product implements Serializable{
+	private int id;
+	private String name;
+	private int price;
+	private String updated;
+	public Product(){}
+	public Product(String name,int price,String updated){
+		this.name=name;
+		this.price=price;
+		this.updated=updated;
+	}
+	public Product(int id,String name,int price,String updated){
+		this(name,price,updated);
+		this.id=id;
+		
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public String getUpdated() {
+		return updated;
+	}
+	public void setUpdated(String updated) {
+		this.updated = updated;
+	}	
+
+}
+
+9.DAOの作成。daoパッケージを作成し、その中にProductDAO.javaを作成する。
+●dao.ProductDAO.java
+
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import model.Product;
+
+public class ProductDAO {
+	private Connection db;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+private void getConnection() throws NamingException, SQLException{	
+			Context context=new InitialContext();
+			DataSource ds = (DataSource) context.lookup("java:comp/env/jdbc/jsp");
+			this.db=ds.getConnection();	
+	}
+	private void disconnect(){
+		try{
+			if(rs != null){rs.close();}
+			if(ps != null){ps.close();}
+			if(db != null){db.close();}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}	
+	}
+	public List<Product> findAll(){
+		
+		List<Product> productList=new ArrayList<>();
+		try {
+			this.getConnection();
+			ps=db.prepareStatement("SELECT * FROM products ORDER BY id DESC");
+			rs=ps.executeQuery();
+			while(rs.next()){
+				int id=rs.getInt("id");
+				String name=rs.getString("name");
+				int price=rs.getInt("price");
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String updated=sdf.format(rs.getTimestamp("updated"));
+				Product product=new Product(id,name,price,updated);
+				productList.add(product);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return productList;
+	}
+	public boolean insertOne(Product product){
+		try {
+			this.getConnection();
+			ps=db.prepareStatement("INSERT INTO products(name,price,updated) VALUES(?,?,?)");
+			ps.setString(1,product.getName());
+			ps.setInt(2,product.getPrice());
+			ps.setString(3, product.getUpdated());
+			int result=ps.executeUpdate();
+			if(result != 1){
+				return false;
+			}
+		} catch (SQLException e) {	
+			e.printStackTrace();
+		} catch (NamingException e) {	
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return true;
+	}
+	public Product findOne(int id){
+		Product product=null;
+		try{
+			this.getConnection();
+			ps=db.prepareStatement("SELECT * FROM products WHERE id=?");
+			ps.setInt(1, id);
+			rs=ps.executeQuery();
+			if(rs.next()){
+				String name=rs.getString("name");
+				int price=rs.getInt("price");
+				String updated=rs.getString("updated");
+				product=new Product(id,name,price,updated);
+			}
+			
+		}catch (SQLException e) {	
+			e.printStackTrace();
+		} catch (NamingException e) {	
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return product;
+	}
+	public boolean updateOne(Product product){
+		try{
+			this.getConnection();
+			ps=db.prepareStatement("UPDATE products SET name=?,price=?,updated=? WHERE id=?");
+			ps.setString(1, product.getName());
+			ps.setInt(2, product.getPrice());
+			ps.setString(3, product.getUpdated());
+			ps.setInt(4, product.getId());
+			int result=ps.executeUpdate();
+			if(result != 1){
+				return false;
+			}
+		}catch (SQLException e) {	
+			e.printStackTrace();
+		} catch (NamingException e) {	
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return true;
+	}
+	public boolean deleteOne(int id){
+		
+		try{
+			this.getConnection();
+			ps=db.prepareStatement("DELETE FROM products WHERE id=?");
+			ps.setInt(1, id);
+			int result=ps.executeUpdate();
+			if(result != 1){
+				return false;
+			}
+		}catch (SQLException e) {	
+			e.printStackTrace();
+		} catch (NamingException e) {	
+			e.printStackTrace();
+		}finally{
+			this.disconnect();
+		}
+		return true;
+	}
+	
+}
+
+10.viewの作成。以下の図のようなフォルダ構成としmain.jspを作成する。
+
+●main.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+List<Product> list=(List<Product>)request.getAttribute("list");
+Product product=(Product)request.getAttribute("product");
+String id=product==null ? "":String.valueOf(product.getId());
+String name=product == null ? "":product.getName();
+String price=product == null ? "":String.valueOf(product.getPrice());
+String title=(String)request.getAttribute("title");
+title=title==null? "商品を登録してください。":title;
+String err=(String)request.getAttribute("err");
+String msg=(String)request.getAttribute("msg");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<title>Joytas8</title>
+</head>
+<body>
+<div class="container" style="margin-top:20px;">
+<% if(err !=null){%>
+<div class="alert alert-danger" role="alert">
+<%=err %>
+</div>
+<%} %>
+<% if(msg !=null){%>
+<div class="alert alert-success" role="alert">
+<%=msg %>
+</div>
+<%} %>
+<p><%=title %></p>
+
+<form action="/joytas8/main" method="post" >
+  <div class="form-group">
+    <label for="name">製品名:</label>
+    <input type="text" id="name" name="name" class="form-control" style="width:200px;" value="<%=name%>">
+  </div>
+  <div class="form-group">
+    <label for="price">価格:</label>
+    <input type="number" id="price" name="price" class="form-control" style="width:200px;" value="<%=price%>">
+  </div>
+  <%if(!id.isEmpty()) {%>
+  <input type="hidden" name="id" value="<%=id %>">
+  <%} %>
+  <button type="submit" class="btn btn-primary"><%=id.isEmpty()?"登録":"更新" %></button>
+</form>
+
+<%if(list != null && list.size()>0){%>
+<table class="table table-striped mt-4">
+<tr><th>製品名</th><th>価格</th><th>更新日</th><th></th></tr>
+<%for(Product p:list) {%>
+<tr><th><%=p.getName() %></th><td><%=String.format("%,3d円",p.getPrice()) %></td><td><%=p.getUpdated() %></td>
+<td>
+<a href="/joytas8/main?action=update&id=<%=String.valueOf(p.getId()) %>" class="btn btn-primary">更新</a>
+<a href="/joytas8/main?action=delete&id=<%=String.valueOf(p.getId()) %>" class="btn btn-danger" onclick="return confirm('削除してよろしいですか？');">削除</a>
+</td>
+</tr>
+<%} %>
+</table>
+<%} %>
+</div>
+<script>
+var forms=document.getElementsByClassName("form-control");
+var alerts=document.getElementsByClassName("alert");
+for(var i=0;i<forms.length;i++){
+	forms[i].addEventListener("focus",function(){
+		for(var j=0;j<alerts.length;j++){
+			alerts[j].style.display="none";
+		}
+	});
+}
+</script>
+</body>
+</html>
+
+●controller.Main.java
+
+package controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.ProductDAO;
+import model.Product;
+
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+          
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ProductDAO dao=new ProductDAO();
+		String action=request.getParameter("action");
+		if(action != null && action.equals("delete")){		
+			dao.deleteOne(Integer.parseInt(request.getParameter("id")));
+			request.setAttribute("msg", "1件削除しました。");
+		}else if(action != null && action.equals("update")){
+			Product product=dao.findOne(Integer.parseInt(request.getParameter("id")));
+			request.setAttribute("product", product);
+			request.setAttribute("title", "項目を編集してください。");			
+		}
+		List<Product> list=dao.findAll();
+		request.setAttribute("list", list);
+		RequestDispatcher rd= request.getRequestDispatcher("/WEB-INF/view/main.jsp");
+		rd.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String name=request.getParameter("name");
+		String price=request.getParameter("price");
+		if(name.isEmpty() || price.isEmpty()){
+			request.setAttribute("err","未記入の項目があります！");
+		}else{
+			Date date=new Date();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String updated=sdf.format(date);
+			ProductDAO dao=new ProductDAO();
+			String id=request.getParameter("id");
+			if(id != null){
+				dao.updateOne(new Product(Integer.parseInt(id),name,Integer.parseInt(price),updated));
+				request.setAttribute("msg","1件更新しました。");
+			}else{
+				dao.insertOne(new Product(name,Integer.parseInt(price),updated));
+				request.setAttribute("msg","1件登録しました。");
+			}	
+		}		
+		doGet(request,response);		
+	}
+}
+
+
+12.サーバーで実行後以下のアドレスにリクエストして、実行例のようになることを確認する。
+http://localhost:8080/joytas8/main
+
+★Day55
+
+JSP & Servlet-14日目(英和辞書アプリの作成1)
+
+MySQLを利用して英和辞書アプリケーションを作成してみよう。
+
+準備
+1.辞書データとして、クジラハンドさんが提供してくれている著作権フリーの英和辞書(TSVファイル)を準備する。(下から同一のものをダウンロードできる)
+Icon
+著作権フリーの英和辞書
+ 1 file(s)    1.75 MB
+
+2.解凍してejdic-hand-utf8.txtをテキストエディターで開いてみよう。
+英単語と意味がタブ区切りで並ぶTSVファイルであることがわかる。
+
+
+3.このファイルをもとにDBを作成しよう。まずはMySQLに以下のコマンド打ちejwordデータベースを作成する。
+
+1
+CREATE DATABASE ejword
+2
+DEFAULT CHARACTER SET utf8;
+4.wordsテーブルを以下のように作成。
+
+1
+CREATE TABLE words(
+2
+id INT PRIMARY KEY AUTO_INCREMENT,
+3
+title VARCHAR(255),
+4
+body text
+5
+);
+5.エクリプスで新規動的プロジェクトを作成しプロジェクト名をejwordとする。
+6.プロジェクトの直下にassetsフォルダを新規に作成し、そこにejdic-hand-utf8.txtを貼り付ける。
+
+
+DBにインサート
+7.WEB-INF/libの中にjdbcを貼り付ける(詳しくはこちらの記事参照)
+
+8.Java Resources/srcフォルダの下にutilパッケージを作成し、その中にCreateDB.javaを以下のように作成する。(Servletではなく、mainメソッドのある普通のクラスである点に注意)
+●util.CreateDB.java
+
+package util;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class CreateDB {
+	//メインメソッド
+	public static void main(String[] args) {
+		try {
+			//ファイル読み込み
+			FileInputStream fis = new FileInputStream("assets/ejdic-hand-utf8.txt");
+			InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+			
+			//データソースを利用せずダイレクトに接続する。
+			Class.forName("com.mysql.jdbc.Driver");
+			String url="jdbc:mysql://localhost:3306/ejword?useUnicode=true&characterEncoding=utf8";
+			String user = "root";
+			String pass = "root";
+			Connection db = DriverManager.getConnection(url, user, pass);
+			
+			//トランザクション処理開始
+			db.setAutoCommit(false);
+			PreparedStatement ps = db.prepareStatement("INSERT INTO words(title,body) VALUES(?,?)");
+			String line;
+			while ((line = br.readLine()) != null) {
+				//1行毎にデータを登録していく
+				String[] vals = line.split("\t");
+				ps.setString(1, vals[0]);
+				ps.setString(2, vals[1]);
+				ps.executeUpdate();
+			}
+			//例外が発生しなければcommit(確定)
+			db.commit();
+			db.close();
+			br.close();
+			//時間がかかる処理なのでコンソールで終了を伝える。
+			System.out.println("done!");
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+9.ConnectDB.javaをJavaアプリケーションとして実行しよう。コンソールにdone!と表示され、DBにデータが入っていれば成功だ。
+
+
+★Day57
+JSP & Servlet-17日目(英和辞書アプリの作成4)
+
+英和辞書アプリの作成を前回の続きから行う。
+検索結果が多い場合には[次へ]などのナビゲーションが必要となる。そのナビゲーションの実装と、検索結果をブックマークできるようにリクエストの処理をGETで行うように変更する。
+
+DAOへの追記
+1.WordDAOにページによって取得範囲を変えるメソッドを追記する。
+変更箇所：112行目以降のgetListBySearchWordメソッドを追記する
+●dao.WordDAO.java
+
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import model.Word;
+
+public class WordDAO {
+	private Connection db;
+	private PreparedStatement ps;
+	private ResultSet rs;
+
+	private void connect() throws NamingException, SQLException {
+			Context context=new InitialContext();
+			DataSource ds=(DataSource)context.lookup("java:comp/env/ejword");
+			this.db=ds.getConnection();
+	}
+	private void disconnect() throws SQLException {
+		if(rs !=null) {
+			rs.close();
+		}
+		if(ps !=null) {
+			ps.close();
+		}
+		if(db != null) {
+			db.close();
+		}
+	}
+	public List<Word> getListBySearchWord(String searchWord,String mode){
+		List<Word> list=new ArrayList<>();
+		switch(mode) {
+		case "startsWith":
+			searchWord=searchWord+"%";
+			break;
+		case "contains":
+			searchWord="%"+searchWord+"%";
+			break;
+		case "endsWith":
+			searchWord="%"+searchWord;
+		}
+		try {
+			this.connect();
+			ps=db.prepareStatement("SELECT * FROM words WHERE title LIKE ?");
+			ps.setString(1, searchWord);
+			//System.out.println(ps);
+			rs=ps.executeQuery();
+			while(rs.next()) {
+				String title=rs.getString("title");
+				String body=rs.getString("body");
+				Word w=new Word(title,body);
+				list.add(w);
+			}
+
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				this.disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	public List<Word> getListBySearchWord(String searchWord,String mode,int limit){
+		List<Word> list=new ArrayList<>();
+		switch(mode) {
+		case "startsWith":
+			searchWord=searchWord+"%";
+			break;
+		case "contains":
+			searchWord="%"+searchWord+"%";
+			break;
+		case "endsWith":
+			searchWord="%"+searchWord;
+		}
+		try {
+			this.connect();
+			ps = db.prepareStatement("SELECT * FROM words WHERE title LIKE ? LIMIT ?");
+			ps.setString(1, searchWord);
+			ps.setInt(2, limit);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String title = rs.getString("title");
+				String body = rs.getString("body");
+				list.add(new Word(id, title, body));
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.disconnect();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	public List<Word> getListBySearchWord(String searchWord,String mode,int limit,int offset){
+		List<Word> list=new ArrayList<>();
+		switch(mode) {
+		case "startsWith":
+			searchWord=searchWord+"%";
+			break;
+		case "contains":
+			searchWord="%"+searchWord+"%";
+			break;
+		case "endsWith":
+			searchWord="%"+searchWord;
+		}
+		try {
+			this.connect();
+			ps = db.prepareStatement("SELECT * FROM words WHERE title LIKE ? LIMIT ? OFFSET ?");
+			ps.setString(1, searchWord);
+			ps.setInt(2, limit);
+			ps.setInt(3, offset);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String title = rs.getString("title");
+				String body = rs.getString("body");
+				list.add(new Word(id, title, body));
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.disconnect();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	//一致件数を求めるメソッド
+	public int getCount(String searchWord,String mode){
+		switch(mode) {
+		case "startsWith":
+			searchWord=searchWord+"%";
+			break;
+		case "contains":
+			searchWord="%"+searchWord+"%";
+			break;
+		case "endsWith":
+			searchWord="%"+searchWord;
+		}
+		int total=0;
+		try {
+			this.connect();
+			ps = db.prepareStatement("SELECT count(*) AS total FROM words WHERE title LIKE ?");
+			ps.setString(1, searchWord);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt("total");
+			}
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				this.disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return total;
+	}
+
+}
+
+controllerの変更
+2.Main.javaを以下のように変更する。すべてdoGetで処理をするようにする。(doPostはコメントアウトまたは削除)
+●controller.Main.java
+package controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.WordDAO;
+import model.Word;
+
+@WebServlet("/main")
+public class Main extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private static final int LIMIT = 20;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		String searchWord = (String) request.getParameter("searchWord");
+		if (searchWord != null) {
+			String mode = (String) request.getParameter("mode");
+			if(mode ==null){
+				mode="startsWith";
+			}
+			String page=(String)request.getParameter("page");
+			int pageNo=page==null? 1:Integer.parseInt(page);
+			WordDAO dao = new WordDAO();
+			int total = dao.getCount(searchWord, mode);
+			List<Word> list = dao.getListBySearchWord(searchWord, mode, LIMIT,(pageNo-1)*LIMIT);
+			request.setAttribute("total", total);
+			request.setAttribute("limit", LIMIT);
+			request.setAttribute("searchWord", searchWord);
+			request.setAttribute("mode", mode);
+			request.setAttribute("list", list);
+			request.setAttribute("pageNo",pageNo);
+		}
+
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/view/main.jsp");
+		rd.forward(request, response);
+	}
+
+}
+
+
+viewの変更
+3.main.jspを以下のように変更する。
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="model.*,java.util.*"%>
+<%
+String searchWord=(String)request.getAttribute("searchWord");
+searchWord=searchWord ==null? "":searchWord;
+String mode=(String)request.getAttribute("mode");
+mode=mode == null? "":mode;
+List<Word> list=(List<Word>)request.getAttribute("list");
+Integer total=(Integer)request.getAttribute("total");
+Integer limit=(Integer)request.getAttribute("limit");
+Integer pageNo=(Integer)request.getAttribute("pageNo");
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EJWord</title>
+</head>
+<body>
+<form action="/ejword/main" method="get">
+<input type="text" name="searchWord" value="<%=searchWord%>">
+<select name="mode">
+<option value="startsWith"<%if(mode.equals("statsWith")) out.print(" selected"); %>>で始まる</option>
+<option value="contains"<%if(mode.equals("contains")) out.print(" selected"); %>>含む</option>
+<option value="endsWith"<%if(mode.equals("endsWith")) out.print(" selected"); %>>で終わる</option>
+<option value="match"<%if(mode.equals("match")) out.print(" selected"); %>>一致する</option>
+</select>
+<button type="submit">検索</button>
+</form>
+<% if(list !=null && list.size() > 0){ %>
+<%-- 件数表示部分作成 --%>
+
+<% if(total <= limit){ %>
+<p>全<%=total %>件</p>
+<%}else{ %>
+<%--ページ番号を利用して何件から何件を表示しているのかを表示する --%>
+		<p>全<%=total %>件中 <%=(pageNo-1)*limit+1 %>~<%=pageNo*limit > total? total:pageNo*limit %>件を表示</p>
+<%--ページ番号が１より大きかったら前へのリンクを表示 --%>
+		<ul>
+		<%if(pageNo > 1) {%>
+		  <li><a href="/ejword/main?searchWord=<%=searchWord %>&mode=<%=mode %>&page=<%=pageNo-1%>"><span aria-hidden="true">&larr;</span>前へ</a></li>
+
+		<%} %>
+		<%--件数が全件数に届かないときは次へのリンクを表示 --%>
+		<%if(pageNo*limit < total) {%>
+		<li><a href="/ejword/main?searchWord=<%=searchWord %>&mode=<%=mode %>&page=<%=pageNo+1%>">次へ<span aria-hidden="true">&rarr;</span></a></li>
+
+		<%} %>
+		</ul>
+<%} %>
+
+<table border="1">
+<% for(Word w:list){ %>
+<tr><th><%=w.getTitle() %></th><td><%=w.getBody() %></td></tr>
+<%} %>
+</table>
+<%} %>
+</body>
+</html>
+
+動作確認
+4.実行し以下のように動作すれば成功だ。
+●次があるときは次へのリンクが表示されている。
+
+●次も前もある時は両方表示されている。
+
+●最後のページ
+
+
+URLの確認
+5.GET通信でリクエストを処理するとデータがクエリパラメーターとなってURLに付与される。
+
+1
+http://localhost:8080/ejword/main?searchWord=book&mode=contains&page=1
+このURLをブックマークすることによっていつでも同じ検索結果を見ることができる。このように検索結果をブックマークしたいアプリには今回のようにGET通信用いることがポイントだ。
+
+
+
+
+
+

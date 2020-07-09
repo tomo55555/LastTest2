@@ -1,0 +1,910 @@
+★java授業ルーム
+
+ミヤタ  10:00
+import java.util.*;
+public class Lesson2{
+	public static void main(String[] args){
+		Scanner scan=new Scanner(System.in);
+		System.out.print("今日の年は?>");
+		int yer=scan.nextInt();
+		System.out.print("今日の月は?>");
+		int month=scan.nextInt();
+		System.out.print("今日の日は?>");
+		int day=scan.nextInt();
+		System.out.print("誕生日の年は?>");
+		int firstYer=scan.nextInt();
+		System.out.print("誕生日の月は?>");
+		int firstMonth=scan.nextInt();
+		System.out.print("誕生日の日は?>");
+		int firstDay=scan.nextInt();
+		int ansYer=yer-firstYer;
+		if(month<firstMonth || (month==firstMonth && day<firstDay)){
+			ansYer-=1;
+		}
+		System.out.printf("あなたの年齢は%d歳です。",ansYer);
+	}
+:100点:
+2
+
+
+mjpurin  11:53
+packageLesson/calcapp/logics/CalcLogic.java
+package calcapp.logics;
+public class CalcLogic{
+	public static int tasu(int a,int b){
+		return (a+b);
+	}
+	public static int hiku(int a,int b){
+		return (a-b);
+	}
+}
+packageLesson/calcapp/main/Calc.java
+package calcapp.main;
+public class Calc{
+	public static void main(String[] args){
+		int a=10;int b=2;
+		int total=calcapp.logics.CalcLogic.tasu(a,b);
+		int delta=calcapp.logics.CalcLogic.hiku(a,b);
+		System.out.println("足すと"+total+",引くと"+delta);
+	}
+}
+
+mjpurin  11:26
+C:\Users\PG_AM\javadev
+
+mjpurin  13:13
+package util;
+import java.util.*;
+public class Common{
+	public static void arrReverse(int[] arr){
+		for(int i=0;i<arr.length/2;i++){
+			int temp=arr[i];
+			arr[i]=arr[arr.length-1-i];
+			arr[arr.length-1-i]=temp;
+		}
+	}
+	public static void arrShuffle(int[] arr){
+		for(int i=0;i<arr.length-1;i++){
+			int index=new Random().nextInt(arr.length-i);
+			int temp=arr[index];
+			arr[index]=arr[arr.length-1-i];
+			arr[arr.length-1-i]=temp;
+		}
+	}
+}
+
+mjpurin  13:55
+コード８－８をコンパイルが通るまでやる
+:+1:
+10
+
+
+mjpurin  14:10
+コード8-13をコンパイル実行まで
+:+1:
+8
+
+14:10
+ Hero h=new Hero();
+        h.name="ミナト";
+        h.hp=100;
+        System.out.println("勇者"+h.name+"を生み出しました！");
+        h.sit(5);
+        h.slip();
+        h.sit(25);
+        h.run();
+
+mjpurin  10:16
+import java.util.*;
+public class Lesson2{
+	public static void main(String[] args){
+		System.out.print("カンマ区切りで数字いれてね>");
+		String input=new Scanner(System.in).nextLine();
+		String[] nums=input.split(",");
+		int sum=0;
+		for(String n:nums){
+			sum+=Integer.parseInt(n);
+		}
+		System.out.println("合計は"+sum);
+	}
+}
+
+mjpurin  10:21
+https://paiza.jp/challenges/info
+
+ITエンジニア専門の転職サイト【paiza転職】ITエンジニア専門の転職サイト【paiza転職】
+paizaプログラミングスキルチェック｜IT/Webプログラマー 転職・就職・学習サービスのpaiza [パイザ]
+paiza（パイザ）のプログラミングスキルチェックのサンプル問題。PHP、Perl、Python、Ruby、Java、C、C++、C#のそれぞれの解答も掲載。
+
+mjpurin  10:34
+import java.util.*;
+public class Lesson3{
+	public static void main(String[] args){
+		String word=new Scanner(System.in).next();
+		String word2=word.replaceAll("[aiueo]","");
+		System.out.println(word2);
+	}
+}
+
+mjpurin  10:40
+import java.util.*;
+public class Lesson4{
+	public static void main(String[] args){
+		Scanner scan=new Scanner(System.in);
+		System.out.print("数値いれてね>");
+		int n=scan.nextInt();
+		System.out.print("名前入れてね>");
+		String name=scan.nextLine();
+		System.out.printf("%sさんは%dといれました%n",name,n);
+	}
+}
+
+mjpurin  10:57
+import java.util.*;
+public class Lesson5{
+	public static void main(String[] args){
+		Scanner scan=new Scanner(System.in);
+		//String str=scan.nextLine();
+		//String[] data=str.split(" ");
+		//int a=Integer.parseInt(data[0]);
+		int a=scan.nextInt();
+		int b=scan.nextInt();
+		int c=scan.nextInt();
+		System.out.println("a,b,c:"+a+b+c);
+	}
+}
+
+sekizawa  11:14
+import java.util.*;
+public class PP{
+    public static void main(String[]args){
+        int x=10;
+        int count=0;
+        while(count<5){
+            if(kaibun(x)){
+                System.out.println(x);
+                count++;
+            }
+            x+=1;
+        }
+    }
+    public static boolean kaibun(int x){
+        String str=""+x;
+        char[] c=str.toCharArray();
+        for(int i=0;i<c.length/2;i++){
+            if(c[i]==c[c.length-1-i]){
+            }else{
+                return false;
+            }
+        }
+        return kaibun2(x);
+    }
+    public static boolean kaibun2(int x){
+        String str = Integer.toBinaryString(x);
+        char[] c=str.toCharArray();
+        for(int i=0;i<c.length/2;i++){
+            if(c[i]==c[c.length-1-i]){
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+mjpurin  13:29
+import java.util.*;
+public class Cleric{
+	String name;
+	int hp=50;
+	final int MAX_HP=50;
+	int mp=10;
+	final int MAX_MP=10;
+	public void selfAid(){
+		System.out.println(this.name+"はセルフエイドを唱えた!");	
+		this.hp=this.MAX_HP;
+		this.mp-=5;
+		System.out.println("HPが最大まで回復した");
+	}
+	public void aid(Hero h){
+		System.out.println(this.name+"はエイドを唱えた!");	
+		h.hp+=10;
+		this.mp-=5;
+		System.out.println(h.name+"のHPが10回復した");
+	}
+	public int pray(int sec){
+		System.out.println(this.name+"は"+sec+"秒間天に祈った!");
+		int recoverMp=sec+new Random().nextInt(3);
+		if(this.mp+recoverMp>MAX_MP){
+			recoverMp=MAX_MP-this.mp;
+		}
+		this.mp+=recoverMp;
+		System.out.println("MPが"+recoverMp+"回復した");
+		return recoverMp;
+	}
+}
+13:30
+public class Main3{
+	public static void main(String[] args){
+		Hero h1=new Hero("ミナト");
+		Hero h2=new Hero("ジェシカ");
+		Matango m1=new Matango();
+		m1.suffix='A';
+		Cleric c=new Cleric();
+		c.name="アラン";
+		h1.slip();
+		h2.slip();
+		m1.run();
+		c.aid(h1);
+	}
+}
+13:30
+public class Hero{
+	String name;
+	int hp;
+	public Hero(String name){
+		this.name=name;
+	}
+	public void sleep(){
+		this.hp=100;
+		System.out.println(this.name+"は、眠って回復した!");
+	}
+	public void sit(int sec){
+		this.hp+=sec;
+		System.out.println(this.name+"は、"+sec+"秒座った!");
+		System.out.println("HPが"+sec+"ポイント回復した");
+	}
+	public void slip(){
+		this.hp-=5;
+		System.out.println(this.name+"は、転んだ!");
+		System.out.println("5のダメージ");
+	}
+	public void run(){
+		System.out.println(this.name+"は、逃げ出した!");
+		System.out.println("GAMEOVER");
+		System.out.println("最終HPは"+this.hp+"でした");
+	}
+}
+13:31
+public class Matango{
+	int hp;
+	final int LEVEL=10;
+	char suffix;
+	public void run(){
+		System.out.println("お化けキノコ"+this.suffix+"は逃げ出した");
+	}
+}
+
+mjpurin  13:37
+public class Main3{
+	public static void main(String[] args){
+		Hero h1=new Hero("ミナト");
+		Hero h2=new Hero("ジェシカ");
+		h1.sleep();
+		h2.sleep();
+		Matango m1=new Matango();
+		m1.suffix='A';
+		Cleric c=new Cleric();
+		c.name="アラン";
+		h1.slip();
+		h2.slip();
+		m1.run();
+		c.aid(h1);
+		c.pray(3);
+		h1.run();
+		h2.run();
+	}
+}
+
+mjpurin  14:00
+public class Hero{
+	String name;
+	int hp;
+	Sword sword;
+	public Hero(String name){
+		this.name=name;
+	}
+	public void sleep(){
+		this.hp=100;
+		System.out.println(this.name+"は、眠って回復した!");
+	}
+	public void sit(int sec){
+		this.hp+=sec;
+		System.out.println(this.name+"は、"+sec+"秒座った!");
+		System.out.println("HPが"+sec+"ポイント回復した");
+	}
+	public void slip(){
+		this.hp-=5;
+		System.out.println(this.name+"は、転んだ!");
+		System.out.println("5のダメージ");
+	}
+	public void run(){
+		System.out.println(this.name+"は、逃げ出した!");
+		System.out.println("GAMEOVER");
+		System.out.println("最終HPは"+this.hp+"でした");
+	}
+	public void attack(Matango m){
+		System.out.println(this.name+"はマタンゴ"+m.suffix+"を"+this.sword.name+"で攻撃した");
+		System.out.println(this.sword.damage+"のダメージを与えた");
+		m.hp-=this.sword.damage;
+	}
+}
+14:01
+public class Main3{
+	public static void main(String[] args){
+		Hero h1=new Hero("ミナト");
+		Hero h2=new Hero("ジェシカ");
+		h1.sleep();
+		h2.sleep();
+		Matango m1=new Matango();
+		m1.suffix='A';
+		Cleric c=new Cleric();
+		c.name="アラン";
+		h1.slip();
+		h2.slip();
+		m1.run();
+		c.aid(h1);
+		c.pray(3);
+		Sword sword=new Sword();
+		sword.name="炎の剣";
+		sword.damage=10;
+		h1.sword=sword;
+		h1.attack(m1);
+		h1.run();
+		h2.run();
+	}
+}
+
+mjpurin  10:37
+import java.util.*;
+public class ObjectArr{
+	public static void main(String[] args){
+		int[] arr={3,5,7};
+		Sword s1=new Sword("炎の剣",20);
+		Sword s2=new Sword("氷の剣",18);
+		Sword s3=new Sword("ヒノキの剣",10);
+		Sword s4=new Sword("こんぼう",5);
+		Sword[] swords=new Sword[4];
+		swords[0]=s1;
+		swords[1]=s2;
+		swords[2]=s3;
+		swords[3]=s4;
+		Sword[] swords2={
+			new Sword("雷神の剣",100),	
+			new Sword("はやぶさの剣",50),	
+			new Sword("土の剣",8),	
+		};
+		Sword sword=swords2[new Random().nextInt(swords2.length)];
+		Hero h1=new Hero("みなと");
+		h1.sword=sword;
+		Matango m1=new Matango();
+		m1.suffix='A';
+		h1.attack(m1);
+		m1.run();
+	}
+}
+
+mjpurin  10:47
+import java.util.*;
+public class ObjectArr{
+	public static void main(String[] args){
+		//int[] arr={3,5,7};
+		Sword s1=new Sword("炎の剣",20);
+		Sword s2=new Sword("氷の剣",18);
+		Sword s3=new Sword("ヒノキの剣",10);
+		Sword s4=new Sword("こんぼう",5);
+		/*
+		Sword[] swords=new Sword[4];
+		swords[0]=s1;
+		swords[1]=s2;
+		swords[2]=s3;
+		swords[3]=s4;
+		*/
+		Sword[] swords2={
+			new Sword("雷神の剣",100),	
+			new Sword("はやぶさの剣",50),	
+			new Sword("土の剣",8),	
+			s1,s2,s3,s4
+		};
+		Sword sword=swords2[new Random().nextInt(swords2.length)];
+		Hero h1=new Hero("みなと");
+		h1.sword=sword;
+		Matango m1=new Matango();
+		m1.suffix='A';
+		h1.attack(m1);
+		m1.run();
+	}
+}
+
+mjpurin  11:00
+0...雷神の剣(100)
+1...はやぶさの剣(50)
+2...
+
+mjpurin  11:07
+ public static void showSwords(Swords[] sw){
+        for(int i=0;i<sw.length;i++){
+            System.out.printf("%d...%s(%d)%n",
+                    i,sw[i].name,sw[i].damage);
+        }
+    }
+
+mjpurin  11:19
+import java.util.*;
+public class ObjectArr{
+	public static void main(String[] args){
+		//int[] arr={3,5,7};
+		Sword s1=new Sword("炎の剣",20);
+		Sword s2=new Sword("氷の剣",18);
+		Sword s3=new Sword("ヒノキの剣",10);
+		Sword s4=new Sword("こんぼう",5);
+		/*
+		Sword[] swords=new Sword[4];
+		swords[0]=s1;
+		swords[1]=s2;
+		swords[2]=s3;
+		swords[3]=s4;
+		*/
+		Sword[] swords2={
+			new Sword("雷神の剣",100),	
+			new Sword("はやぶさの剣",50),	
+			new Sword("土の剣",8),	
+			s1,s2,s3,s4
+		};
+		showSwords(swords2);
+		System.out.print("どの武器を装備しますか>");
+		int num=new Scanner(System.in).nextInt();
+		Sword sword=swords2[num];
+		//Sword sword=swords2[new Random().nextInt(swords2.length)];
+		Hero h1=new Hero("みなと");
+		h1.equip(sword);
+		//h1.sword=sword;
+		Matango m1=new Matango();
+		m1.suffix='A';
+		h1.attack(m1);
+		m1.run();
+	}
+	public static void showSwords(Sword[] sw){
+		for(int i=0;i<sw.length;i++){
+			System.out.printf("%d...%s(%d)%n",
+					i,sw[i].name,sw[i].damage);
+		}
+	}
+}
+11:19
+public class Hero{
+	String name;
+	int hp;
+	Sword sword;
+	public Hero(){
+		this.hp=100;
+	}
+	public Hero(String name){
+		this();
+		this.name=name;
+	}
+	public void sleep(){
+		this.hp=100;
+		System.out.println(this.name+"は、眠って回復した!");
+	}
+	public void sit(int sec){
+		this.hp+=sec;
+		System.out.println(this.name+"は、"+sec+"秒座った!");
+		System.out.println("HPが"+sec+"ポイント回復した");
+	}
+	public void slip(){
+		this.hp-=5;
+		System.out.println(this.name+"は、転んだ!");
+		System.out.println("5のダメージ");
+	}
+	public void run(){
+		System.out.println(this.name+"は、逃げ出した!");
+		System.out.println("GAMEOVER");
+		System.out.println("最終HPは"+this.hp+"でした");
+	}
+	public void equip(Sword sw){
+		System.out.println(sw.name+"を装備した！");
+		this.sword=sw;
+	}
+	public void attack(Matango m){
+		System.out.println(this.name+"はマタンゴ"+m.suffix+"を"+this.sword.name+"で攻撃した");
+		System.out.println(this.sword.damage+"のダメージを与えた");
+		m.hp-=this.sword.damage;
+	}
+}
+
+Fujimine  12:49
+import java.util.*;//サイズと文字を指定して三角形を表示する
+public class Q6_5{
+    public static void main(String[] args){
+        Scanner scan=new Scanner(System.in);
+        System.out.print("サイズを入力してください>");
+        int inputSize=scan.nextInt();
+        System.out.print("表示する文字を入力してください>");
+        String inputStr=scan.next();
+        char[] inputChar=inputStr.toCharArray();    //受け取った文字列をchar型に変換
+        char dspC=inputChar[0];                     //一文字めを取り出して、char型変数に代入
+        disp(inputSize,dspC);                       //入力したサイズ、文字を引数にしてdispメソッド実行
+        disp(3,'赤');
+        disp(4,'青');
+        disp(5,'黄');
+    }
+    static void disp(int s,char c){         //s段の三角形をcを表示して作る
+        for(int i=0;i<s;i++){               //上から数えたとき、段数と文字の個数が一緒の三角形を作る
+            for(int j=0;j<i+1;j++){
+                System.out.print(c);
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+}
+
+しんぼー  12:57
+import java.util.*;
+public class Q6_7{
+    //素数かどうか判定して、10000以上10100未満の素数を全て表示する
+    //素数とは、1と自分自身で割り切れない、1以外の数
+    public static void main(String[] args){
+        for(int i=10000; i<10100; i++){
+            if(prime(i)){
+            System.out.print(i+" ");
+            }
+        }
+        System.out.println();
+    }
+    public static boolean prime(int x){
+        if(x<=3){
+            return true;
+        }
+        for(int i=2; i<=(x/2); i++){
+            if((x%i)==0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+:+1:
+1
+
+
+mjpurin  13:14
+https://joytas.net/programming/java_basic
+
+ジョイタスネット
+Java(オブジェクト指向基本復習) | ジョイタスネット
+1.ゲームを作ることになりスライムを登場させることになった。そこで名前とHP(初期値20)をパラメータとして持つpublicなSlimeクラスを作成せよ。コンストラクタやメソッドの実装は不要でクラス内のアクセス修飾子は無印(パッケージプライベート)とする。 ●Slimeクラス 2.SlimeAppクラスを作成し、2匹のスライムをnewせよ。その際変数名はsurarinとsurakitiとし、名前は
+2018年1月29日
+
+mjpurin  14:03
+https://joytas.net/programming/java_oop1
+
+ジョイタスネット
+Java(オブジェクト指向1) | ジョイタスネット
+Q.Monkeyクラスを作成し、MonkeyAppクラスから以下の処理を実現せよ。(アクセス性はすべてpublicでよい） [実行例] おさるの名前を決めてください:>トシ おさるの歳を決めてください:>3 おさるに何をさせますか？1...挨拶、2...竹馬、3...逆立ち、4...終了>1 こんにちはトシ(3才)です。よろしく！ おさるに何をさせますか？1...挨拶、2...
+2018年1月20日
+
+mjpurin  09:18
+import java.util.*;
+public class TimeLesson{
+	public static void main(String[] args){
+		System.out.println("33+50=");
+		long start=System.currentTimeMillis();
+		int ans=new Scanner(System.in).nextInt();
+		long end=0;
+		if(ans==83){
+			end=System.currentTimeMillis();
+			System.out.println("回答までの時間は"+(end-start)+"(ms)");
+		}else{
+			System.out.println("答えが違います");
+		}
+	}
+}
+
+Fujimine  10:34
+import java.util.*;
+public class PP0205{
+    public static void main(String[] args){
+        long start=System.currentTimeMillis();
+        String[] spells={"a","b","c","d","e","f","g",
+                        "h","i","j","k","l","m","n",
+                        "o","p","q","r","s","t","u",
+                        "v","w","x","y","z"};
+        String randomSpells;
+        int count=0;
+        while(true){
+            randomSpells="";
+            for(int i=0;i<10;i++){
+                int ran=new Random().nextInt(26);
+                randomSpells+=spells[ran];
+            }
+            System.out.println(randomSpells);
+            String userAns=new Scanner(System.in).nextLine();
+            if(randomSpells.equals(userAns)){
+                count++;
+                if(count==3){
+                    long end=System.currentTimeMillis();
+                    System.out.println(end-start+"(ms)");
+                    break;
+                }
+            }else{
+                System.out.println("ミス");
+            }
+        }
+        System.out.println();
+    }
+}
+
+mjpurin  11:16
+cp ../rpg/Matango.java ./
+
+mjpurin  21:18
+コンストラクタの演習問題です！
+https://joytas.net/programming/java_constructor
+
+ジョイタスネット
+Java(コンストラクター) | ジョイタスネット
+Q. 1.以下の構成のBookクラスを作成する。 フィールド String title; int price コンストラクタ(3つ) Book() Book(String title) Book(String title,int price) メソッド(フィールドの値を出力する) void showStatus() 2.BookAppクラスを作成し３つのコンストラクタそれぞれでnewして実行例の
+2018年1月24日
+:+1:
+1
+
+
+sekizawa  12:32
+public class Student{
+    int id;
+    String name;
+    int score;
+    public Student(int id,String name,int score){
+        this.id=id;
+        this.name=name;
+        this.score=score;
+    }
+    public void showInfo(){
+        System.out.printf("%s   ...%d点%n",this.name,this.score);
+    }
+}
+12:33
+import java.util.*;
+public class StudentApp{
+	public static void main(String[] args){
+		Scanner sc=new Scanner(System.in);
+		System.out.print("生徒は何人>");
+		int memberNum=sc.nextInt();
+		sc.nextLine();
+		Student[] students=new Student[memberNum];
+		for(int i=0;i<memberNum;i++){
+			System.out.printf("%d人目の名前>",(i+1));
+			String name=sc.nextLine();
+			System.out.printf("%d人目の点数>",(i+1));
+			int score=sc.nextInt();
+			sc.nextLine();
+			students[i]=new Student(i,name,score);
+		}
+		for(Student n:students){
+			n.showInfo();
+		}
+		while(true){
+			System.out.print("操作を入力:1...登録順に一覧,2...点数降順に一覧,3...終了>");
+			int num =sc.nextInt();
+			switch(num){
+				case 1:
+					sortStudents(students,"id");
+					for(Student n:students){
+						n.showInfo();
+					}
+					break;
+				case 2:
+					sortStudents(students,"score");
+					for(Student n:students){
+						n.showInfo();
+					}
+					break;
+				case 3:
+					System.out.println("アプリケーションを終了します");
+					return;
+			}
+		}
+	}
+	public static void sortStudents(Student[] data,String key){
+		if(key.equals("id")){
+			for(int i=0;i<data.length-1;i++){
+				for(int j=i+1;j<data.length;j++){
+					if(data[i].id > data[j].id){
+						Student temp=data[i];
+						data[i]=data[j];
+						data[j]=temp;
+					}
+				}
+			}
+		}else{
+			for(int i=0;i<data.length-1;i++){
+				for(int j=i+1;j<data.length;j++){
+					if(data[i].score < data[j].score){
+						Student temp=data[i];
+						data[i]=data[j];
+						data[j]=temp;
+					}
+				}
+			}
+		}
+	}
+}
+
+mjpurin  14:05
+import java.util.*;
+public class ZombieApp{
+	public static void main(String[] args){
+		Random rand=new Random();
+		Person[] persons=new Person[100];
+		for(int i=0;i<100;i++){
+			int hp=rand.nextInt(99)+1;
+			persons[i]=new Person(hp);
+		}
+		Zombie[] teamA=new Zombie[3];
+		Zombie[] teamB=new Zombie[3];
+		char s='A';
+		teamA[0]=new Zombie(50,s++);
+		char sb='a';
+		teamB[0]=new Zombie(50,sb++);
+		for(int i=0;i<4;i++){
+			if(i%2==0){
+				teamA[i/2+1]=teamA[0].bitePerson(persons[i],s++);
+			}else{
+				teamB[i/2+1]=teamB[0].bitePerson(persons[i],sb++);
+			}
+		}
+	}
+}
+class Zombie{
+	int hp;
+	int mp=10;
+	char suffix;
+	Zombie(int hp){
+		this.hp=hp;
+	}
+	Zombie(int hp,char suffix){
+		this(hp);
+		this.suffix=suffix;
+		this.created();
+	}
+	Zombie bitePerson(Person p,char suffix){
+		Zombie z=new Zombie(p.hp,suffix);
+		p.isAlive=false;
+		return z;
+	}
+	void created(){
+		System.out.printf("うぉ～(%s:%d)%n",this.suffix,this.hp);
+	}
+}
+class Person{
+	int hp;
+	boolean isAlive=true;
+	Person(int hp){
+		this.hp=hp;
+	}
+}
+
+mjpurin  14:15
+import java.util.*;
+public class ZombieApp{
+	public static void main(String[] args){
+		Random rand=new Random();
+		Person[] persons=new Person[100];
+		for(int i=0;i<100;i++){
+			int hp=rand.nextInt(99)+1;
+			persons[i]=new Person(hp);
+		}
+		Zombie[] teamA=new Zombie[3];
+		Zombie[] teamB=new Zombie[3];
+		char s='A';
+		teamA[0]=new Zombie(50,s++);
+		char sb='a';
+		teamB[0]=new Zombie(50,sb++);
+		for(int i=0;i<4;i++){
+			if(i<2){
+				teamA[i+1]=teamA[0].bitePerson(persons[i],s++);
+			}else{
+				teamB[i-1]=teamB[0].bitePerson(persons[i],sb++);
+			}
+		}
+		for(Zombie z:teamA){
+			z.created();
+		}
+		for(Zombie z:teamB){
+			z.created();
+		}
+	}
+}
+class Zombie{
+	int hp;
+	int mp=10;
+	char suffix;
+	Zombie(int hp){
+		this.hp=hp;
+	}
+	Zombie(int hp,char suffix){
+		this(hp);
+		this.suffix=suffix;
+	}
+	Zombie bitePerson(Person p,char suffix){
+		Zombie z=new Zombie(p.hp,suffix);
+		p.isAlive=false;
+		return z;
+	}
+	void created(){
+		System.out.printf("うぉ～(%s:%d)%n",this.suffix,this.hp);
+	}
+}
+class Person{
+	int hp;
+	boolean isAlive=true;
+	Person(int hp){
+		this.hp=hp;
+	}
+}
+
+mjpurin  14:23
+import java.util.*;
+public class ZombieApp{
+	public static void main(String[] args){
+		Random rand=new Random();
+		Person[] persons=new Person[100];
+		for(int i=0;i<100;i++){
+			int hp=rand.nextInt(99)+1;
+			persons[i]=new Person(hp);
+		}
+		Zombie[] teamA=new Zombie[3];
+		Zombie[] teamB=new Zombie[3];
+		char s='A';
+		teamA[0]=new Zombie(50,s++);
+		char sb='a';
+		teamB[0]=new Zombie(50,sb++);
+		for(int i=0;i<4;i++){
+			if(i<2){
+				teamA[i+1]=teamA[0].bitePerson(persons[i],s++);
+			}else{
+				teamB[i-1]=teamB[0].bitePerson(persons[i],sb++);
+			}
+		}
+		for(Zombie z:teamA){
+			z.created();
+		}
+		for(Zombie z:teamB){
+			z.created();
+		}
+	}
+}
+class Zombie{
+	int hp;
+	int mp=10;
+	char suffix;
+	Zombie(int hp){
+		this.hp=hp;
+	}
+	Zombie(int hp,char suffix){
+		this(hp);
+		this.suffix=suffix;
+	}
+	Zombie bitePerson(Person p,char suffix){
+		p.bite();
+		Zombie z=new Zombie(p.hp,suffix);
+		return z;
+	}
+	void created(){
+		System.out.printf("うぉ～(%s:%d)%n",this.suffix,this.hp);
+	}
+}
+class Person{
+	int hp;
+	boolean isAlive=true;
+	Person(int hp){
+		this.hp=hp;
+	}
+	void bite(){
+		System.out.println("ぎゃー");
+		this.isAlive=false;
+	}
+}
+

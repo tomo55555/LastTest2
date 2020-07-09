@@ -1,0 +1,288 @@
+Unityでよく使う実装方法まとめ
+C#
+Unity
+はじめに
+Unityでこんな機能をつけたい、といったときのコードへの落とし方をまとめました。
+Unityを利用し始めの人向けです。
+全部書くのは大変なのでurlベタ張り気味ですが...
+
+基礎の基礎
+スクリプトの生成
+ProjectのCreateからC# Scriptを選びましょう。
+ここで注意が必要なのが、名前の変更です。
+生成時の名前付けは問題ないのですが、あとから名前を変える場合
+名前を変えてもスクリプト上のクラス名は変わりません。
+必ずスクリプト上でも名前を変更しましょう。
+
+スクリプトを書く
+エディタ上からスクリプトをダブルクリックすると自動的にIDEが開かれます。
+標準だとVisual Studioですね。
+スクリプトを変更して保存すれば、自動的にUnity上に反映されます。
+IDEなどで実行する必要はありません。
+
+スクリプトのアタッチ
+オブジェクトにスクリプトを追加することをスクリプトをアタッチするといいます。
+ドラッグ＆ドロップでもできますし、インスペクタのAdd Componentからもできます。
+
+スクリプトが実行される流れ
+Start、Update、Awakeってなんや！FixedUpdateとUpdateどう違うねん！
+みたいな人へ
+https://docs.unity3d.com/ja/2018.2/Manual/ExecutionOrder.html
+
+Updateは1フレーム毎に呼ばれます。呼ばれる間隔は一定ではありません。
+FixedUpdateは一定時間ごとに呼ばれます。
+Inputなど入力はUpdate、RigidBodyなどの物理演算はFixedUpdateを使った方がいいとか。
+https://gametukurikata.com/basic/update
+
+変数の値などを表示させたい
+Debug.Log()を使いましょう。
+実行されたタイミングでConsoleに表示されます。
+変数の値はもちろん、ifなどの条件が通っているかなど確かめられます。
+
+https://docs.unity3d.com/ja/current/ScriptReference/Debug.Log.html
+
+基礎
+アタッチされたComponentを入手する。
+自身のクラスから他のアタッチされたComponentを参照したい場合があると思います。
+そんなとき使うのがGetComponentです。
+例えばEnemyオブジェクトにRigidBodyと、
+自作クラスEnemyControllerとEnemyが存在するとき。
+
+public class Enemy : MonoBehaviour
+{
+    private RigidBody rb;
+    private EnemyController ec;
+    private float moveForce;
+
+    void Start(){
+        rb = GetComponent<RigidBody>();
+        ec = GetComponent<EnemyController>();
+        moveForce = ec.GetMoveForce();
+    }
+
+    void FixedUpdate(){
+        rb.AddForce(transform.forward * moveForce);
+    }
+}
+public class EnemyController : MonoBehaviour
+{
+    public float moveForce;
+    public float GetMoveForce(){
+        return this.moveForce;
+    }
+}
+https://docs.unity3d.com/ja/current/ScriptReference/GameObject.GetComponent.html
+
+オブジェクトを移動させる
+オブジェクトの移動方法は様々です。
+transform.positionの値を直接書き換える、RigidBodyを使う、CharacterControllerを使う、Vector3を使う。
+私はCharacterControllerを主に使っています。
+RigidBodyにて、FreezePosition,FreezeRotationで動けるベクトルを制限できるので便利です。
+
+https://tama-lab.net/2017/05/Unityでキャラクターを移動させる方法【3D編】/
+
+オブジェクトを回転させる
+簡単なのはtransform.Rotateでしょうか。
+こちらもいろんな方法があるので模索してみてください。
+https://docs.unity3d.com/jp/current/ScriptReference/Transform.Rotate.html
+
+オブジェクトを生成する
+Instantiateを使いましょう。
+引数として、生成するオブジェクト、生成する位置、生成する角度(、親となるオブジェクト)を渡します。
+
+生成したオブジェクトを変数として扱いたい場合や、削除する場合などは、かならずInstantiateで生成するときに変数に代入しましょう。
+
+public GameObject enemyPrefab;
+private GameObject enemy;
+
+enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+https://docs.unity3d.com/ja/current/ScriptReference/Object.Instantiate.html
+
+オブジェクトを削除する
+Destroyメソッドを使います。
+引数に消したいオブジェクトを入れましょう。
+
+prefabそのものを消すことはできません。あくまでインスタンス化されたものです。
+
+public GameObject enemyPrefab;
+private GameObject enemy;
+
+enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+
+Destroy(enemyPrefab); //エラー。prefabそのものは消せない
+Destroy(enemy);
+オブジェクトを非アクティブにする
+オブジェクトを消したくはないけど、無いものとみなしたい。
+インスペクタでいうところの、左上のチェックを外したいというとき。
+
+SetActiveを利用しよう。
+もちろん非アクティブからアクティブにすることも可能。
+
+private GameObject enemy;
+
+enemy.SetActive(false); //非アクティブ化
+enemy.SetActive(true); //アクティブ化
+オブジェクトのタグを調べる
+オブジェクトのグループ化としてタグは便利です。
+CompareTagを利用することで特定のタグであるかどうか判断できます。
+
+public GameObject enemy;
+
+if(enemy.CompareTag("Enemy")){
+  Debug.Log(enemy.name + "はEnemyです");
+}
+https://docs.unity3d.com/ja/2018.2/ScriptReference/GameObject.CompareTag.html
+
+オブジェクト同士の衝突判定
+これがとてもよく使います。
+よく使う上になにかと間違います。
+オブジェクトにBoxColliderなりコライダーがついているもの同士がぶつかる、
+つまりコライダーがぶつかることで衝突判定をおこなっています。
+
+OnTriggerEnter, OnCollisionEnterはコライダー同士が触れた瞬間、
+OnTriggerStay, OnCollisionStayはコライダー同士が触れ続けている間、
+OnTriggerExit, OnCollisionExitはコライダー同士が離れた瞬間
+に呼ばれます。
+
+OnTriggerEnter(Collider other){
+  if(other.CompareTag("Wall")){
+    Debug.Log("壁に衝突した");
+  }
+}
+CollisionとTriggerの違い等はサイト参照
+物理演算をさせたいときはCollision、非物理的なものやセンサー的なものはTriggerを使うらしい(私は専らTriggerばかり)
+ちなみにこの2つは引数も違うので注意が必要。
+
+https://gametukurikata.com/program/collisiontrigger
+https://docs.unity3d.com/ja/2017.4/ScriptReference/Collider.OnTriggerEnter.html
+https://docs.unity3d.com/ja/2017.4/ScriptReference/Collider.OnCollisionEnter.html
+
+一定時間単位の動き
+Time.deltaTimeを利用する。
+これは前回のフレームから何秒経ったかを示すので、
+毎フレーム呼ばれるUpdate関数と組み合わせることで経過時間を計ることもできる。
+
+private float countTime = 0f;
+private bool flag = true;
+void Update(){
+  countTime += Time.deltaTime;
+  if(countTime >= 1f && flag){
+    Debug.Log("1秒経ったよ!!");
+    flag = false;
+  }
+}
+入力を受け付ける
+Inputクラスを利用。
+愚直に何のキーが押されたかを判断してもいいが私は好まない。
+UnityのProject SettingsからInputの設定ができる。
+そこでキーボードやコントローラーの対応付けができる。
+
+例えばFire1をマウス左クリック、Enter、とあるコントローラの〇ボタンに対応させたとする。
+そのとき以下のスクリプトでは3つの入力どれでも反応する。
+
+if(Input.GetButtonDown("Fire1")){
+  Debug.Log("Fire1が押された");
+}
+https://docs.unity3d.com/ja/2018.1/Manual/ConventionalGameInput.html
+https://qiita.com/yando/items/c406690c9ad87ecfc8e5
+
+Scene上にあるオブジェクトを探す
+GameObject.Findで名前で検索。
+GameObject.FindWithTagでタグ検索。
+たくさん使うと重くなるので注意。
+Transform.Findを使うことで、特定オブジェクトの子オブジェクトから探すことも可能。
+
+private GameObject enemy;
+private GameObject enemyArm;
+private GameObject enemyEye;
+
+enemy = GameObject.Find("Enemy");
+enemyArm = GameObject.FindWithTag("EnemyArm");
+enemyEye = enemy.transform.Find("Face/Eye"); //Enemyの子のFaceの子のEye
+https://docs.unity3d.com/ja/2017.4/ScriptReference/GameObject.Find.html
+https://docs.unity3d.com/ja/current/ScriptReference/GameObject.FindWithTag.html
+https://docs.unity3d.com/ja/2018.1/ScriptReference/Transform.Find.html
+
+時を止める
+Time.timeScale = 0;
+ただしFixedUpdateなど一部止められないものもあるらしい。
+
+https://tech.pjin.jp/blog/2016/12/20/unity_skill_7/
+
+一定時間後に実行する
+なにかとよく使いたい遅延したあとの実行。
+コルーチンを利用して解決しました。
+waitTime後に実行されます。
+
+using System;
+
+void Start(){
+    Debug.Log("5秒後に");
+    StartCoroutine(DelayMethod(5f, () =>
+    {
+        Debug.Log("こんにちは");
+    }));
+
+    Debug.Log("5フレーム後に");
+    StartCoroutine(DelayMethod(5, () =>
+    {
+        Debug.Log("こんばんわ");
+    }));
+}
+
+IEnumerator DelayMethod(float waitTime, Action action)
+{
+    yield return new WaitForSeconds(waitTime);
+    action();
+}
+
+IEnumerator DelayMethod(int delayFrameCount, Action action)
+{
+    for(int i = 0; i < delayFrameCount; i++)
+    {
+        yield return null;
+    }
+    action();
+}
+
+/*以下だとTime.timeScaleに影響されず呼ばれる
+IEnumerator DelayMethodRealTime(float waitTime, Action action)
+{
+    yield return new WaitForSecondsRealtime(waitTime);
+    action();
+}*/
+シーンを切り替える
+SceneManager.LoadScene(シーン名)で可能
+
+using UnityEngine.SceneManagement;
+忘れずに
+
+https://docs.unity3d.com/ja/2017.4/ScriptReference/SceneManagement.SceneManager.LoadScene.html
+
+特定方向を検知する
+Physics.Raycastを利用
+重いので頻繁に呼ばない方がいいらしい。
+
+予めRaycastHit型の変数を用意しておく。
+Physics.Raycastはbool型。trueならRaycastHitの変数に検知した情報を代入といった具合。
+
+private RaycastHit hit;
+
+//自身の位置からx負の方向(←)にRaycastを発射。最大長さは100f
+if(Physics.Raycast(this.transform.position, new Vector3(-1f, 0f, 0f), out hit, 100f)){
+    Debug.Log(hit.transform.gameObject.name + "を検知");
+}
+layerMaskを引数で加えることで、特定のレイヤーのオブジェクトのみの検知ができます。
+
+http://kan-kikuchi.hatenablog.com/entry/RayCast1
+http://kan-kikuchi.hatenablog.com/entry/RayCast2
+https://docs.unity3d.com/ja/2018.2/ScriptReference/RaycastHit.html
+
+canvas単位の絵画順の指定
+ひとつのSceneに複数のCanvasを配置することがあると思います。
+そんなときにCanvasの絵画順(どのCanvasを画面手前に配置するか)を指定するのは、CanvasコンポーネントのSortOrderの値を変更することでできます。
+
+SortOrderの値が大きいCanvasが手前に絵画されます。
+
+画面端の座標の取得
+https://qiita.com/kwst/items/4ec30f00ec1fdffe6e32
